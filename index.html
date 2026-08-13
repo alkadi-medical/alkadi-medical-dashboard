@@ -507,7 +507,7 @@ function setStatus(live){
     text.textContent = 'متصل ببيانات حية';
   } else {
     pill.className = 'status-pill demo';
-    text.textContent = 'بيانات محفوظة (تجريبي) — آخر يوم: ' + (DATA.length? DATA[DATA.length-1].date : '-');
+    text.textContent = 'تقرير الأداء اليومي: ' + (DATA.length? DATA[DATA.length-1].date : '-');
   }
 }
 
