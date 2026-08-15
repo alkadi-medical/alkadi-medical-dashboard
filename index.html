@@ -457,7 +457,8 @@ function parseFlexibleDate(raw){
   if(m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
   return null;
 }
-  if (dateSelect) {
+  const dateSelect = document.getElementById('dateSelect');
+if (dateSelect) {
     dateSelect.addEventListener('change', function() {
         loadDemo();
     });
