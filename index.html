@@ -456,21 +456,7 @@ function parseFlexibleDate(raw){
   m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
   if(m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
   return null;
- // دالة تحديث تفاصيل اليوم المدمجة في الواجهة
-function syncEmbeddedDayDetails(targetDate) {
-  const container = document.getElementById('embedded-day-details');
-  if (!container) return;
-
- // التشغيل تلقائياً عند فتح الصفحة وتفعيل التحديث الفوري عند تغيير القائمة
-document.addEventListener('DOMContentLoaded', function() {
-  const dateSelect = document.querySelector('select');
-
-  if (typeof DATA !== 'undefined' && DATA.length > 0) {
-    const latestDate = DATA[DATA.length - 1].date;
-    if (dateSelect) dateSelect.value = latestDate;
-    syncEmbeddedDayDetails(latestDate);
-  }
-
+}
   if (dateSelect) {
     dateSelect.addEventListener('change', function(e) {
       syncEmbeddedDayDetails(e.target.value);
