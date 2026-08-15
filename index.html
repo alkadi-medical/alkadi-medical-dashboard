@@ -451,11 +451,44 @@ function parseFlexibleDate(raw){
   m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
   if(m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
   return null;
-  // فتح تفاصيل اليوم تلقائياً
-  if(typeof DATA !== 'undefined' && DATA.length > 0){
-    const latestDate = DATA[DATA.length - 1].date;
-    if(typeof openDayModal === 'function') openDayModal(latestDate);
+ // دالة تحديث تفاصيل اليوم المدمجة في الواجهة
+function syncEmbeddedDayDetails(targetDate) {
+  const container = document.getElementById('embedded-day-details');
+  if (!container) return;
+
+  if (typeof openDayModal === 'function') {
+    openDayModal(targetDate);
+    
+    const modalContent = document.querySelector('.modal-content') || document.querySelector('.modal-body');
+    const modal = document.getElementById('dayModal') || document.querySelector('.modal');
+    
+    if (modalContent) {
+      container.innerHTML = modalContent.innerHTML;
+      
+      // إخفاء زر الإغلاق والنافذة المنبثقة
+      const closeBtn = container.querySelector('.close, [onclick*="close"], .close-btn');
+      if (closeBtn) closeBtn.style.display = 'none';
+      if (modal) modal.style.display = 'none';
+    }
   }
+}
+
+// التشغيل تلقائياً عند فتح الصفحة وتفعيل التحديث الفوري عند تغيير القائمة
+document.addEventListener('DOMContentLoaded', function() {
+  const dateSelect = document.querySelector('select');
+
+  if (typeof DATA !== 'undefined' && DATA.length > 0) {
+    const latestDate = DATA[DATA.length - 1].date;
+    if (dateSelect) dateSelect.value = latestDate;
+    syncEmbeddedDayDetails(latestDate);
+  }
+
+  if (dateSelect) {
+    dateSelect.addEventListener('change', function(e) {
+      syncEmbeddedDayDetails(e.target.value);
+    });
+  }
+});
 }
 
 // يقرأ صفوف تبويب "بيانات يومية" كما هي (بعناوينها العربية) من نشر Google Sheets مباشرة - بدون أي تعديل يدوي مطلوب من المستخدم
