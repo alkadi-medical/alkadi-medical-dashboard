@@ -470,6 +470,12 @@ function csvRowToRaw(row){
   };
 }
 
+// 1. تعريف مصفوفة الأشهر لتفادي خطأ MONTHS_AR
+if (typeof MONTHS_AR === 'undefined') {
+  var MONTHS_AR = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+}
+
+// 2. دالة التحميل الحية المحدثة
 function loadLive(){
   if(!CONFIG.csvUrl){ loadDemo(); return; }
   if(typeof Papa === 'undefined'){
@@ -477,7 +483,6 @@ function loadLive(){
     loadDemo(); return;
   }
 
-  // دالة جلب الشيت الرئيسي ورسم اللوحة
   function fetchMainSheet(){
     Papa.parse(CONFIG.csvUrl, {
       download: true, header: true, skipEmptyLines: true,
@@ -500,7 +505,6 @@ function loadLive(){
     });
   }
 
-  // 1. جلب شيت سداد الموردين أولاً وتنظيم بياناته
   if(CONFIG.suppliersCsvUrl){
     Papa.parse(CONFIG.suppliersCsvUrl, {
       download: true, header: true, skipEmptyLines: true,
@@ -535,11 +539,14 @@ function loadLive(){
               }
             }
           });
-          PAYMENTS = pMap;
+
+          // تحديث محتوى PAYMENTS بأمان دون إعادة تعيين المتغير الثابت
+          for(let k in PAYMENTS) delete PAYMENTS[k];
+          Object.assign(PAYMENTS, pMap);
+
         } catch(e) {
           console.warn('تعذر تحليل تفاصيل السدادات:', e);
         }
-        // بعد الانتهاء من السدادات، يتم جلب الشيت الرئيسي ورسم الصفحة
         fetchMainSheet();
       },
       error: function(){
