@@ -896,9 +896,8 @@ function renderAll(){
   renderMonths();
   renderAlerts();
   renderTrend();
-if(DATA && DATA.length > 0) {
-    selectDay(DATA[DATA.length - 1].date, {openDrawer: true});
-}
+  openDrawer(selectedDate); //
+  }
 
 document.getElementById('drawerBackdrop').addEventListener('click', (e)=>{
   if(e.target.id==='drawerBackdrop') closeDrawer();
