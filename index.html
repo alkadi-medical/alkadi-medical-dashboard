@@ -862,7 +862,28 @@ function renderAll(){
 document.getElementById('drawerBackdrop').addEventListener('click', (e)=>{
   if(e.target.id==='drawerBackdrop') closeDrawer();
 });
-
+function loadLive() {
+    Papa.parse(CONFIG.csvUrl, {
+        download: true,
+        header: true,
+        complete: function(results) {
+            if (results && results.data && results.data.length > 0) {
+                // استخدم نفس دالة معالجة وعرض البيانات التي تستخدمها في loadDemo لديك
+                // (مثل processData أو updateDashboard أو اسم الدالة المسؤولة عن بناء الرسوم البيانية والجداول)
+                if (typeof processData === 'function') {
+                    processData(results.data);
+                } else if (typeof updateDashboard === 'function') {
+                    updateDashboard(results.data);
+                }
+            } else {
+                console.error("البيانات المسترجعة فارغة أو غير صالحة");
+            }
+        },
+        error: function(err) {
+            console.error("خطأ أثناء جلب البيانات الحية:", err);
+        }
+    });
+}
 if(CONFIG.mode==='live'){ loadLive(); } else { loadDemo(); }
 
 </script>
