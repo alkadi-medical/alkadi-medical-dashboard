@@ -437,6 +437,14 @@ function indexData(){
 function loadDemo(){
     fetchMainSheet();
 }
+  function csvRowToRaw(row) {
+    return {
+        date: row[0] || '',
+        sales: parseFloat(row[1]) || 0,
+        orders: parseInt(row[2]) || 0,
+        // أضف بقية الحقول حسب ترتيب الأعمدة في الشيت الخاص بك
+    };
+}
 
 function parseFlexibleDate(raw){
   if(!raw) return null;
