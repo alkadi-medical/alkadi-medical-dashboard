@@ -965,7 +965,75 @@ document.getElementById('drawerBackdrop').addEventListener('click', (e)=>{
 });
 
 if(CONFIG.mode==='live'){ loadLive(); } else { loadDemo(); }
+// دالة لجلب وعرض بيانات القروض من التبويب المنشور
+function loadLoansData() {
+    const loansCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=1832741970&single=true&output=csv';
+    
+    Papa.parse(loansCsvUrl, {
+        download: true,
+        header: true,
+        complete: function(results) {
+            const loansData = results.data.filter(row => row['#'] || row['name']);
+            renderLoansTable(loansData);
+        }
+    });
+}
 
+// دالة لتعبئة الجدول والحسابات
+function renderLoansTable(loansData) {
+    const tbody = document.getElementById('loansTableBody');
+    const tfoot = document.getElementById('loansTableFoot');
+    if (!tbody || !tfoot) return;
+    
+    tbody.innerHTML = '';
+
+    let totalLoanAmount = 0;
+    let totalPrincipal = 0;
+    let totalInterest = 0;
+    let totalMonthlyInstallment = 0;
+    let totalPaidAmount = 0;
+    let totalRemainingAmount = 0;
+
+    loansData.forEach(loan => {
+        totalLoanAmount += parseFloat(String(loan['مبلغ القرض'] || 0).replace(/,/g, '')) || 0;
+        totalPrincipal += parseFloat(String(loan['أصل القرض'] || 0).replace(/,/g, '')) || 0;
+        totalInterest += parseFloat(String(loan['فوائد البنك'] || 0).replace(/,/g, '')) || 0;
+        totalMonthlyInstallment += parseFloat(String(loan['القسط الشهري'] || 0).replace(/,/g, '')) || 0;
+        totalPaidAmount += parseFloat(String(loan['المبلغ المسدد'] || 0).replace(/,/g, '')) || 0;
+        totalRemainingAmount += parseFloat(String(loan['المبلغ المتبقي'] || 0).replace(/,/g, '')) || 0;
+
+        const row = `
+            <tr>
+                <td>${loan['#'] || ''}</td>
+                <td>${loan['تاريخ أول قسط'] || ''}</td>
+                <td>${loan['مبلغ القرض'] || ''}</td>
+                <td>${loan['أصل القرض'] || ''}</td>
+                <td>${loan['فوائد البنك'] || ''}</td>
+                <td>${loan['القسط الشهري'] || ''}</td>
+                <td>${loan['المبلغ المسدد'] || ''}</td>
+                <td>${loan['المبلغ المتبقي'] || ''}</td>
+                <td>${loan['عدد الأقساط'] || ''}</td>
+                <td>${loan['الأقساط المدفوعة'] || ''}</td>
+                <td>${loan['الأقساط المتبقية'] || ''}</td>
+                <td>${loan['تاريخ آخر قسط'] || ''}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+
+    tfoot.innerHTML = `
+        <tr>
+            <td colspan="2">الإجمالي</td>
+            <td>${totalLoanAmount.toLocaleString()}</td>
+            <td>${totalPrincipal.toLocaleString()}</td>
+            <td>${totalInterest.toLocaleString()}</td>
+            <td>${totalMonthlyInstallment.toLocaleString()}</td>
+            <td>${totalPaidAmount.toLocaleString()}</td>
+            <td>${totalRemainingAmount.toLocaleString()}</td>
+            <td colspan="4"></td>
+        </tr>
+    `;
+}
 </script>
 </body>
 </html>
