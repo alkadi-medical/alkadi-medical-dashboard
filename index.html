@@ -435,15 +435,7 @@ function indexData(){
 }
 
 function loadDemo(){
-  DATA = RAW_DATA.map(enrich);
-  indexData();
-  setStatus(false);
-  renderAll();
-  // عرض تفاصيل أحدث يوم فور اكتمال تحميل البيانات
-if (typeof DATA !== 'undefined' && DATA.length > 0) {
-  const latestDate = DATA[DATA.length - 1].date;
-  if (typeof openDayModal === 'function') openDayModal(latestDate);
-}
+    fetchMainSheet();
 }
 
 function parseFlexibleDate(raw){
