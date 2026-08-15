@@ -9,6 +9,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 :root{
+  /* إصلاح اقتصاص الأرقام وبروز شريط التمرير من اليسار */
+.modal-content, .card, .table-container, div[style*="overflow"] {
+  scrollbar-gutter: stable;
+}
+
+/* إضافة هامش أمان للأرقام في الجداول */
+table td, table th {
+  padding-left: 25px !important;
+  padding-right: 12px !important;
+}
+
+/* منع تداخل شريط التمرير مع العمود الأيسر (الرقم والأثر) */
+td:first-child, th:first-child, .amount, .text-left {
+  padding-left: 28px !important;
+  min-width: 100px;
+}
   --bg:#0A0F1C;
   --bg-grad: radial-gradient(1200px 600px at 80% -10%, #0F1B33 0%, #0A0F1C 55%);
   --surface:#111A2E;
@@ -434,6 +450,11 @@ function parseFlexibleDate(raw){
   m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
   if(m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
   return null;
+  // فتح تفاصيل اليوم تلقائياً
+  if(typeof DATA !== 'undefined' && DATA.length > 0){
+    const latestDate = DATA[DATA.length - 1].date;
+    if(typeof openDayModal === 'function') openDayModal(latestDate);
+  }
 }
 
 // يقرأ صفوف تبويب "بيانات يومية" كما هي (بعناوينها العربية) من نشر Google Sheets مباشرة - بدون أي تعديل يدوي مطلوب من المستخدم
