@@ -8,6 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
+:root{#drawer {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 24px !important;
+}
   /* إصلاح اقتصاص الأرقام وبروز شريط التمرير من اليسار */
 .modal-content, .card, .table-container, div[style*="overflow"] {
   scrollbar-gutter: stable;
@@ -18,25 +23,14 @@ table td, table th {
   padding-left: 25px !important;
   padding-right: 12px !important;
 }
-    #drawer {
-    max-width: 800px !important;
-    margin: 0 auto !important;
-    padding: 24px !important;
-}
-
-#pulseSection {
-    display: none !important;
-}
 
 /* منع تداخل شريط التمرير مع العمود الأيسر (الرقم والأثر) */
 td:first-child, th:first-child, .amount, .text-left {
   padding-left: 28px !important;
   min-width: 100px;
 }
-  :root {
-    --bg: #0A0F1C;
-    --bg-grad: radial-gradient(1200px 600px at 80% -10%, #0F1B33 0%, #0A0F1C 55%);
-}
+  --bg:#0A0F1C;
+  --bg-grad: radial-gradient(1200px 600px at 80% -10%, #0F1B33 0%, #0A0F1C 55%);
   --surface:#111A2E;
   --surface-2:#182futuristic1B2B45; /* placeholder fixed below */
   --surface-2:#1A2540;
@@ -319,7 +313,20 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
   <div class="drawer" id="drawer"></div>
 </div> 
   <section class="pulse" id="pulseSection">
-    
+    <div class="section-head">
+      <div class="eyebrow">التوزيع اليومي — يناير إلى أغسطس 2026</div>
+      <h2 class="section-title">مؤشرات المبيعات اليومية</h2>
+      <p class="section-sub">كل مربع = يوم واحد، ولونه يعكس نسبة تحقق المستهدف الموزون لذلك اليوم تحديداً (المستهدف موزون حسب نشاط كل يوم أسبوع فعلياً، وليس بالتساوي). اضغط أي يوم لعرض التفاصيل الكاملة.</p>
+    </div>
+    <div class="pulse-legend">
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--danger)"></span> أقل من 70%</div>
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--amber)"></span> 70% – 99%</div>
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--success)"></span> 100% فأكثر</div>
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--surface-2); border:1px solid var(--border)"></span> لا يوجد تقرير</div>
+    </div>
+    <div class="pulse-grid" id="pulseGrid"></div>
+  </section>
+
   <section class="alerts">
     <div class="section-head">
       <div class="eyebrow">مراجعة تلقائية</div>
