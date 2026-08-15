@@ -152,15 +152,14 @@ section{padding:48px 0;}
 @media (prefers-reduced-motion: reduce){.pulse-cell.today-pulse{animation:none;}}
 
 /* ---------------- detail drawer ---------------- */
-.drawer-backdrop{
-  position:fixed; inset:0; background:rgba(5,8,16,.6); backdrop-filter:blur(3px);
-  z-index:100; display:none; align-items:center; justify-content:center; padding:20px;
-}
-.drawer-backdrop.open{display:flex;}
-.drawer{
-  background:var(--surface); border:1px solid var(--border); border-radius:18px;
-  width:100%; max-width:620px; max-height:86vh; overflow-y:auto;
-  padding:26px 26px 22px;
+.drawer-backdrop {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    z-index: 1;
+    padding: 0 !important;
+    margin-top: 20px;
 }
 .drawer-head{display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px;}
 .drawer-title{font-family:var(--font-display); font-weight:800; font-size:19px;}
@@ -605,8 +604,7 @@ function selectDay(dateStr, opts){
   document.querySelectorAll('.pulse-cell.selected').forEach(el=>el.classList.remove('selected'));
   const cell = document.querySelector('.pulse-cell[data-date="'+dateStr+'"]');
   if(cell) cell.classList.add('selected');
-  if(opts.openDrawer) openDrawer(dateStr);
-}
+openDrawer(dateStr);}
 
 // -------------------------------------------------------------------------
 // RENDER: hero KPIs
@@ -682,7 +680,6 @@ function openDrawer(dateStr){
         <div class="drawer-title">تفاصيل اليوم</div>
         <div class="drawer-date">${r.date} — ${r.dow}</div>
       </div>
-      <button class="drawer-close" onclick="closeDrawer()">✕</button>
     </div>
     <div class="drawer-kpis">
       <div class="mini-kpi"><div class="l">إجمالي المبيعات</div><div class="v">${fmt(r.totalSales)}</div></div>
@@ -899,6 +896,8 @@ function renderAll(){
   renderMonths();
   renderAlerts();
   renderTrend();
+if(DATA && DATA.length > 0) {
+    selectDay(DATA[DATA.length - 1].date, {openDrawer: true});
 }
 
 document.getElementById('drawerBackdrop').addEventListener('click', (e)=>{
