@@ -726,10 +726,11 @@ function openDrawer(dateStr){
       <thead><tr><th colspan="2">حركة النقد</th></tr></thead>
       <tbody>
         <tr><td>رصيد أول اليوم</td><td class="v">${fmt(r.openBalance)}</td></tr>
-        <tr><td>تحصيلات من العملاء</td><td class="v">${fmt(r.collections)}</td></tr>
-        <tr><td>سداد موردين نقداً</td><td class="v">${fmt(r.supplierCash)}</td></tr>
-        <tr><td>إجمالي المصروفات النقدية</td><td class="v">${fmt(r.totalExpenses)}</td></tr>
-        <tr><td>رصيد آخر اليوم</td><td class="v">${fmt(r.closeBalance)}</td></tr>
+<tr><td>تحصيلات من العملاء</td><td class="v">${fmt(r.collections)}</td></tr>
+<tr><td>سداد موردين نقداً</td><td class="v">${fmt(r.supplierCash)}</td></tr>
+<tr><td>مشتريات نقدية</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
+<tr><td>المصروفات النقدية</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
+<tr><td>رصيد آخر اليوم</td><td class="v">${fmt(r.closeBalance)}</td></tr>
       </tbody>
     </table>
     ${paymentsTableHtml('سداد الموردين نقداً', pay.cash, pay.cashTotalReported)}
