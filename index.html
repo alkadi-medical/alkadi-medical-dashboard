@@ -562,7 +562,7 @@ function loadLive(){
     console.warn('مكتبة تحليل CSV غير متاحة، سيتم عرض النسخة المحفوظة.');
     loadDemo(); return;
   }
-
+    loadLoansData();
   function fetchMainSheet(){
     Papa.parse(CONFIG.csvUrl, {
       download: true, header: true, skipEmptyLines: true,
