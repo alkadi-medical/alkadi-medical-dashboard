@@ -458,59 +458,10 @@ function parseFlexibleDate(raw){
   return null;
 }
   if (dateSelect) {
-    dateSelect.addEventListener('change', function(e) {
-      syncEmbeddedDayDetails(e.target.value);
+    dateSelect.addEventListener('change', function() {
+        loadDemo();
     });
-  }
-});
 }
-
-// يقرأ صفوف تبويب "بيانات يومية" كما هي (بعناوينها العربية) من نشر Google Sheets مباشرة - بدون أي تعديل يدوي مطلوب من المستخدم
-const AR_HEADER_MAP = {
-  'التاريخ':'date',
-  'مبيعات نقدية':'cashSales', 'مبيعات شبكة':'cardSales', 'تحويلات بنكية':'bankTransfer', 'مبيعات آجلة':'creditSales',
-  'مشتريات نقدية':'cashPurchases', 'سداد موردين نقداً':'supplierCash', 'مرتجع نقدي':'returns',
-  'مصروفات نقدية':'cashExpenses', 'إيداع بنك':'bankDeposit', 'أخرى':'other', 'تحويل بين فروع':'branchTransfer',
-  'رصيد أول اليوم':'openBalance', 'تحصيلات من العملاء':'collections'
-};
-
-function csvRowToRaw(row){
-  // يدعم كل من عناوين الشيت العربية الأصلية أو عناوين إنجليزية مبسطة (date, cashSales, ...) لو استُخدم شيت مخصص
-  const out = {};
-  const keys = Object.keys(row);
-  const hasArabicHeaders = keys.some(k => AR_HEADER_MAP[k.trim()]);
-  if(hasArabicHeaders){
-    keys.forEach(k=>{
-      const mapped = AR_HEADER_MAP[k.trim()];
-      if(mapped) out[mapped] = row[k];
-    });
-  } else {
-    Object.assign(out, row);
-  }
-  const dateStr = parseFlexibleDate(out.date);
-  const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
-  return {
-    date: dateStr,
-    cashSales:num(out.cashSales), cardSales:num(out.cardSales), bankTransfer:num(out.bankTransfer),
-    creditSales:num(out.creditSales), cashPurchases:num(out.cashPurchases), supplierCash:num(out.supplierCash),
-    returns:num(out.returns), cashExpenses:num(out.cashExpenses), bankDeposit:num(out.bankDeposit),
-    other:num(out.other), branchTransfer:num(out.branchTransfer), openBalance:num(out.openBalance),
-    collections:num(out.collections)
-  };
-}
-
-// 1. تعريف مصفوفة الأشهر لتفادي خطأ MONTHS_AR
-if (typeof MONTHS_AR === 'undefined') {
-  var MONTHS_AR = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
-}
-
-// 2. دالة التحميل الحية المحدثة
-function loadLive(){
-  if(!CONFIG.csvUrl){ loadDemo(); return; }
-  if(typeof Papa === 'undefined'){
-    console.warn('مكتبة تحليل CSV غير متاحة، سيتم عرض النسخة المحفوظة.');
-    loadDemo(); return;
-  }
 
   function fetchMainSheet(){
     Papa.parse(CONFIG.csvUrl, {
