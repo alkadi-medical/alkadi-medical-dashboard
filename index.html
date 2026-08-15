@@ -439,6 +439,11 @@ function loadDemo(){
   indexData();
   setStatus(false);
   renderAll();
+  // عرض تفاصيل أحدث يوم فور اكتمال تحميل البيانات
+if (typeof DATA !== 'undefined' && DATA.length > 0) {
+  const latestDate = DATA[DATA.length - 1].date;
+  if (typeof openDayModal === 'function') openDayModal(latestDate);
+}
 }
 
 function parseFlexibleDate(raw){
@@ -456,24 +461,7 @@ function syncEmbeddedDayDetails(targetDate) {
   const container = document.getElementById('embedded-day-details');
   if (!container) return;
 
-  if (typeof openDayModal === 'function') {
-    openDayModal(targetDate);
-    
-    const modalContent = document.querySelector('.modal-content') || document.querySelector('.modal-body');
-    const modal = document.getElementById('dayModal') || document.querySelector('.modal');
-    
-    if (modalContent) {
-      container.innerHTML = modalContent.innerHTML;
-      
-      // إخفاء زر الإغلاق والنافذة المنبثقة
-      const closeBtn = container.querySelector('.close, [onclick*="close"], .close-btn');
-      if (closeBtn) closeBtn.style.display = 'none';
-      if (modal) modal.style.display = 'none';
-    }
-  }
-}
-
-// التشغيل تلقائياً عند فتح الصفحة وتفعيل التحديث الفوري عند تغيير القائمة
+ // التشغيل تلقائياً عند فتح الصفحة وتفعيل التحديث الفوري عند تغيير القائمة
 document.addEventListener('DOMContentLoaded', function() {
   const dateSelect = document.querySelector('select');
 
