@@ -532,6 +532,7 @@ function loadLive(){
           if(rows.length===0) throw new Error('empty');
           DATA = rows.map(enrich);
           indexData();
+          openDrawer(DATA[DATA.length - 1].date);
           setStatus(true);
           renderAll();
         }catch(e){
