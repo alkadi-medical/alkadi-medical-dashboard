@@ -1134,6 +1134,24 @@ function renderSimpleTable(tbodyId, data, headers) {
         tbody.innerHTML += tr;
     });
 }
+    function fetchMainSheet() {
+    if (!CONFIG.csvUrl) return;
+    Papa.parse(CONFIG.csvUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(res) {
+            try {
+                const rows = res.data.map(csvRowToRaw).filter(r => r.date);
+                if (rows.length === 0) throw new Error('empty');
+                DATA = rows.map(enrich);
+                indexData();
+            } catch (e) {
+                console.error('Error fetching main sheet:', e);
+            }
+        }
+    });
+}
 </script>
 </body>
 </html>
