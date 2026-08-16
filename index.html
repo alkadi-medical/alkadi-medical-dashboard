@@ -385,9 +385,9 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 <table class="data-table" style="width: 100%; table-layout: fixed; text-align: right; direction: rtl;">
     <thead>
             <tr>
-<th style="width: 20%; text-align: right;">كود العميل</th>
-    <th style="width: 60%; text-align: right;">اسم العميل</th>
-    <th style="width: 20%; text-align: left; direction: ltr;">الرصيد</th>
+                <th>كود العميل</th>
+                <th>اسم العميل</th>
+                <th>الرصيد</th>
             </tr>
         </thead>
         <tbody id="customersTableBody"></tbody>
@@ -1072,7 +1072,7 @@ function renderLoansTable(loansData) {
 function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد']);
+        renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد']);
     }});
 }
 
