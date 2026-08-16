@@ -1084,25 +1084,34 @@ function loadSuppliersData() {
     }});
 }
 
-// دالة عامة لتعبئة الجداول البسيطة
 function renderSimpleTable(tbodyId, data, headers) {
     const tbody = document.getElementById(tbodyId);
     if (!tbody) return;
     tbody.innerHTML = '';
-    
     const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
-    
     filteredData.forEach(row => {
         const tr = `
             <tr>
-                <td>${row[headers[0]] || ''}</td>
-                <td>${row[headers[1]] || ''}</td>
-                <td>${row[headers[2]] || ''}</td>
+                <td style="width: 15%; text-align: right; padding: 8px 12px;">${row[headers[0]] || ''}</td>
+                <td style="width: 60%; text-align: right; padding: 8px 12px;">${row[headers[1]] || ''}</td>
+                <td style="width: 25%; text-align: right; padding: 8px 12px;">${row[headers[2]] || ''}</td>
             </tr>
         `;
         tbody.innerHTML += tr;
     });
 }
+
+function toggleSection(contentId, headerElement) {
+    const content = document.getElementById(contentId);
+    if (content) {
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+            headerElement.style.color = '#38bdf8';
+        } else {
+            content.style.display = 'none';
+            headerElement.style.color = '#94a3b8';
+        }
+    }
 }
     function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
@@ -1122,17 +1131,33 @@ function renderSimpleTable(tbodyId, data, headers) {
     const tbody = document.getElementById(tbodyId);
     if (!tbody) return;
     tbody.innerHTML = '';
+    
+    let total = 0;
     const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
+    
     filteredData.forEach(row => {
+        // تحويل الرصيد لرقم لجمع المجموع
+        const balance = parseFloat(row[headers[2]].replace(/,/g, '')) || 0;
+        total += balance;
+        
         const tr = `
             <tr>
-                <td>${row[headers[0]] || ''}</td>
-                <td>${row[headers[1]] || ''}</td>
-                <td>${row[headers[2]] || ''}</td>
+                <td style="width: 15%; text-align: right; padding: 8px 12px;">${row[headers[0]] || ''}</td>
+                <td style="width: 60%; text-align: right; padding: 8px 12px;">${row[headers[1]] || ''}</td>
+                <td style="width: 25%; text-align: right; padding: 8px 12px;">${row[headers[2]] || ''}</td>
             </tr>
         `;
         tbody.innerHTML += tr;
     });
+
+    // إضافة سطر المجموع في نهاية الجدول
+    const totalTr = `
+        <tr style="background-color: #1e293b; font-weight: bold; border-top: 2px solid #38bdf8;">
+            <td style="padding: 10px;" colspan="2">الإجمالـــي</td>
+            <td style="padding: 10px; text-align: right;">${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+        </tr>
+    `;
+    tbody.innerHTML += totalTr;
 }
     function fetchMainSheet() {
     if (!CONFIG.csvUrl) return;
