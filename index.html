@@ -385,9 +385,9 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 <table class="data-table" style="width: 100%; table-layout: fixed; text-align: right; direction: rtl;">
     <thead>
             <tr>
-<th style="width: 150px; text-align: right;">كود العميل</th>
+<th style="width: 140px; text-align: right;">كود العميل</th>
     <th style="width: auto; text-align: right;">اسم العميل</th>
-    <th style="width: 150px; text-align: right;">الرصيد</th>
+    <th style="width: 160px; text-align: left; padding-left: 50px;">الرصيد</th>
             </tr>
         </thead>
         <tbody id="customersTableBody"></tbody>
@@ -1095,9 +1095,9 @@ function renderSimpleTable(tbodyId, data, headers) {
     filteredData.forEach(row => {
         const tr = `
 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-<td style="width: 150px; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
+<td style="width: 140px; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
         <td style="width: auto; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
-        <td style="width: 150px; padding: 10px; text-align: right; direction: ltr;">${row[headers[2]] || ''}</td>
+        <td style="width: 160px; padding: 10px; text-align: left; direction: ltr; padding-left: 50px;">${row[headers[2]] || ''}</td>
         </tr>        `;
         tbody.innerHTML += tr;
     });
