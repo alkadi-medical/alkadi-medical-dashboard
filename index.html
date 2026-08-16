@@ -382,8 +382,8 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 <!-- قسم أرصدة العملاء -->
 <section id="customersSection" style="padding: 20px;">
     <h2 style="color: #fff; text-align: center;">أرصدة العملاء</h2>
-    <table class="data-table">
-        <thead>
+<table class="data-table" style="width: 100%; text-align: right; direction: rtl;">      
+    <thead>
             <tr>
                 <th>كود العميل</th>
                 <th>اسم العميل</th>
@@ -397,8 +397,8 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 <!-- قسم أرصدة الموردين -->
 <section id="suppliersSection" style="padding: 20px;">
     <h2 style="color: #fff; text-align: center;">أرصدة الموردين</h2>
-    <table class="data-table">
-        <thead>
+<table class="data-table" style="width: 100%; text-align: right; direction: rtl;">      
+    <thead>
             <tr>
                 <th>كود المورد</th>
                 <th>اسم المورد</th>
@@ -596,8 +596,10 @@ function loadLive(){
     console.warn('مكتبة تحليل CSV غير متاحة، سيتم عرض النسخة المحفوظة.');
     loadDemo(); return;
   }
-    loadLoansData();
-  function fetchMainSheet(){
+loadLoansData();
+    loadCustomersData();
+    loadSuppliersData();
+    fetchMainSheet(){
     Papa.parse(CONFIG.csvUrl, {
       download: true, header: true, skipEmptyLines: true,
       complete: function(res){
