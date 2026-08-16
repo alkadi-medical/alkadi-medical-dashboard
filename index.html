@@ -1104,6 +1104,36 @@ function renderSimpleTable(tbodyId, data, headers) {
     });
 }
 }
+    function loadCustomersData() {
+    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
+    Papa.parse(url, { download: true, header: true, complete: function(res) {
+        renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد']);
+    }});
+}
+
+function loadSuppliersData() {
+    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=246288434&single=true&output=csv';
+    Papa.parse(url, { download: true, header: true, complete: function(res) {
+        renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد']);
+    }});
+}
+
+function renderSimpleTable(tbodyId, data, headers) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
+    filteredData.forEach(row => {
+        const tr = `
+            <tr>
+                <td>${row[headers[0]] || ''}</td>
+                <td>${row[headers[1]] || ''}</td>
+                <td>${row[headers[2]] || ''}</td>
+            </tr>
+        `;
+        tbody.innerHTML += tr;
+    });
+}
 </script>
 </body>
 </html>
