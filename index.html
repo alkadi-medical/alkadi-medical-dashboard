@@ -673,13 +673,12 @@ loadLoansData();
   } else {
     fetchMainSheet();
   }
-}
 function setStatus(live){
   const pill = document.getElementById('statusPill');
   const text = document.getElementById('statusText');
   if(live){
     pill.className = 'status-pill live';
-    text.textContent = 'متصل ببيانات حية';
+text.textContent = 'متصل ببيانات حية';
   } else {
     pill.className = 'status-pill demo';
     text.textContent = 'تقرير الأداء اليومي: ' + (DATA.length? DATA[DATA.length-1].date : '-');
