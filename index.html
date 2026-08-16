@@ -1095,9 +1095,9 @@ function renderSimpleTable(tbodyId, data, headers) {
     filteredData.forEach(row => {
         const tr = `
 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-        <td style="width: 15%; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
-        <td style="width: 60%; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
-        <td style="width: 25%; padding: 10px; text-align: left; direction: ltr;">${row[headers[2]] || ''}</td>
+<td style="width: 15%; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
+    <td style="width: 60%; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
+    <td style="width: 25%; padding: 10px; text-align: left; direction: ltr;">${row[headers[2]] || ''}</td>
     </tr>        `;
         tbody.innerHTML += tr;
     });
