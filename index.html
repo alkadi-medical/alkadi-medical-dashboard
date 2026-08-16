@@ -387,7 +387,7 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
             <tr>
 <th style="width: 150px; text-align: right;">كود العميل</th>
     <th style="width: auto; text-align: right;">اسم العميل</th>
-    <th style="width: 180px; text-align: left; direction: ltr; padding-left: 30px;">الرصيد</th>
+    <th style="width: 150px; text-align: right;">الرصيد</th>
             </tr>
         </thead>
         <tbody id="customersTableBody"></tbody>
@@ -1097,7 +1097,7 @@ function renderSimpleTable(tbodyId, data, headers) {
 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
 <td style="width: 150px; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
         <td style="width: auto; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
-        <td style="width: 180px; padding: 10px; text-align: left; direction: ltr; padding-left: 30px;">${row[headers[2]] || ''}</td>
+        <td style="width: 150px; padding: 10px; text-align: right; direction: ltr;">${row[headers[2]] || ''}</td>
         </tr>        `;
         tbody.innerHTML += tr;
     });
