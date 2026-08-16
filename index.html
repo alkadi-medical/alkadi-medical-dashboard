@@ -281,7 +281,13 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </style>
 </head>
 <body>
-
+<!-- شريط التنقل العلوي -->
+<nav id="mainNav" style="position: sticky; top: 0; background: #0b0e14; padding: 15px; text-align: center; z-index: 1000; border-bottom: 1px solid #333;">
+    <a href="#dailyReport" style="color: #fff; margin: 0 15px; text-decoration: none;">التقرير اليومي</a>
+    <a href="#customersSection" style="color: #fff; margin: 0 15px; text-decoration: none;">أرصدة العملاء</a>
+    <a href="#suppliersSection" style="color: #fff; margin: 0 15px; text-decoration: none;">أرصدة الموردين</a>
+    <a href="#loansSection" style="color: #fff; margin: 0 15px; text-decoration: none;">بيان القروض</a>
+</nav>
 <div class="topbar">
   <div class="brand">
     <div class="brand-mark">AKM</div>
@@ -373,7 +379,35 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </div>
 <!-- هنا نهاية المحتوى السابق للوحة -->
 </div> <!-- نهاية الحاوية الرئيسية إن وجدت -->
+<!-- قسم أرصدة العملاء -->
+<section id="customersSection" style="padding: 20px;">
+    <h2 style="color: #fff; text-align: center;">أرصدة العملاء</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>كود العميل</th>
+                <th>اسم العميل</th>
+                <th>الرصيد</th>
+            </tr>
+        </thead>
+        <tbody id="customersTableBody"></tbody>
+    </table>
+</section>
 
+<!-- قسم أرصدة الموردين -->
+<section id="suppliersSection" style="padding: 20px;">
+    <h2 style="color: #fff; text-align: center;">أرصدة الموردين</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>كود المورد</th>
+                <th>اسم المورد</th>
+                <th>الرصيد</th>
+            </tr>
+        </thead>
+        <tbody id="suppliersTableBody"></tbody>
+    </table>
+</section>
 <!-- قسم بيان القروض الجديد -->
 <section class="loans-section" style="margin-top: 30px; background: rgba(15, 27, 51, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px;">
     <div class="card-title" style="margin-bottom: 16px; font-size: 1.2rem;">بيان القروض حتى تاريخه</div>
@@ -1033,6 +1067,41 @@ function renderLoansTable(loansData) {
             <td colspan="4"></td>
         </tr>
     `;
+    // جلب أرصدة العملاء
+function loadCustomersData() {
+    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
+    Papa.parse(url, { download: true, header: true, complete: function(res) {
+        renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد']);
+    }});
+}
+
+// جلب أرصدة الموردين
+function loadSuppliersData() {
+    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=246288434&single=true&output=csv';
+    Papa.parse(url, { download: true, header: true, complete: function(res) {
+        renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد']);
+    }});
+}
+
+// دالة عامة لتعبئة الجداول البسيطة
+function renderSimpleTable(tbodyId, data, headers) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    
+    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
+    
+    filteredData.forEach(row => {
+        const tr = `
+            <tr>
+                <td>${row[headers[0]] || ''}</td>
+                <td>${row[headers[1]] || ''}</td>
+                <td>${row[headers[2]] || ''}</td>
+            </tr>
+        `;
+        tbody.innerHTML += tr;
+    });
+}
 }
 </script>
 </body>
