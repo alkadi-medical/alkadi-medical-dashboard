@@ -1136,56 +1136,6 @@ function renderSimpleTable(tbodyId, data, headers) {
     const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
     
     filteredData.forEach(row => {
-        // تحويل الرصيد لرقم لجمع المجموع
-        const balance = parseFloat(row[headers[2]].replace(/,/g, '')) || 0;
-        total += balance;
-        
-        const tr = `
-            <tr>
-                <td style="width: 15%; text-align: right; padding: 8px 12px;">${row[headers[0]] || ''}</td>
-                <td style="width: 60%; text-align: right; padding: 8px 12px;">${row[headers[1]] || ''}</td>
-                <td style="width: 25%; text-align: right; padding: 8px 12px;">${row[headers[2]] || ''}</td>
-            </tr>
-        `;
-        tbody.innerHTML += tr;
-    });
-
-    // إضافة سطر المجموع في نهاية الجدول
-    const totalTr = `
-        <tr style="background-color: #1e293b; font-weight: bold; border-top: 2px solid #38bdf8;">
-            <td style="padding: 10px;" colspan="2">الإجمالـــي</td>
-            <td style="padding: 10px; text-align: right;">${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-        </tr>
-    `;
-    tbody.innerHTML += totalTr;
-}
-    function fetchMainSheet() {
-    if (!CONFIG.csvUrl) return;
-    Papa.parse(CONFIG.csvUrl, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(res) {
-            try {
-                const rows = res.data.map(csvRowToRaw).filter(r => r.date);
-                if (rows.length === 0) throw new Error('empty');
-                DATA = rows.map(enrich);
-                indexData();
-            } catch (e) {
-                console.error('Error fetching main sheet:', e);
-            }
-        }
-    });
-}
-function renderSimpleTable(tbodyId, data, headers) {
-    const tbody = document.getElementById(tbodyId);
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    
-    let total = 0;
-    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
-    
-    filteredData.forEach(row => {
         const balance = parseFloat(row[headers[2]].replace(/,/g, '')) || 0;
         total += balance;
         
