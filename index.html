@@ -381,36 +381,47 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </div> <!-- نهاية الحاوية الرئيسية إن وجدت -->
 <section id="customersSection" style="padding: 20px;">
     <h2 style="color: #22c55e; text-align: right; cursor: pointer;" onclick="toggleSection('customersSection', this)">أرصدة العملاء</h2>
-    <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+    <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
         <table class="data-table" style="width: 100%; border-collapse: collapse; text-align: right; direction: rtl;">
             <thead>
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; background: #0f172a; z-index: 1;">
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; background: #0f172a; z-index: 2;">
                     <th style="width: 140px; padding: 12px; text-align: right;">كود العميل</th>
                     <th style="width: auto; padding: 12px; text-align: right;">اسم العميل</th>
                     <th style="width: 160px; padding: 12px; text-align: left; padding-left: 20px;">الرصيد</th>
                 </tr>
             </thead>
             <tbody id="customersTableBody"></tbody>
+            <tfoot style="position: sticky; bottom: 0; background: #0f172a; border-top: 2px solid rgba(34, 197, 94, 0.4); z-index: 2;">
+                <tr>
+                    <td colspan="2" style="padding: 12px; text-align: right; font-weight: bold; color: #22c55e;">المجموع الإجمالي</td>
+                    <td id="customersTotal" style="padding: 12px; text-align: left; font-weight: bold; color: #22c55e; direction: ltr; padding-left: 20px;">0.00</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </section>
-<!-- قسم أرصدة الموردين -->
+    <!-- قسم أرصدة الموردين -->
 <section id="suppliersSection" style="padding: 20px;">
     <h2 style="color: #22c55e; text-align: right; cursor: pointer;" onclick="toggleSection('suppliersSection', this)">أرصدة الموردين</h2>
-    <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+    <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
         <table class="data-table" style="width: 100%; border-collapse: collapse; text-align: right; direction: rtl;">
             <thead>
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; background: #0f172a; z-index: 1;">
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; background: #0f172a; z-index: 2;">
                     <th style="width: 140px; padding: 12px; text-align: right;">كود المورد</th>
                     <th style="width: auto; padding: 12px; text-align: right;">اسم المورد</th>
                     <th style="width: 160px; padding: 12px; text-align: left; padding-left: 20px;">الرصيد</th>
                 </tr>
             </thead>
             <tbody id="suppliersTableBody"></tbody>
+            <tfoot style="position: sticky; bottom: 0; background: #0f172a; border-top: 2px solid rgba(34, 197, 94, 0.4); z-index: 2;">
+                <tr>
+                    <td colspan="2" style="padding: 12px; text-align: right; font-weight: bold; color: #22c55e;">المجموع الإجمالي</td>
+                    <td id="suppliersTotal" style="padding: 12px; text-align: left; font-weight: bold; color: #22c55e; direction: ltr; padding-left: 20px;">0.00</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
-</section>
-    
+</section>    
 <!-- قسم بيان القروض الجديد -->
 <section class="loans-section" style="margin-top: 30px; background: rgba(15, 27, 51, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px;">
     <div class="card-title" style="margin-bottom: 16px; font-size: 1.2rem;">بيان القروض حتى تاريخه</div>
