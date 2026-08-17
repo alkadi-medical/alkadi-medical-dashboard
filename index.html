@@ -1086,7 +1086,7 @@ function renderLoansTable(loansData) {
 function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد'], 'customersTotal');
+renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد']);
     }});
 }
 
@@ -1094,7 +1094,7 @@ renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اس�
 function loadSuppliersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=246288434&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد'], 'suppliersTotal');
+renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد']);
     }});
 }
 
@@ -1104,33 +1104,26 @@ function renderSimpleTable(tbodyId, data, headers, totalElementId) {
     if (!tbody) return;
     tbody.innerHTML = '';
     
+    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
     let totalSum = 0;
 
-    data.forEach(row => {
-        // تحويل صف البيانات إلى مصفوفة قيم بغض النظر عن أسماء الأعمدة
-        const values = Object.values(row);
-        if (!values[0] && !values[1]) return; // تجاهل الصفوف الفارغة
-
-        let codeVal = values[0] || '';
-        let nameVal = values[1] || '';
-        let balanceVal = values[2] || '';
-
-        // تنظيف وحساب المجموع للرصيد (العمود الثالث)
-        let valStr = balanceVal ? String(balanceVal).replace(/,/g, '') : '0';
+    filteredData.forEach(row => {
+        // حساب المجموع (تنظيف النص من الفواصل لضمان دقة الجمع)
+        let valStr = row[headers[2]] ? String(row[headers[2]]).replace(/,/g, '') : '0';
         let val = parseFloat(valStr) || 0;
         totalSum += val;
 
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
         tr.innerHTML = `
-            <td style="width: 140px; padding: 12px; text-align: right;">${codeVal}</td>
-            <td style="width: auto; padding: 12px; text-align: right;">${nameVal}</td>
-            <td style="width: 160px; padding: 12px; text-align: left; direction: ltr; padding-left: 20px;">${balanceVal}</td>
+            <td style="width: 140px; padding: 12px; text-align: right;">${row[headers[0]] || ''}</td>
+            <td style="width: auto; padding: 12px; text-align: right;">${row[headers[1]] || ''}</td>
+            <td style="width: 160px; padding: 12px; text-align: left; direction: ltr; padding-left: 20px;">${row[headers[2]] || ''}</td>
         `;
         tbody.appendChild(tr);
     });
 
-    // تحديث إجمالي المجموع في الأسفل
+    // تحديث حقل المجموع إذا وُجد
     if (totalElementId) {
         const totalEl = document.getElementById(totalElementId);
         if (totalEl) {
