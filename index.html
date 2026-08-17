@@ -1104,12 +1104,18 @@ function renderSimpleTable(tbodyId, data, headers, totalElementId) {
     if (!tbody) return;
     tbody.innerHTML = '';
     
-    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
     let totalSum = 0;
 
-filteredData.forEach(row => {
-        // البحث عن حقل الرصيد تلقائياً لضمان قراءة القيمة الصحيحة
-        let balanceVal = row['الرصيد'] !== undefined ? row['الرصيد'] : row[headers[2]];
+    data.forEach(row => {
+        // تحويل صف البيانات إلى مصفوفة قيم بغض النظر عن أسماء الأعمدة
+        const values = Object.values(row);
+        if (!values[0] && !values[1]) return; // تجاهل الصفوف الفارغة
+
+        let codeVal = values[0] || '';
+        let nameVal = values[1] || '';
+        let balanceVal = values[2] || '';
+
+        // تنظيف وحساب المجموع للرصيد (العمود الثالث)
         let valStr = balanceVal ? String(balanceVal).replace(/,/g, '') : '0';
         let val = parseFloat(valStr) || 0;
         totalSum += val;
@@ -1117,13 +1123,14 @@ filteredData.forEach(row => {
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
         tr.innerHTML = `
-            <td style="width: 140px; padding: 12px; text-align: right;">${row[headers[0]] || ''}</td>
-            <td style="width: auto; padding: 12px; text-align: right;">${row[headers[1]] || ''}</td>
-            <td style="width: 160px; padding: 12px; text-align: left; direction: ltr; padding-left: 20px;">${balanceVal !== undefined ? balanceVal : ''}</td>
+            <td style="width: 140px; padding: 12px; text-align: right;">${codeVal}</td>
+            <td style="width: auto; padding: 12px; text-align: right;">${nameVal}</td>
+            <td style="width: 160px; padding: 12px; text-align: left; direction: ltr; padding-left: 20px;">${balanceVal}</td>
         `;
         tbody.appendChild(tr);
     });
-    // تحديث حقل المجموع إذا وُجد
+
+    // تحديث إجمالي المجموع في الأسفل
     if (totalElementId) {
         const totalEl = document.getElementById(totalElementId);
         if (totalEl) {
