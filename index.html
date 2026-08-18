@@ -1086,7 +1086,7 @@ function renderLoansTable(loansData) {
 function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد'], 'customersTableFoot');
+renderSimpleTable('customersTableBody', res.data, ['الرصيد', 'اسم العميل', 'كود العميل'], 'customersTotal');
     }});
 }
 
@@ -1094,7 +1094,7 @@ renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اس�
 function loadSuppliersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=246288434&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد'], 'suppliersTotal');
+renderSimpleTable('suppliersTableBody', res.data, ['الرصيد', 'اسم المورد', 'كود المورد'], 'suppliersTotal');
     }});
 }
 
