@@ -1105,31 +1105,30 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
     tbody.innerHTML = '';
     
     let totalSum = 0;
-    // تصفية الصفوف الفارغة لضمان عدم حدوث أخطاء
-    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]] || row[headers[2]]);
 
-    filteredData.forEach(row => {
-        // الرقم موجود في العمود الثالث (headers[2]) وهو 'الرصيد'
-        let balanceKey = headers[2]; 
-        let rawVal = row[balanceKey] || '0';
-        
-        // تحويل النص إلى رقم مع حذف الفواصل
-        let val = parseFloat(String(rawVal).replace(/,/g, '')) || 0;
-        totalSum += val;
+    data.forEach(row => {
+        // التحقق من وجود أي بيانات في الصف
+        if (!row[headers[0]] && !row[headers[1]] && !row[headers[2]]) return;
 
+        // 1. عرض الصف في الجدول (كود، اسم، رصيد)
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
-        
-        // عرض البيانات حسب الترتيب في جدولك (كود، اسم، رصيد)
         tr.innerHTML = `
             <td style="width: 15%; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
             <td style="width: 65%; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
             <td style="width: 20%; padding: 10px; text-align: left; direction: ltr; padding-left: 20px;">${row[headers[2]] || '0.00'}</td>
         `;
         tbody.appendChild(tr);
+
+        // 2. حساب المجموع (استخراج الرقم الصافي من العمود الثالث)
+        let balanceValue = row[headers[2]] || '0';
+        // هذه الخطوة تحذف الفواصل وأي حروف وتترك الأرقام فقط للجمع
+        let cleanValue = String(balanceValue).replace(/[^\d.-]/g, '');
+        let val = parseFloat(cleanValue) || 0;
+        totalSum += val;
     });
 
-    // وضع المجموع في الخانة الصحيحة (customersTotal أو suppliersTotal)
+    // 3. تحديث خانة المجموع في الـ HTML
     if (totalFooterId) {
         const totalEl = document.getElementById(totalFooterId);
         if (totalEl) {
