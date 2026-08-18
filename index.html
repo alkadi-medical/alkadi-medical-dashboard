@@ -1104,31 +1104,36 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
     if (!tbody) return;
     tbody.innerHTML = '';
     
-    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
+    // تصفية الصفوف الفارغة
+    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]] || row[headers[2]]);
     let totalSum = 0;
 
     filteredData.forEach(row => {
-                    let val = parseFloat(String(row['الرصيد'] || '0').replace(/,/g, '')) || 0;
+        // استخراج قيمة الرصيد. لاحظ أننا نبحث عن كلمة 'الرصيد' في البيانات
+        let rawVal = row['الرصيد'] || '0';
+        let val = parseFloat(String(rawVal).replace(/,/g, '')) || 0;
         totalSum += val;
 
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+        
+        // عرض البيانات بالترتيب (كود، اسم، رصيد)
         tr.innerHTML = `
-            <td style="width: 15%; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
-            <td style="width: 65%; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
-            <td style="width: 20%; padding: 10px; text-align: left; direction: ltr; padding-left: 20px;">${row[headers[2]] || ''}</td>
+            <td style="width: 15%; padding: 10px; text-align: right;">${row['كود العميل'] || row['كود المورد'] || ''}</td>
+            <td style="width: 65%; padding: 10px; text-align: right;">${row['اسم العميل'] || row['اسم المورد'] || ''}</td>
+            <td style="width: 20%; padding: 10px; text-align: left; direction: ltr; padding-left: 20px;">${row['الرصيد'] || '0.00'}</td>
         `;
         tbody.appendChild(tr);
     });
 
-    if (totalFooterId) {
-        const totalEl = document.getElementById(totalFooterId);
-        if (totalEl) {
-            let formattedTotal = totalSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            totalEl.innerText = formattedTotal;
-        }
+    // تحديث خانة المجموع
+    const totalEl = document.getElementById(totalFooterId);
+    if (totalEl) {
+        totalEl.innerText = totalSum.toLocaleString('en-US', { 
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2 
+        });
     }
-}
 }
     function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
