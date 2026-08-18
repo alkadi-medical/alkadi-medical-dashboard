@@ -1082,23 +1082,25 @@ function renderLoansTable(loansData) {
             <td colspan="4"></td>
         </tr>
     `;
-    // جلب أرصدة العملاء
+// 1. دالة جلب أرصدة العملاء
 function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
-    Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('customersTableBody', res.data, ['الرصيد', 'اسم العميل', 'كود العميل'], 'customersTotal');
+    Papa.parse(url, { download: true, header: true, complete: function(res ) {
+        // نمرر ID المجموع الصحيح وهو customersTotal
+        renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد'], 'customersTotal');
     }});
 }
 
-// جلب أرصدة الموردين
+// 2. دالة جلب أرصدة الموردين
 function loadSuppliersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=246288434&single=true&output=csv';
-    Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('suppliersTableBody', res.data, ['الرصيد', 'اسم المورد', 'كود المورد'], 'suppliersTotal');
+    Papa.parse(url, { download: true, header: true, complete: function(res ) {
+        // نمرر ID المجموع الصحيح وهو suppliersTotal
+        renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد'], 'suppliersTotal');
     }});
 }
 
-// دالة عامة لتعبئة الجداول البسيطة
+// 3. الدالة العامة لرسم الجداول وحساب المجموع
 function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
     const tbody = document.getElementById(tbodyId);
     if (!tbody) return;
@@ -1106,14 +1108,14 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
     
     let totalSum = 0;
 
-    data.forEach(row => {
-        // التحقق من وجود بيانات في الصف
-        if (!row[headers[0]] && !row[headers[1]] && !row[headers[2]]) return;
+    // تصفية الصفوف التي تحتوي على بيانات فقط
+    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]] || row[headers[2]]);
 
+    filteredData.forEach(row => {
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
         
-        // عرض البيانات (كود العميل، الاسم، الرصيد)
+        // عرض البيانات حسب الترتيب (كود، اسم، رصيد)
         tr.innerHTML = `
             <td style="width: 15%; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
             <td style="width: 65%; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
@@ -1121,14 +1123,14 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
         `;
         tbody.appendChild(tr);
 
-        // حساب المجموع من عمود الرصيد (headers[2])
+        // حساب المجموع من عمود الرصيد (العنصر الثالث في headers)
         let balanceValue = row[headers[2]] || '0';
         let cleanValue = String(balanceValue).replace(/[^\d.-]/g, '');
         let val = parseFloat(cleanValue) || 0;
         totalSum += val;
     });
 
-    // تحديث خانة المجموع
+    // تحديث خانة المجموع في الـ HTML
     if (totalFooterId) {
         const totalEl = document.getElementById(totalFooterId);
         if (totalEl) {
