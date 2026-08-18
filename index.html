@@ -1107,12 +1107,13 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
     let totalSum = 0;
 
     data.forEach(row => {
-        // التحقق من وجود أي بيانات في الصف
+        // التحقق من وجود بيانات في الصف
         if (!row[headers[0]] && !row[headers[1]] && !row[headers[2]]) return;
 
-        // 1. عرض الصف في الجدول (كود، اسم، رصيد)
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+        
+        // عرض البيانات (كود العميل، الاسم، الرصيد)
         tr.innerHTML = `
             <td style="width: 15%; padding: 10px; text-align: right;">${row[headers[0]] || ''}</td>
             <td style="width: 65%; padding: 10px; text-align: right;">${row[headers[1]] || ''}</td>
@@ -1120,15 +1121,14 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
         `;
         tbody.appendChild(tr);
 
-        // 2. حساب المجموع (استخراج الرقم الصافي من العمود الثالث)
+        // حساب المجموع من عمود الرصيد (headers[2])
         let balanceValue = row[headers[2]] || '0';
-        // هذه الخطوة تحذف الفواصل وأي حروف وتترك الأرقام فقط للجمع
         let cleanValue = String(balanceValue).replace(/[^\d.-]/g, '');
         let val = parseFloat(cleanValue) || 0;
         totalSum += val;
     });
 
-    // 3. تحديث خانة المجموع في الـ HTML
+    // تحديث خانة المجموع
     if (totalFooterId) {
         const totalEl = document.getElementById(totalFooterId);
         if (totalEl) {
