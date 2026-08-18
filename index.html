@@ -1108,7 +1108,10 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
     let totalSum = 0;
 
     filteredData.forEach(row => {
-        let val = parseFloat(String(row['الرصيد'] || '0').replace(/,/g, '')) || 0;
+        filteredData.forEach(row => {
+    console.log(row);   // ← هذا السطر الجديد، أضفه هنا
+    let val = parseFloat(String(row['الرصيد'] || '0').replace(/,/g, '')) || 0;
+                    let val = parseFloat(String(row['الرصيد'] || '0').replace(/,/g, '')) || 0;
         totalSum += val;
 
         const tr = document.createElement('tr');
