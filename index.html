@@ -1144,12 +1144,22 @@ renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اس�
     }});
 }
 
-function renderSimpleTable(tbodyId, data, headers) {
+function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
     const tbody = document.getElementById(tbodyId);
     if (!tbody) return;
     tbody.innerHTML = '';
+    
+    let totalSum = 0; // متغير لحساب المجموع
     const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
+    
     filteredData.forEach(row => {
+        // جمع قيمة الرصيد (نفترض أن الرصيد هو العمود الثالث headers[2])
+        let rawVal = row[headers[2]] ? row[headers[2]].toString().replace(/,/g, '').trim() : '0';
+        let val = parseFloat(rawVal);
+        if (!isNaN(val)) {
+            totalSum += val;
+        }
+
         const tr = `
             <tr>
                 <td>${row[headers[0]] || ''}</td>
@@ -1159,6 +1169,14 @@ function renderSimpleTable(tbodyId, data, headers) {
         `;
         tbody.innerHTML += tr;
     });
+
+    // تحديث خانة المجموع الإجمالي في الجدول إذا تم تمرير الـ ID الخاص بها
+    if (totalFooterId) {
+        const totalElem = document.getElementById(totalFooterId);
+        if (totalElem) {
+            totalElem.innerText = totalSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+    }
 }
     function fetchMainSheet() {
     if (!CONFIG.csvUrl) return;
