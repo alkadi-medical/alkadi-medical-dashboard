@@ -1101,16 +1101,14 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
 // فحص ما إذا كان السطر الحالي هو صف المجموع
         const isTotalRow = row[headers[1]] && row[headers[1]].toString().includes('المجموع');
         
-        // تحديد لون الخلفية التبادلي (سطر غامق قليلاً وسطر أغمق أو شفاف)، وصف المجموع يكون مميزاً
+        // تحديد لون الخلفية بتباين واضح للأسطر العادية، وخضراء بارزة لصف المجموع
         let bgStyle = '';
         if (isTotalRow) {
-            bgStyle = 'background-color: rgba(34, 197, 94, 0.08); color: #22c55e; font-weight: bold;';
+            bgStyle = 'background-color: rgba(34, 197, 94, 0.15); color: #22c55e; font-weight: bold;';
         } else {
-            // تلوين تبادلي للأسطر العادية (كل سطر زوجي يأخذ خلفية خفيفة جداً للتميز)
             const index = filteredData.indexOf(row);
-            bgStyle = index % 2 === 0 ? 'background-color: rgba(255, 255, 255, 0.02);' : 'background-color: transparent;';
+            bgStyle = index % 2 === 0 ? 'background-color: rgba(255, 255, 255, 0.05);' : 'background-color: rgba(0, 0, 0, 0.15);';
         }
-
         const tr = `
             <tr style="${bgStyle} border-bottom: 1px solid rgba(255,255,255,0.05);">
                 <td>${row[headers[0]] || ''}</td>
