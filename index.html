@@ -1147,9 +1147,14 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
         if (!isNaN(val)) {
             totalSum += val;
         }
+// فحص ما إذا كان السطر الحالي هو صف المجموع
+        const isTotalRow = row[headers[1]] && row[headers[1]].toString().includes('المجموع');
+        
+        // تطبيق التنسيق (لون أخضر وبولد إذا كان هو صف المجموع، وإلا فبدون تنسيق خاص)
+        const rowStyle = isTotalRow ? 'style="color: #22c55e; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.05);"' : 'style="border-bottom: 1px solid rgba(255,255,255,0.05);"';
 
         const tr = `
-            <tr>
+            <tr ${rowStyle}>
                 <td>${row[headers[0]] || ''}</td>
                 <td>${row[headers[1]] || ''}</td>
                 <td>${row[headers[2]] || ''}</td>
