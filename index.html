@@ -779,8 +779,8 @@ function renderPulse(){
 function openDrawer(dateStr){
   const r = byDate[dateStr];
   if(!r) return;
-  const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[dateStr] : {cash:[],bank:[],cashTotalReported:0,bankTotalReported:0};
-  const drawer = document.getElementById('drawer');
+const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[dateStr] : {cash:[], bank:[], cashTotalReported:null, bankTotalReported:null};
+    const drawer = document.getElementById('drawer');
   drawer.innerHTML = `
     <div class="drawer-head">
       <div>
