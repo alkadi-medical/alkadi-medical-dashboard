@@ -925,7 +925,10 @@ function renderAlerts(){
       alerts.push({type:'amber', icon:'🗂️', text:`شهر ${MONTHS_AR[m-1]} بيانات غير مكتملة (${rows.length} من ${daysInMonth} يوماً فقط) — أي نسبة تحقق له غير موثوقة.`});
     }
   });
-
+function renderAlerts(){
+    return; // <-- أضف هذه الكلمة هنا فقط
+    let maxDrop = null;
+    for(let i=1;i<DATA.length;i++){
   let maxDrop = null;
   for(let i=1;i<DATA.length;i++){
     const drop = DATA[i-1].closeBalance - DATA[i].closeBalance;
