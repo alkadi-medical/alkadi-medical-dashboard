@@ -899,6 +899,30 @@ function renderMonths(){
       </div>
     </div>`;
   }).join('');
+    // --- حساب وتحديث بيانات الأداء السنوي التراكمي ---
+    let totalYearlyActual = 0;
+    let totalYearlyTarget = 0;
+    
+    months.forEach(m => {
+        const mRows = DATA.filter(r => r.month === m);
+        const mActual = mRows.reduce((sum, r) => sum + (r.totalSales || 0), 0);
+        const mTarget = mRows.reduce((sum, r) => sum + (r.target || 0), 0); 
+        
+        totalYearlyActual += mActual;
+        totalYearlyTarget += mTarget;
+    });
+
+    const yearlyPct = totalYearlyTarget > 0 ? Math.round((totalYearlyActual / totalYearlyTarget) * 100) : 0;
+    
+    const actEl = document.getElementById('yearlyActual');
+    const tgtEl = document.getElementById('yearlyTarget');
+    const pctEl = document.getElementById('yearlyPercentage');
+    const barEl = document.getElementById('yearlyProgressBar');
+    
+    if(actEl) actEl.innerText = fmt(totalYearlyActual) + ' ريال';
+    if(tgtEl) tgtEl.innerText = fmt(totalYearlyTarget) + ' ريال';
+    if(pctEl) pctEl.innerText = yearlyPct + '%';
+    if(barEl) barEl.style.width = Math.min(yearlyPct, 100) + '%';
 
   grid.querySelectorAll('.month-card').forEach(card=>{
     card.addEventListener('click', (e)=>{
