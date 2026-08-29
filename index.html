@@ -899,45 +899,87 @@ function renderMonths(){
       </div>
     </div>`;
   }).join('');
-// --- حساب وتحديث بيانات الأداء السنوي التراكمي بدقة تامة ---
+// --- حساب وتجهيز جدول الـ 12 شهراً للبطاقة السنوية الإجمالية ---
     let totalYearlyActualSales = 0;
+    let totalYearlyTargetSum = 0;
     
-    // 1. جمع إجمالي الفعلي لكل شهر على حدة
-    months.forEach(m => {
+    const allMonths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    let yearlyTableHTML = '';
+
+    allMonths.forEach(m => {
         const mRows = DATA.filter(r => r.month === m);
         const mActual = mRows.reduce((sum, r) => sum + (r.totalSales || 0), 0);
+        
+        let mTarget = 0;
+        if (typeof BUDGET_SALES !== 'undefined' && BUDGET_SALES[m]) {
+            mTarget = BUDGET_SALES[m];
+        } else {
+            const monthlyTargets = {1: 1000000, 2: 1000000, 3: 1000000, 4: 1250000, 5: 1250000, 6: 1250000, 7: 1500000, 8: 1500000, 9: 1500000, 10: 1750000, 11: 1750000, 12: 1750000};
+            mTarget = monthlyTargets[m] || 0;
+        }
+
         totalYearlyActualSales += mActual;
+        totalYearlyTargetSum += mTarget;
+
+        const mAchv = mTarget > 0 ? (mActual / mTarget) : 0;
+        const mPctText = (mAchv * 100).toFixed(1) + '%';
+        const mColor = mAchv >= 1 ? '#34d399' : (mAchv >= 0.8 ? '#38bdf8' : '#f87171');
+        
+        const monthNamesAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+        const monthName = monthNamesAr[m-1];
+
+        yearlyTableHTML += `
+            <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                <td style="padding: 8px; color: #fff; font-weight: bold;">${monthName}</td>
+                <td style="padding: 8px; color: #94a3b8;" class="v">${fmt(mTarget)}</td>
+                <td style="padding: 8px; color: #fff;" class="v">${fmt(mActual)}</td>
+                <td style="padding: 8px; color: ${mColor}; font-weight: bold;" class="v">${mPctText}</td>
+            </tr>
+        `;
     });
 
-    // 2. المستهدف السنوي الإجمالي للـ 12 شهراً
-    let totalYearlyTargetSum = 0;
-    if (typeof BUDGET_SALES !== 'undefined') {
-        totalYearlyTargetSum = Object.values(BUDGET_SALES).reduce((a, b) => a + b, 0);
-    } else {
-        const monthlyTargets = {1: 1000000, 2: 1000000, 3: 1000000, 4: 1250000, 5: 1250000, 6: 1250000, 7: 1500000, 8: 1500000, 9: 1500000, 10: 1750000, 11: 1750000, 12: 1750000};
-        totalYearlyTargetSum = Object.values(monthlyTargets).reduce((a, b) => a + b, 0);
-    }
-
     const yearlyPctFinal = totalYearlyTargetSum > 0 ? Math.round((totalYearlyActualSales / totalYearlyTargetSum) * 100) : 0;
-    
+    const totalAchv = totalYearlyTargetSum > 0 ? (totalYearlyActualSales / totalYearlyTargetSum) : 0;
+    const totalColor = totalAchv >= 1 ? '#34d399' : '#38bdf8';
+
+    yearlyTableHTML += `
+        <tr style="border-top: 2px solid #38bdf8; background: rgba(56, 189, 248, 0.05);">
+            <td style="padding: 10px; color: #38bdf8; font-weight: bold;">الإجمالي السنوي</td>
+            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(totalYearlyTargetSum)}</td>
+            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(totalYearlyActualSales)}</td>
+            <td style="padding: 10px; color: ${totalColor}; font-weight: bold;" class="v">${yearlyPctFinal}%</td>
+        </tr>
+    `;
+
     const yearlyActEl = document.getElementById('yearlyActual');
     const yearlyTgtEl = document.getElementById('yearlyTarget');
     const yearlyPctEl = document.getElementById('yearlyPercentage');
     const yearlyBarEl = document.getElementById('yearlyProgressBar');
+    const yearlyTbody = document.getElementById('yearlyTableBody');
     
     if(yearlyActEl) yearlyActEl.innerText = fmt(totalYearlyActualSales) + ' ريال';
     if(yearlyTgtEl) yearlyTgtEl.innerText = fmt(totalYearlyTargetSum) + ' ريال';
     if(yearlyPctEl) yearlyPctEl.innerText = yearlyPctFinal + '%';
     if(yearlyBarEl) yearlyBarEl.style.width = Math.min(yearlyPctFinal, 100) + '%';
-    
-  grid.querySelectorAll('.month-card').forEach(card=>{
-    card.addEventListener('click', (e)=>{
-      const detail = card.querySelector('.month-detail');
-      detail.classList.toggle('open');
-    });
-  });
-}
+    if(yearlyTbody) yearlyTbody.innerHTML = yearlyTableHTML;
 
+    // تفعيل تفاعلية كروت الشهور العادية
+    grid.querySelectorAll('.month-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const detail = card.querySelector('.month-detail');
+            if(detail) detail.classList.toggle('open');
+        });
+    });
+
+    // تفعيل تفاعلية البطاقة السنوية لفتح/إغلاق جدول الـ 12 شهراً
+    const yearlyCard = document.getElementById('yearlyCard');
+    const yearlyDetail = document.getElementById('yearlyDetail');
+    if(yearlyCard && yearlyDetail) {
+        yearlyCard.addEventListener('click', (e) => {
+            yearlyDetail.style.display = yearlyDetail.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+    
 // -------------------------------------------------------------------------
 // RENDER: alerts
 // -------------------------------------------------------------------------
