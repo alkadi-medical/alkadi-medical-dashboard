@@ -899,90 +899,39 @@ function renderMonths(){
       </div>
     </div>`;
   }).join('');
-{
-    // --- نسخة نهائية بدون تعريف أي متغيرات قد تتضارب مع ملفك الأصلي ---
-    var customYearlyActualSum = 0;
-    var customYearlyTargetSum = 0;
+    // --- حساب وتحديث بيانات الأداء السنوي التراكمي ---
+    let totalYearlyActual = 0;
+    let totalYearlyTarget = 0;
     
-    const customMonthsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    let customTableHtmlContent = '';
-
-    customMonthsList.forEach(mNum => {
-        const rowItems = DATA.filter(r => r.month === mNum);
-        const monthActualVal = rowItems.reduce((sum, r) => sum + (r.totalSales || 0), 0);
+    months.forEach(m => {
+        const mRows = DATA.filter(r => r.month === m);
+        const mActual = mRows.reduce((sum, r) => sum + (r.totalSales || 0), 0);
+        const mTarget = mRows.reduce((sum, r) => sum + (r.target || 0), 0); 
         
-        let monthTargetVal = 0;
-        if (typeof BUDGET_SALES !== 'undefined' && BUDGET_SALES[mNum]) {
-            monthTargetVal = BUDGET_SALES[mNum];
-        } else {
-            const defTargets = {1: 1000000, 2: 1000000, 3: 1000000, 4: 1250000, 5: 1250000, 6: 1250000, 7: 1500000, 8: 1500000, 9: 1500000, 10: 1750000, 11: 1750000, 12: 1750000};
-            monthTargetVal = defTargets[mNum] || 0;
-        }
-
-        customYearlyActualSum += monthActualVal;
-        customYearlyTargetSum += monthTargetVal;
-
-        const mRatio = monthTargetVal > 0 ? (monthActualVal / monthTargetVal) : 0;
-        const mRatioText = (mRatio * 100).toFixed(1) + '%';
-        const mStatusColor = mRatio >= 1 ? '#34d399' : (mRatio >= 0.8 ? '#38bdf8' : '#f87171');
-        
-        const arMonthsArr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-        const curMonthNameStr = arMonthsArr[mNum - 1];
-
-        customTableHtmlContent += `
-            <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
-                <td style="padding: 8px; color: #fff; font-weight: bold;">${curMonthNameStr}</td>
-                <td style="padding: 8px; color: #94a3b8;" class="v">${fmt(monthTargetVal)}</td>
-                <td style="padding: 8px; color: #fff;" class="v">${fmt(monthActualVal)}</td>
-                <td style="padding: 8px; color: ${mStatusColor}; font-weight: bold;" class="v">${mRatioText}</td>
-            </tr>
-        `;
+        totalYearlyActual += mActual;
+        totalYearlyTarget += mTarget;
     });
 
-    let overallYearPct = customYearlyTargetSum > 0 ? Math.round((customYearlyActualSum / customYearlyTargetSum) * 100) : 0;
-    let overallRatioCalc = customYearlyTargetSum > 0 ? (customYearlyActualSum / customYearlyTargetSum) : 0;
-    let overallColorHex = overallRatioCalc >= 1 ? '#34d399' : '#38bdf8';
+    const yearlyPct = totalYearlyTarget > 0 ? Math.round((totalYearlyActual / totalYearlyTarget) * 100) : 0;
+    
+    const actEl = document.getElementById('yearlyActual');
+    const tgtEl = document.getElementById('yearlyTarget');
+    const pctEl = document.getElementById('yearlyPercentage');
+    const barEl = document.getElementById('yearlyProgressBar');
+    
+    if(actEl) actEl.innerText = fmt(totalYearlyActual) + ' ريال';
+    if(tgtEl) tgtEl.innerText = fmt(totalYearlyTarget) + ' ريال';
+    if(pctEl) pctEl.innerText = yearlyPct + '%';
+    if(barEl) barEl.style.width = Math.min(yearlyPct, 100) + '%';
 
-    customTableHtmlContent += `
-        <tr style="border-top: 2px solid #38bdf8; background: rgba(56, 189, 248, 0.05);">
-            <td style="padding: 10px; color: #38bdf8; font-weight: bold;">الإجمالي السنوي</td>
-            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(customYearlyTargetSum)}</td>
-            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(customYearlyActualSum)}</td>
-            <td style="padding: 10px; color: ${overallColorHex}; font-weight: bold;" class="v">${overallYearPct}%</td>
-        </tr>
-    `;
-
-    // تعبئة البيانات مباشرة بدون تعريف متغيرات للعناصر
-    if(document.getElementById('yearlyActual')) document.getElementById('yearlyActual').innerText = fmt(customYearlyActualSum) + ' ريال';
-    if(document.getElementById('yearlyTarget')) document.getElementById('yearlyTarget').innerText = fmt(customYearlyTargetSum) + ' ريال';
-    if(document.getElementById('yearlyPercentage')) document.getElementById('yearlyPercentage').innerText = overallYearPct + '%';
-    if(document.getElementById('yearlyProgressBar')) document.getElementById('yearlyProgressBar').style.width = Math.min(overallYearPct, 100) + '%';
-    if(document.getElementById('yearlyTableBody')) document.getElementById('yearlyTableBody').innerHTML = customTableHtmlContent;
-
-    // تفاعلية الكروت العادية
-    document.querySelectorAll('.month-card').forEach(cardBox => {
-        cardBox.onclick = function() {
-            const detailDiv = cardBox.querySelector('.month-detail');
-            if(detailDiv) detailDiv.classList.toggle('open');
-        };
+  grid.querySelectorAll('.month-card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      const detail = card.querySelector('.month-detail');
+      detail.classList.toggle('open');
     });
-
-    // تفاعلية البطاقة السنوية بالوصول المباشر للـ ID بدون تعريف متغيرات متضاربة
-    if(document.getElementById('yearlyCard') && document.getElementById('yearlyDetail')) {
-        document.getElementById('yearlyCard').onclick = function() {
-            const det = document.getElementById('yearlyDetail');
-            det.style.display = det.style.display === 'none' ? 'block' : 'none';
-        };
-    }
+  });
 }
-    
-    const yearlyDetail = document.getElementById('yearlyDetail');
-    if(yearlyCard && yearlyDetail) {
-        yearlyCard.addEventListener('click', (e) => {
-            yearlyDetail.style.display = yearlyDetail.style.display === 'none' ? 'block' : 'none';
-        });
-    }
-    
+
 // -------------------------------------------------------------------------
 // RENDER: alerts
 // -------------------------------------------------------------------------
