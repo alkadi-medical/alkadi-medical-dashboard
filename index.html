@@ -899,20 +899,39 @@ function renderMonths(){
       </div>
     </div>`;
   }).join('');
-    // --- حساب وتحديث بيانات الأداء السنوي التراكمي ---
-    let totalYearlyActual = 0;
-    let totalYearlyTarget = 0;
+// --- حساب وتحديث بيانات الأداء السنوي التراكمي للـ 12 شهراً ---
+    let totalYearlyActualSales = 0;
     
+    // 1. جمع الفعلي فقط للأشهر المتاحة
     months.forEach(m => {
         const mRows = DATA.filter(r => r.month === m);
         const mActual = mRows.reduce((sum, r) => sum + (r.totalSales || 0), 0);
-        const mTarget = mRows.reduce((sum, r) => sum + (r.target || 0), 0); 
-        
-        totalYearlyActual += mActual;
-        totalYearlyTarget += mTarget;
+        totalYearlyActualSales += mActual;
     });
 
-    const yearlyPct = totalYearlyTarget > 0 ? Math.round((totalYearlyActual / totalYearlyTarget) * 100) : 0;
+    // 2. المستهدف السنوي الإجمالي (مجموع مستهدفات الـ 12 شهراً بالكامل)
+    let totalYearlyTargetSum = 0;
+    if (typeof BUDGET_SALES !== 'undefined') {
+        totalYearlyTargetSum = Object.values(BUDGET_SALES).reduce((a, b) => a + b, 0);
+    } else {
+        months.forEach(m => {
+            const mRows = DATA.filter(r => r.month === m);
+            const mTarget = mRows.reduce((sum, r) => sum + (r.target || 0), 0);
+            totalYearlyTargetSum += mTarget;
+        });
+    }
+
+    const yearlyPctFinal = totalYearlyTargetSum > 0 ? Math.round((totalYearlyActualSales / totalYearlyTargetSum) * 100) : 0;
+    
+    const yearlyActEl = document.getElementById('yearlyActual');
+    const yearlyTgtEl = document.getElementById('yearlyTarget');
+    const yearlyPctEl = document.getElementById('yearlyPercentage');
+    const yearlyBarEl = document.getElementById('yearlyProgressBar');
+    
+    if(yearlyActEl) yearlyActEl.innerText = fmt(totalYearlyActualSales) + ' ريال';
+    if(yearlyTgtEl) yearlyTgtEl.innerText = fmt(totalYearlyTargetSum) + ' ريال';
+    if(yearlyPctEl) yearlyPctEl.innerText = yearlyPctFinal + '%';
+    if(yearlyBarEl) yearlyBarEl.style.width = Math.min(yearlyPctFinal, 100) + '%';
     
     const actEl = document.getElementById('yearlyActual');
     const tgtEl = document.getElementById('yearlyTarget');
