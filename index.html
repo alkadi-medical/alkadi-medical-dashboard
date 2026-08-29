@@ -899,83 +899,79 @@ function renderMonths(){
       </div>
     </div>`;
   }).join('');
-// --- حساب وتجهيز جدول الـ 12 شهراً للبطاقة السنوية الإجمالية ---
-    totalYearlyActualSales = 0;
-    totalYearlyTargetSum = 0;
+// --- حساب وتجهيز جدول الـ 12 شهراً للبطاقة السنوية (نسخة نظيفة بدون أي تكرار للمتغيرات) ---
+    var customYearlyActualSum = 0;
+    var customYearlyTargetSum = 0;
     
-    const allMonths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    let yearlyTableHTML = '';
+    const customMonthsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    let customTableHtmlContent = '';
 
-    allMonths.forEach(m => {
-        const mRows = DATA.filter(r => r.month === m);
-        const mActual = mRows.reduce((sum, r) => sum + (r.totalSales || 0), 0);
+    customMonthsList.forEach(mNum => {
+        const rowItems = DATA.filter(r => r.month === mNum);
+        const monthActualVal = rowItems.reduce((sum, r) => sum + (r.totalSales || 0), 0);
         
-        let mTarget = 0;
-        if (typeof BUDGET_SALES !== 'undefined' && BUDGET_SALES[m]) {
-            mTarget = BUDGET_SALES[m];
+        let monthTargetVal = 0;
+        if (typeof BUDGET_SALES !== 'undefined' && BUDGET_SALES[mNum]) {
+            monthTargetVal = BUDGET_SALES[mNum];
         } else {
-            const monthlyTargets = {1: 1000000, 2: 1000000, 3: 1000000, 4: 1250000, 5: 1250000, 6: 1250000, 7: 1500000, 8: 1500000, 9: 1500000, 10: 1750000, 11: 1750000, 12: 1750000};
-            mTarget = monthlyTargets[m] || 0;
+            const defTargets = {1: 1000000, 2: 1000000, 3: 1000000, 4: 1250000, 5: 1250000, 6: 1250000, 7: 1500000, 8: 1500000, 9: 1500000, 10: 1750000, 11: 1750000, 12: 1750000};
+            monthTargetVal = defTargets[mNum] || 0;
         }
 
-        totalYearlyActualSales += mActual;
-        totalYearlyTargetSum += mTarget;
+        customYearlyActualSum += monthActualVal;
+        customYearlyTargetSum += monthTargetVal;
 
-        const mAchv = mTarget > 0 ? (mActual / mTarget) : 0;
-        const mPctText = (mAchv * 100).toFixed(1) + '%';
-        const mColor = mAchv >= 1 ? '#34d399' : (mAchv >= 0.8 ? '#38bdf8' : '#f87171');
+        const mRatio = monthTargetVal > 0 ? (monthActualVal / monthTargetVal) : 0;
+        const mRatioText = (mRatio * 100).toFixed(1) + '%';
+        const mStatusColor = mRatio >= 1 ? '#34d399' : (mRatio >= 0.8 ? '#38bdf8' : '#f87171');
         
-        const monthNamesAr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-        const monthName = monthNamesAr[m-1];
+        const arMonthsArr = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+        const curMonthNameStr = arMonthsArr[mNum - 1];
 
-        yearlyTableHTML += `
+        customTableHtmlContent += `
             <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
-                <td style="padding: 8px; color: #fff; font-weight: bold;">${monthName}</td>
-                <td style="padding: 8px; color: #94a3b8;" class="v">${fmt(mTarget)}</td>
-                <td style="padding: 8px; color: #fff;" class="v">${fmt(mActual)}</td>
-                <td style="padding: 8px; color: ${mColor}; font-weight: bold;" class="v">${mPctText}</td>
+                <td style="padding: 8px; color: #fff; font-weight: bold;">${curMonthNameStr}</td>
+                <td style="padding: 8px; color: #94a3b8;" class="v">${fmt(monthTargetVal)}</td>
+                <td style="padding: 8px; color: #fff;" class="v">${fmt(monthActualVal)}</td>
+                <td style="padding: 8px; color: ${mStatusColor}; font-weight: bold;" class="v">${mRatioText}</td>
             </tr>
         `;
     });
 
-    let finalYearlyPct = totalYearlyTargetSum > 0 ? Math.round((totalYearlyActualSales / totalYearlyTargetSum) * 100) : 0;
-    let finalTotalAchv = totalYearlyTargetSum > 0 ? (totalYearlyActualSales / totalYearlyTargetSum) : 0;
-    let finalTotalColor = finalTotalAchv >= 1 ? '#34d399' : '#38bdf8';
+    let overallYearPct = customYearlyTargetSum > 0 ? Math.round((customYearlyActualSum / customYearlyTargetSum) * 100) : 0;
+    let overallRatioCalc = customYearlyTargetSum > 0 ? (customYearlyActualSum / customYearlyTargetSum) : 0;
+    let overallColorHex = overallRatioCalc >= 1 ? '#34d399' : '#38bdf8';
 
-    yearlyTableHTML += `
+    customTableHtmlContent += `
         <tr style="border-top: 2px solid #38bdf8; background: rgba(56, 189, 248, 0.05);">
             <td style="padding: 10px; color: #38bdf8; font-weight: bold;">الإجمالي السنوي</td>
-            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(totalYearlyTargetSum)}</td>
-            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(totalYearlyActualSales)}</td>
-            <td style="padding: 10px; color: ${finalTotalColor}; font-weight: bold;" class="v">${finalYearlyPct}%</td>
+            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(customYearlyTargetSum)}</td>
+            <td style="padding: 10px; color: #fff; font-weight: bold;" class="v">${fmt(customYearlyActualSum)}</td>
+            <td style="padding: 10px; color: ${overallColorHex}; font-weight: bold;" class="v">${overallYearPct}%</td>
         </tr>
     `;
 
-    // تحديث العناصر مباشرة بدون إعادة تعريف متغيرة لتجنب التعارض
-    if(document.getElementById('yearlyActual')) document.getElementById('yearlyActual').innerText = fmt(totalYearlyActualSales) + ' ريال';
-    if(document.getElementById('yearlyTarget')) document.getElementById('yearlyTarget').innerText = fmt(totalYearlyTargetSum) + ' ريال';
-    if(document.getElementById('yearlyPercentage')) document.getElementById('yearlyPercentage').innerText = finalYearlyPct + '%';
-    if(document.getElementById('yearlyProgressBar')) document.getElementById('yearlyProgressBar').style.width = Math.min(finalYearlyPct, 100) + '%';
-    if(document.getElementById('yearlyTableBody')) document.getElementById('yearlyTableBody').innerHTML = yearlyTableHTML;
+    // تعبئة البيانات في واجهة المستخدم بأمان تام
+    if(document.getElementById('yearlyActual')) document.getElementById('yearlyActual').innerText = fmt(customYearlyActualSum) + ' ريال';
+    if(document.getElementById('yearlyTarget')) document.getElementById('yearlyTarget').innerText = fmt(customYearlyTargetSum) + ' ريال';
+    if(document.getElementById('yearlyPercentage')) document.getElementById('yearlyPercentage').innerText = overallYearPct + '%';
+    if(document.getElementById('yearlyProgressBar')) document.getElementById('yearlyProgressBar').style.width = Math.min(overallYearPct, 100) + '%';
+    if(document.getElementById('yearlyTableBody')) document.getElementById('yearlyTableBody').innerHTML = customTableHtmlContent;
 
     // تفعيل تفاعلية كروت الشهور العادية
-    const monthCards = document.querySelectorAll('.month-card');
-    if(monthCards) {
-        monthCards.forEach(card => {
-            card.removeEventListener('click', arguments.callee); // تجنب تراكم الأحداث
-            card.addEventListener('click', (e) => {
-                const detail = card.querySelector('.month-detail');
-                if(detail) detail.classList.toggle('open');
-            });
-        });
-    }
+    document.querySelectorAll('.month-card').forEach(cardBox => {
+        cardBox.onclick = function() {
+            const detailDiv = cardBox.querySelector('.month-detail');
+            if(detailDiv) detailDiv.classList.toggle('open');
+        };
+    });
 
     // تفعيل تفاعلية البطاقة السنوية لفتح/إغلاق جدول الـ 12 شهراً
-    const yearlyCard = document.getElementById('yearlyCard');
-    const yearlyDetail = document.getElementById('yearlyDetail');
-    if(yearlyCard && yearlyDetail) {
-        yearlyCard.onclick = function(e) {
-            yearlyDetail.style.display = yearlyDetail.style.display === 'none' ? 'block' : 'none';
+    const mainYearCardEl = document.getElementById('yearlyCard');
+    const mainYearDetailEl = document.getElementById('yearlyDetail');
+    if(mainYearCardEl && mainYearDetailEl) {
+        mainYearCardEl.onclick = function() {
+            mainYearDetailEl.style.display = mainYearDetailEl.style.display === 'none' ? 'block' : 'none';
         };
     }
     
