@@ -899,31 +899,37 @@ function renderMonths(){
       </div>
     </div>`;
   }).join('');
-    // --- حساب وتحديث بيانات الأداء السنوي التراكمي ---
-    let totalYearlyActual = 0;
-    let totalYearlyTarget = 0;
+// --- حساب وتحديث بيانات الأداء السنوي التراكمي بدقة تامة ---
+    let totalYearlyActualSales = 0;
     
+    // 1. جمع إجمالي الفعلي لكل شهر على حدة
     months.forEach(m => {
         const mRows = DATA.filter(r => r.month === m);
         const mActual = mRows.reduce((sum, r) => sum + (r.totalSales || 0), 0);
-        const mTarget = mRows.reduce((sum, r) => sum + (r.target || 0), 0); 
-        
-        totalYearlyActual += mActual;
-        totalYearlyTarget += mTarget;
+        totalYearlyActualSales += mActual;
     });
 
-    const yearlyPct = totalYearlyTarget > 0 ? Math.round((totalYearlyActual / totalYearlyTarget) * 100) : 0;
-    
-    const actEl = document.getElementById('yearlyActual');
-    const tgtEl = document.getElementById('yearlyTarget');
-    const pctEl = document.getElementById('yearlyPercentage');
-    const barEl = document.getElementById('yearlyProgressBar');
-    
-    if(actEl) actEl.innerText = fmt(totalYearlyActual) + ' ريال';
-    if(tgtEl) tgtEl.innerText = fmt(totalYearlyTarget) + ' ريال';
-    if(pctEl) pctEl.innerText = yearlyPct + '%';
-    if(barEl) barEl.style.width = Math.min(yearlyPct, 100) + '%';
+    // 2. المستهدف السنوي الإجمالي للـ 12 شهراً
+    let totalYearlyTargetSum = 0;
+    if (typeof BUDGET_SALES !== 'undefined') {
+        totalYearlyTargetSum = Object.values(BUDGET_SALES).reduce((a, b) => a + b, 0);
+    } else {
+        const monthlyTargets = {1: 1000000, 2: 1000000, 3: 1000000, 4: 1250000, 5: 1250000, 6: 1250000, 7: 1500000, 8: 1500000, 9: 1500000, 10: 1750000, 11: 1750000, 12: 1750000};
+        totalYearlyTargetSum = Object.values(monthlyTargets).reduce((a, b) => a + b, 0);
+    }
 
+    const yearlyPctFinal = totalYearlyTargetSum > 0 ? Math.round((totalYearlyActualSales / totalYearlyTargetSum) * 100) : 0;
+    
+    const yearlyActEl = document.getElementById('yearlyActual');
+    const yearlyTgtEl = document.getElementById('yearlyTarget');
+    const yearlyPctEl = document.getElementById('yearlyPercentage');
+    const yearlyBarEl = document.getElementById('yearlyProgressBar');
+    
+    if(yearlyActEl) yearlyActEl.innerText = fmt(totalYearlyActualSales) + ' ريال';
+    if(yearlyTgtEl) yearlyTgtEl.innerText = fmt(totalYearlyTargetSum) + ' ريال';
+    if(yearlyPctEl) yearlyPctEl.innerText = yearlyPctFinal + '%';
+    if(yearlyBarEl) yearlyBarEl.style.width = Math.min(yearlyPctFinal, 100) + '%';
+    
   grid.querySelectorAll('.month-card').forEach(card=>{
     card.addEventListener('click', (e)=>{
       const detail = card.querySelector('.month-detail');
