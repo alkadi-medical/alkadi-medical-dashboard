@@ -1317,8 +1317,8 @@ function populateYearlyMonthsTable() {
             });
 
             monthRows.forEach(r => {
-                // شملنا هنا كل الأسماء المحتملة للمحقق في ملفك البرمجي
-                let val = r.actual || r.Actual || r.ACTUAL || r.sales || r.Sales || r.actualSales || r.achieved || r.revenue || r.value || r.Value || r.amount || r.Amount || r.sum || 0;
+                // أضفنا هنا كلمة "فعلي" وكافة الاحتمالات البرمجية والعربية الممكنة
+                let val = r.فعلي || r.الفعلي || r.actual || r.Actual || r.ACTUAL || r.sales || r.Sales || r.actualSales || r.achieved || r.revenue || r.value || r.Value || r.amount || r.Amount || 0;
                 mActual += Number(val);
             });
         }
