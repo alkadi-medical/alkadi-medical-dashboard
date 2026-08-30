@@ -1254,6 +1254,76 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
         }
     });
 }
+    // دوال عرض قائمة تفاصيل الأداء السنوي للأشهر
+function toggleYearlyDetail() {
+    const dropdown = document.getElementById('yearlyDetailDropdown');
+    if (!dropdown) return;
+    
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'block';
+        populateYearlyMonthsTable();
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+function populateYearlyMonthsTable() {
+    const tbody = document.getElementById('yearlyMonthsTableBody');
+    const tfoot = document.getElementById('yearlyMonthsTableFoot');
+    if (!tbody || !tfoot) return;
+
+    const monthsNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    
+    let htmlRows = '';
+    let totalTargetSum = 0;
+    let totalActualSum = 0;
+
+    for (let m = 1; m <= 12; m++) {
+        let mTarget = 0;
+        let mActual = 0;
+
+        if (typeof DATA !== 'undefined' && Array.isArray(DATA)) {
+            const monthRows = DATA.filter(r => {
+                if (!r.date) return false;
+                let dParts = r.date.split('-');
+                let monthNum = parseInt(dParts[1] || (new Date(r.date).getMonth() + 1));
+                return monthNum === m;
+            });
+
+            monthRows.forEach(r => {
+                mTarget += Number(r.target || r.Target || 0);
+                mActual += Number(r.actual || r.Actual || r.sales || r.Sales || 0);
+            });
+        }
+        
+        let mPercent = mTarget > 0 ? ((mActual / mTarget) * 100).toFixed(1) + '%' : '0%';
+        totalTargetSum += mTarget;
+        totalActualSum += mActual;
+
+        if (mTarget > 0 || mActual > 0) {
+            htmlRows += `
+                <tr style="border-bottom: 1px dashed rgba(51,65,85,0.6);">
+                    <td style="padding: 8px; font-weight: 600; color: #fff;">${monthsNames[m - 1]}</td>
+                    <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mTarget.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mActual.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mPercent}</td>
+                </tr>
+            `;
+        }
+    }
+
+    let overallPercent = totalTargetSum > 0 ? ((totalActualSum / totalTargetSum) * 100).toFixed(1) + '%' : '0%';
+
+    tbody.innerHTML = htmlRows;
+    tfoot.innerHTML = `
+        <tr>
+            <td style="padding: 10px; color: #fff;">الإجمالي العام</td>
+            <td style="padding: 10px; text-align: left; direction: ltr; color: #fff;" class="num">${totalTargetSum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="padding: 10px; text-align: left; direction: ltr; color: #fff;" class="num">${totalActualSum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="padding: 10px; text-align: left; direction: ltr; color: #38bdf8;" class="num">${overallPercent}</td>
+        </tr>
+    `;
+}
 </script>
 </body>
 </html>
