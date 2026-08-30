@@ -356,10 +356,9 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
       <p class="section-sub">اضغط أي شهر لعرض تفاصيل أيامه. الأشهر ذات البيانات الناقصة (أقل من 80% من أيامها مسجّلة) موسومة بوضوح لأن نسبتها غير موثوقة للمقارنة.</p>
     </div>
       <!-- بطاقة الأداء السنوي التراكمي -->
-<!-- بطاقة الأداء السنوي التراكمي القابلة للنقر -->
-<div class="yearly-summary-card" id="yearlyCard" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; border-radius: 16px; padding: 20px; margin-bottom: 25px; color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.3); cursor: pointer; transition: border-color 0.15s ease;" onclick="toggleYearlyDetail()">
+<div class="yearly-summary-card" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; border-radius: 16px; padding: 20px; margin-bottom: 25px; color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="margin: 0; font-size: 1.2rem; color: #38bdf8;">📊 الأداء السنوي الإجمالي (حتى تاريخه) <span style="font-size: 0.85rem; color: #94a3b8; margin-right: 8px;">(اضغط للعرض/الإخفاء)</span></h3>
+        <h3 style="margin: 0; font-size: 1.2rem; color: #38bdf8;">📊 الأداء السنوي الإجمالي (حتى تاريخه)</h3>
         <span id="yearlyPercentage" style="font-size: 1.4rem; font-weight: bold; background: rgba(56, 189, 248, 0.1); padding: 4px 12px; border-radius: 8px; color: #38bdf8;">0%</span>
     </div>
     <div style="background: #334155; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 15px;">
@@ -369,30 +368,8 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
         <div>المحقق فعلياً: <span id="yearlyActual" style="color: #fff; font-weight: bold; margin-right: 5px;">0</span></div>
         <div>المستهدف السنوي: <span id="yearlyTarget" style="color: #fff; font-weight: bold; margin-right: 5px;">0</span></div>
     </div>
-
-    <!-- القائمة المنسدلة لتفاصيل الأشهر -->
-    <div id="yearlyDetailDropdown" style="display: none; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #334155;" onclick="event.stopPropagation()">
-        <div class="month-detail-scroll" style="max-height: 280px; overflow-y: auto;">
-            <table class="detail-table" style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: right;">
-                <thead>
-                    <tr style="border-bottom: 1px solid #334155; color: #94a3b8;">
-                        <th style="padding: 8px;">الشهر</th>
-                        <th style="padding: 8px; text-align: left;">المستهدف</th>
-                        <th style="padding: 8px; text-align: left;">المحقق</th>
-                        <th style="padding: 8px; text-align: left;">نسبة التحقيق</th>
-                    </tr>
-                </thead>
-                <tbody id="yearlyMonthsTableBody">
-                    <!-- سيتم تعبئة تفاصيل الأشهر برمجياً -->
-                </tbody>
-                <tfoot id="yearlyMonthsTableFoot" style="font-weight: bold; border-top: 2px solid #334155; color: #38bdf8;">
-                    <!-- سيتم تعبئة إجماليات الأعمدة برمجياً -->
-                </tfoot>
-            </table>
-        </div>
-    </div>
 </div>
-      <div class="month-grid" id="monthGrid"></div>
+    <div class="month-grid" id="monthGrid"></div>
   </section>
 
   <section class="trend">
@@ -1275,86 +1252,6 @@ function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
                 console.error('Error fetching main sheet:', e);
             }
         }
-        // دالة النقر لفتح أو إغلاق قائمة تفاصيل الأشهر في كرت الأداء السنوي
-function toggleYearlyDetail() {
-    const dropdown = document.getElementById('yearlyDetailDropdown');
-    if (!dropdown) return;
-    
-    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-        dropdown.style.display = 'block';
-        populateYearlyMonthsTable();
-    } else {
-        dropdown.style.display = 'none';
-    }
-}
-
-// دالة حساب وتعبئة بيانات الأشهر والإجماليات بدقة من مصفوفة DATA لديك
-function populateYearlyMonthsTable() {
-    const tbody = document.getElementById('yearlyMonthsTableBody');
-    const tfoot = document.getElementById('yearlyMonthsTableFoot');
-    if (!tbody || !tfoot) return;
-
-const monthsNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-    
-    let htmlRows = '';
-    let totalTargetSum = 0;
-    let totalActualSum = 0;
-
-    // بما أن DATA متوفرة لديك وتمر بعملية الـ enrich، سنقوم بتجميع البيانات لكل شهر (من 1 إلى 12)
-    for (let m = 1; m <= 12; m++) {
-        let mTarget = 0;
-        let mActual = 0;
-
-        // تصفية السطور الخاصة بالشهر الحالي m من مصفوفة DATA العامة
-        if (typeof DATA !== 'undefined' && Array.isArray(DATA)) {
-            const monthRows = DATA.filter(r => {
-                if (!r.date) return false;
-                let dParts = r.date.split('-'); // أو حسب صيغة التاريخ لديك
-                // استخراج رقم الشهر للتأكد من مطابقته
-                let monthNum = parseInt(dParts[1] || (new Date(r.date).getMonth() + 1));
-                return monthNum === m;
-            });
-
-            // جمع المستهدف والمحقق لأيام هذا الشهر
-            monthRows.forEach(r => {
-                mTarget += Number(r.target || r.Target || 0);
-                mActual += Number(r.actual || r.Actual || r.sales || r.Sales || 0);
-            });
-        }
-
-        // إذا لم توجد بيانات كافية بالطريقة أعلاه، يمكنك الاعتماد على الدوال الجاهزة في لوحتك إن وجدت، 
-        // أو نربطها بمصفوفة الأشهر الشهرية لو كانت متوفرة لديك.
-        
-        let mPercent = mTarget > 0 ? ((mActual / mTarget) * 100).toFixed(1) + '%' : '0%';
-
-        totalTargetSum += mTarget;
-        totalActualSum += mActual;
-
-        // عرض الأشهر التي تحتوي على أرقام فقط لترتيب الجدول
-        if (mTarget > 0 || mActual > 0) {
-            htmlRows += `
-                <tr style="border-bottom: 1px dashed rgba(51,65,85,0.6);">
-                    <td style="padding: 8px; font-weight: 600; color: #fff;">${monthsNames[m - 1]}</td>
-                    <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mTarget.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                    <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mActual.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                    <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mPercent}</td>
-                </tr>
-            `;
-        }
-    }
-
-    let overallPercent = totalTargetSum > 0 ? ((totalActualSum / totalTargetSum) * 100).toFixed(1) + '%' : '0%';
-
-    tbody.innerHTML = htmlRows;
-    tfoot.innerHTML = `
-        <tr>
-            <td style="padding: 10px; color: #fff;">الإجمالي العام</td>
-            <td style="padding: 10px; text-align: left; direction: ltr; color: #fff;" class="num">${totalTargetSum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td style="padding: 10px; text-align: left; direction: ltr; color: #fff;" class="num">${totalActualSum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td style="padding: 10px; text-align: left; direction: ltr; color: #38bdf8;" class="num">${overallPercent}</td>
-        </tr>
-    `;
-}
     });
 }
 </script>
