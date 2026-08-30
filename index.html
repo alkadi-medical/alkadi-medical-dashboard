@@ -1358,6 +1358,49 @@ function populateYearlyMonthsTable() {
         </tr>
     `;
 }
+    function sortCardTable(thElement, columnIndex, isNumeric) {
+    // العثور على أقرب جدول وأخذ الـ tbody الخاص به مباشرة
+    const table = thElement.closest('table');
+    if (!table) return;
+    
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    if (rows.length === 0) return;
+    
+    // تحديد اتجاه الترتيب (تصاعدي أو تنازلي) وتخزينه في العنصر
+    let dir = thElement.dataset.dir === 'asc' ? 'desc' : 'asc';
+    
+    // إعادة تعيين اتجاه باقي الأعمدة لتكون نظيفة
+    table.querySelectorAll('th').forEach(th => {
+        if (th !== thElement) delete th.dataset.dir;
+    });
+    
+    thElement.dataset.dir = dir;
+
+    // فرز الصفوف
+    rows.sort((a, b) => {
+        const cellA_Elem = a.cells[columnIndex];
+        const cellB_Elem = b.cells[columnIndex];
+        
+        if (!cellA_Elem || !cellB_Elem) return 0;
+
+        let cellA = cellA_Elem.innerText.replace(/,/g, '').replace('%', '').trim();
+        let cellB = cellB_Elem.innerText.replace(/,/g, '').replace('%', '').trim();
+
+        if (isNumeric) {
+            let numA = parseFloat(cellA) || 0;
+            let numB = parseFloat(cellB) || 0;
+            return dir === 'asc' ? numA - numB : numB - numA;
+        } else {
+            return dir === 'asc' ? cellA.localeCompare(cellB, 'ar') : cellB.localeCompare(cellA, 'ar');
+        }
+    });
+
+    // إعادة ضخ الصفوف مرتبة داخل الـ tbody
+    rows.forEach(row => tbody.appendChild(row));
+}
 </script>
 </body>
 </html>
