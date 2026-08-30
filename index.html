@@ -1317,8 +1317,8 @@ function populateYearlyMonthsTable() {
             });
 
             monthRows.forEach(r => {
-                // أضفنا هنا كلمة "فعلي" وكافة الاحتمالات البرمجية والعربية الممكنة
-                let val = r.فعلي || r.الفعلي || r.actual || r.Actual || r.ACTUAL || r.sales || r.Sales || r.actualSales || r.achieved || r.revenue || r.value || r.Value || r.amount || r.Amount || 0;
+                // الاعتماد على actual أو totalSales كما ظهرت في كود البطاقات لديك
+                let val = r.actual || r.totalSales || r.sales || r.Sales || r.actualSales || r.achieved || r.revenue || r.value || r.Value || 0;
                 mActual += Number(val);
             });
         }
