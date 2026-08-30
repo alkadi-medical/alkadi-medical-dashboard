@@ -1314,8 +1314,8 @@ function populateYearlyMonthsTable() {
             });
 
             monthRows.forEach(r => {
-                mTarget += Number(r.target || r.Target || 0);
-                mActual += Number(r.actual || r.Actual || r.sales || r.Sales || 0);
+                mTarget += Number(r.target || r.Target || r.TARGET || 0);
+                mActual += Number(r.actual || r.Actual || r.ACTUAL || r.sales || r.Sales || r.actualSales || r.achieved || r.revenue || 0);
             });
         }
         
@@ -1328,7 +1328,7 @@ function populateYearlyMonthsTable() {
                 <tr style="border-bottom: 1px dashed rgba(51,65,85,0.6);">
                     <td style="padding: 8px; font-weight: 600; color: #fff;">${monthsNames[m - 1]}</td>
                     <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mTarget.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                    <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mActual.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td style="padding: 8px; text-align: left; direction: ltr; color: #38bdf8;" class="num">${mActual.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                     <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mPercent}</td>
                 </tr>
             `;
