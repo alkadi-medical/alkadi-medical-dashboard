@@ -908,8 +908,15 @@ function renderMonths(){
       <div class="month-detail" id="month-detail-${m}">
         <div class="month-detail-scroll">
           <table>
-            <thead><tr><th>اليوم</th><th>مبيعات</th><th>مستهدف</th><th>%</th></tr></thead>
-            <tbody>
+<thead>
+  <tr>
+    <th style="cursor: pointer;" onclick="sortCardTable(this, 0, false)" title="ترتيب حسب اليوم">اليوم ↕</th>
+    <th style="cursor: pointer;" onclick="sortCardTable(this, 1, true)" title="ترتيب حسب المبيعات">مبيعات ↕</th>
+    <th style="cursor: pointer;" onclick="sortCardTable(this, 2, true)" title="ترتيب حسب المستهدف">مستهدف ↕</th>
+    <th style="cursor: pointer;" onclick="sortCardTable(this, 3, true)" title="ترتيب حسب النسبة">% ↕</th>
+  </tr>
+</thead>
+<tbody>
               ${rows.map(r=>`<tr>
                 <td>${r.dayNum} ${r.dow}</td>
                 <td class="v">${fmt(r.totalSales)}</td>
