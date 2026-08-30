@@ -1297,31 +1297,17 @@ function populateYearlyMonthsTable() {
 
     const monthsNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
     
-    // المستهدفات الشهرية الثابتة بناءً على خطتك المعتمدة
-    const fixedTargets = [
-        1000000, // يناير
-        1000000, // فبراير
-        1000000, // مارس
-        1250000, // أبريل
-        1250000, // مايو
-        1250000, // يونيو
-        1500000, // يوليو
-        1500000, // أغسطس
-        1500000, // سبتمبر
-        1500000, // أكتوبر
-        1500000, // نوفمبر
-        1500000  // ديسمبر
-    ];
+    // المستهدفات الشهرية الثابتة حسب خطتك
+    const fixedTargets = [1000000, 1000000, 1000000, 1250000, 1250000, 1250000, 1500000, 1500000, 1500000, 1500000, 1500000, 1500000];
     
     let htmlRows = '';
     let totalTargetSum = 0;
     let totalActualSum = 0;
 
     for (let m = 1; m <= 12; m++) {
-        let mTarget = fixedTargets[m - 1]; // اخذ المستهدف الثابت للشهر
+        let mTarget = fixedTargets[m - 1];
         let mActual = 0;
 
-        // جمع المبالغ المحققة لهذا الشهر من مصفوفة البيانات DATA
         if (typeof DATA !== 'undefined' && Array.isArray(DATA)) {
             const monthRows = DATA.filter(r => {
                 if (!r.date) return false;
@@ -1331,7 +1317,9 @@ function populateYearlyMonthsTable() {
             });
 
             monthRows.forEach(r => {
-                mActual += Number(r.actual || r.Actual || r.ACTUAL || r.sales || r.Sales || r.actualSales || r.achieved || r.revenue || r.value || r.Value || 0);
+                // شملنا هنا كل الأسماء المحتملة للمحقق في ملفك البرمجي
+                let val = r.actual || r.Actual || r.ACTUAL || r.sales || r.Sales || r.actualSales || r.achieved || r.revenue || r.value || r.Value || r.amount || r.Amount || r.sum || 0;
+                mActual += Number(val);
             });
         }
         
@@ -1339,7 +1327,6 @@ function populateYearlyMonthsTable() {
         totalTargetSum += mTarget;
         totalActualSum += mActual;
 
-        // عرض الشهر طالما أن له مستهدف أو محقق
         if (mTarget > 0 || mActual > 0) {
             htmlRows += `
                 <tr style="border-bottom: 1px dashed rgba(51,65,85,0.6);">
