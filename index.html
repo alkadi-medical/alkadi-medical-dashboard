@@ -826,11 +826,6 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
         <div class="drawer-date">${r.date} — ${r.dow}</div>
       </div>
     </div>
-    <div class="drawer-kpis">
-      <div class="mini-kpi"><div class="l">إجمالي المبيعات</div><div class="v">${fmt(r.totalSales)}</div></div>
-      <div class="mini-kpi"><div class="l">المستهدف الموزون</div><div class="v">${fmt(r.target)}</div></div>
-      <div class="mini-kpi"><div class="l">نسبة التحقق</div><div class="v" style="color:${achvColor(r.achievement)}">${pct(r.achievement)}</div></div>
-      <div class="mini-kpi"><div class="l">رصيد آخر اليوم</div><div class="v">${fmt(r.closeBalance)}</div></div>
     </div>
     <table class="detail-table">
       <thead><tr><th colspan="2">تفاصيل الإيرادات</th></tr></thead>
