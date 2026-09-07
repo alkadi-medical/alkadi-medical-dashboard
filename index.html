@@ -865,7 +865,7 @@ function paymentsTableHtml(title, list, reportedTotal){
       <thead><tr><th>${title}</th><th>الجهة/الطريقة</th><th style="text-align:left">المبلغ</th></tr></thead>
       <tbody>
         ${list.map(x=>`<tr><td>${x.n}</td><td style="color:var(--muted)">${x.m||'-'}</td><td class="v">${fmt(x.a)}</td></tr>`).join('')}
-<tr style="color: #22c55e; font-weight: bold; font-size: 1.1em;"><td colspan="2">الإجمالي</td><td class="v">${fmt(total)}</td></tr>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td colspan="2">الإجمالي</td><td class="v">${fmt(total)}</td></tr>
 </tbody>
     </table>`;
 }
