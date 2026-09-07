@@ -834,7 +834,7 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
         <tr><td>مبيعات شبكة</td><td class="v">${fmt(r.cardSales)}</td></tr>
         <tr><td>تحويلات بنكية</td><td class="v">${fmt(r.bankTransfer)}</td></tr>
         <tr><td>مبيعات آجلة</td><td class="v">${fmt(r.creditSales)}</td></tr>
-<tr style="color: #22c55e; font-weight: bold; font-size: 1.1em;"><td>إجمالي المبيعات</td><td class="v">${fmt(r.totalSales)}</td></tr>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>إجمالي المبيعات</td><td class="v">${fmt(r.totalSales)}</td></tr>
 </tbody>
     </table>
     <table class="detail-table">
@@ -845,7 +845,7 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
 <tr><td>سداد موردين نقداً</td><td class="v">${fmt(r.supplierCash)}</td></tr>
 <tr><td>مشتريات نقدية</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
 <tr><td>المصروفات النقدية</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
-<tr style="color: #22c55e; font-weight: bold; font-size: 1.1em;"><td>رصيد آخر اليوم</td><td class="v">${fmt(r.closeBalance)}</td></tr>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>رصيد آخر اليوم</td><td class="v">${fmt(r.closeBalance)}</td></tr>
 </tbody>
     </table>
     ${paymentsTableHtml('سداد الموردين نقداً', pay.cash, pay.cashTotalReported)}
