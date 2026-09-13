@@ -889,8 +889,8 @@ const cards = [
 
 function renderDaySelect(){
   const sel = document.getElementById('daySelect');
-  sel.innerHTML = DATA.slice().reverse().map(r=>`<option value="${r.date}">${r.date} — ${r.dow}</option>`).join('');
-  sel.onchange = ()=> selectDay(sel.value);
+sel.innerHTML = DATA.slice().reverse().map(r=>`<option value="${r.date}">${r.date} – ${getDow(r.dow)}</option>`).join('');
+    sel.onchange = ()=> selectDay(sel.value);
 }
 
 // -------------------------------------------------------------------------
