@@ -552,7 +552,9 @@ updateTime: "آخر تحديث للبيانات",
         achievementRatio: "Achievement Rate",
 cashBalanceTitle: "Ending Cash Balance",
     viewDayLabel: "View Day"
-    }
+};
+
+const DOW_MAP = {
     'السبت': { ar: 'السبت', en: 'Saturday' },
     'الأحد': { ar: 'الأحد', en: 'Sunday' },
     'الإثنين': { ar: 'الإثنين', en: 'Monday' },
@@ -561,7 +563,7 @@ cashBalanceTitle: "Ending Cash Balance",
     'الخميس': { ar: 'الخميس', en: 'Thursday' },
     'الجمعة': { ar: 'الجمعة', en: 'Friday' }
 };
-
+    
 function getDow(dayName) {
     if (!DOW_MAP[dayName]) return dayName;
     return DOW_MAP[dayName][currentLang] || dayName;
