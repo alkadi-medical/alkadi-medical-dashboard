@@ -524,14 +524,10 @@ const translations = {
         mainTitle: "تقرير",
         mainTitleAccent: "الأداء",
         mainTitleEnd: "اليومي",
-        updateTime: "آخر تحديث للبيانات",
-        liveStatus: "متصل ببيانات حية",
-        toggleBtn: "English",
-        toggleBtn: "English",
+updateTime: "آخر تحديث للبيانات",
+    liveStatus: "متصل بيانات حية",
+    toggleBtn: "English",
     viewDayLabel: "عرض يوم",
-        
-        // بطاقات المؤشرات الرئيسة
-        todaySalesTitle: "مبيعات اليوم",
         todayTargetTitle: "المستهدف اليومي (موزون)",
         achievementRatio: "نسبة التحقق",
         cashBalanceTitle: "رصيد النقد آخر اليوم"
@@ -554,10 +550,9 @@ const translations = {
         todaySalesTitle: "Today's Sales",
         todayTargetTitle: "Daily Target (Weighted)",
         achievementRatio: "Achievement Rate",
-        cashBalanceTitle: "Ending Cash Balance"
-    }
-};
-    const DOW_MAP = {
+cashBalanceTitle: "Ending Cash Balance",
+    viewDayLabel: "View Day"
+}
     'السبت': { ar: 'السبت', en: 'Saturday' },
     'الأحد': { ar: 'الأحد', en: 'Sunday' },
     'الإثنين': { ar: 'الإثنين', en: 'Monday' },
@@ -893,11 +888,11 @@ const cards = [
 }
 
 function renderDaySelect(){
-  const sel = document.getElementById('daySelect');
-sel.innerHTML = DATA.slice().reverse().map(r=>`<option value="${r.date}">${r.date} – ${getDow(r.dow)}</option>`).join('');
+    const sel = document.getElementById('daySelect');
+    const prefix = translations[currentLang].viewDayLabel;
+    sel.innerHTML = DATA.slice().reverse().map(r=>`<option value="${r.date}">${prefix}: ${r.date} – ${getDow(r.dow)}</option>`).join('');
     sel.onchange = ()=> selectDay(sel.value);
 }
-
 // -------------------------------------------------------------------------
 // RENDER: pulse heatmap
 // -------------------------------------------------------------------------
