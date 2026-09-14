@@ -654,16 +654,17 @@ function pct(n){
   return (n*100).toFixed(1) + '%';
 }
 function achvClass(a){
-  if(a>=1) return 'good';
-  if(a>=0.85) return 'ok';
-  return 'weak';
+    if(a>=1) return 'excellent';
+    if(a>=0.9) return 'good';
+    if(a>=0.75) return 'ok';
+    return 'weak';
 }
 function achvColor(a){
-  if(a>=1) return 'var(--success)';
-  if(a>=0.7) return 'var(--amber)';
-  return 'var(--danger)';
+    if(a>=1) return 'var(--success)';
+    if(a>=0.9) return 'var(--success)';
+    if(a>=0.75) return 'var(--amber)';
+    return 'var(--danger)';
 }
-
 // -------------------------------------------------------------------------
 // enrich a raw record with computed fields
 // -------------------------------------------------------------------------
