@@ -946,8 +946,8 @@ function openDrawer(dateStr){
     const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[dateStr] : {cash:[], bank:[], cashTotalReported:null, bankTotalReported:null};
     const drawer = document.getElementById('drawer');
     const t = translations[currentLang];
-    drawer.innerHTML = `
-    <div class="drawer-head">
+drawer.innerHTML = `
+      <div class="drawer-head">
         <div>
             <div class="drawer-title">${t.drawerTitle}</div>
             <div class="drawer-date">${r.date} – ${r.dow}</div>
