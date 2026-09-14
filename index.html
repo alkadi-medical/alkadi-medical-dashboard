@@ -940,46 +940,32 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
   drawer.innerHTML = `
     <div class="drawer-head">
       <div>
-function openDrawer(dateStr){
-    const r = byDate[dateStr];
-    if(!r) return;
-    const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[dateStr] : {cash:[], bank:[], cashTotalReported:null, bankTotalReported:null};
-    const drawer = document.getElementById('drawer');
-    const t = translations[currentLang];
-drawer.innerHTML = `
-      <div class="drawer-head">
-        <div>
-            <div class="drawer-title">${t.drawerTitle}</div>
-            <div class="drawer-date">${r.date} – ${r.dow}</div>
-        </div>
+        <div class="drawer-title">تفاصيل اليوم</div>
+        <div class="drawer-date">${r.date} — ${r.dow}</div>
+      </div>
+    </div>
     </div>
     <table class="detail-table">
-    <thead><tr><th colspan="2">${t.revenues}</th></tr></thead>
-    <tbody>
-        <tr><td>${t.cashSales}</td><td class="v">${fmt(r.cashSales)}</td></tr>
-        <tr><td>${t.cardSales}</td><td class="v">${fmt(r.cardSales)}</td></tr>
-        <tr><td>${t.bankTransfer}</td><td class="v">${fmt(r.bankTransfer)}</td></tr>
-        <tr><td>${t.creditSales}</td><td class="v">${fmt(r.creditSales)}</td></tr>
-        <tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>${t.totalSales}</td><td class="v">${fmt(r.totalSales)}</td></tr>
-    </tbody>
+      <thead><tr><th colspan="2">تفاصيل الإيرادات</th></tr></thead>
+      <tbody>
+        <tr><td>مبيعات نقدية</td><td class="v">${fmt(r.cashSales)}</td></tr>
+        <tr><td>مبيعات شبكة</td><td class="v">${fmt(r.cardSales)}</td></tr>
+        <tr><td>تحويلات بنكية</td><td class="v">${fmt(r.bankTransfer)}</td></tr>
+        <tr><td>مبيعات آجلة</td><td class="v">${fmt(r.creditSales)}</td></tr>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>إجمالي المبيعات</td><td class="v">${fmt(r.totalSales)}</td></tr>
+</tbody>
     </table>
     <table class="detail-table">
-    <thead><tr><th colspan="2">${t.cashFlow}</th></tr></thead>
-    <tbody>
-        <tr><td>${t.openBalance}</td><td class="v">${fmt(r.openBalance)}</td></tr>
-        <tr><td>${t.collections}</td><td class="v">${fmt(r.collections)}</td></tr>
-        <tr><td>${t.supplierCash}</td><td class="v">${fmt(r.supplierCash)}</td></tr>
-        <tr><td>${t.cashPurchases}</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
-        <tr><td>${t.cashExpenses}</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
-        <tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>${t.closeBalance}</td><td class="v">${fmt(r.closeBalance)}</td></tr>
-    </tbody>
+      <thead><tr><th colspan="2">حركة النقد</th></tr></thead>
+      <tbody>
+        <tr><td>رصيد أول اليوم</td><td class="v">${fmt(r.openBalance)}</td></tr>
+<tr><td>تحصيلات من العملاء</td><td class="v">${fmt(r.collections)}</td></tr>
+<tr><td>سداد موردين نقداً</td><td class="v">${fmt(r.supplierCash)}</td></tr>
+<tr><td>مشتريات نقدية</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
+<tr><td>المصروفات النقدية</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>رصيد آخر اليوم</td><td class="v">${fmt(r.closeBalance)}</td></tr>
+</tbody>
     </table>
-    ${paymentsTableHtml(t.supplierCash, pay.cash, pay.cashTotalReported)}
-    ${paymentsTableHtml(t.supplierBank || (currentLang === 'en' ? 'Supplier Bank Transfers' : 'سداد موردين بنكياً (تحويل)'), pay.bank, pay.bankTotalReported)}
-    `;
-    document.getElementById('drawerBackdrop').classList.add('open');
-}
-</table>
     ${paymentsTableHtml('سداد الموردين نقداً', pay.cash, pay.cashTotalReported)}
     ${paymentsTableHtml('سداد الموردين بنكياً (تحويل)', pay.bank, pay.bankTotalReported)}
   `;
@@ -987,27 +973,21 @@ drawer.innerHTML = `
 }
 
 function paymentsTableHtml(title, list, reportedTotal){
-    const t = translations[currentLang];
-    const noRecordText = currentLang === 'en' ? 'No payment records for this day.' : 'لا يوجد سداد مسجل لهذا اليوم.';
-    const methodHeader = currentLang === 'en' ? 'Method' : 'الجهة/الطريقة';
-    const amountHeader = currentLang === 'en' ? 'Amount' : 'المبلغ';
-    const totalText = currentLang === 'en' ? 'Total' : 'الإجمالي';
-
-    if(!list || list.length==0){
-        return `<table class="detail-table"><thead><tr><th>${title}</th></tr></thead>
-        <tbody><tr><td style="color:var(--muted-2); font-size:12px;">${noRecordText}</td></tr></tbody></table>`;
-    }
-    const total = reportedTotal != null ? reportedTotal : list.reduce((s,x)=>s+x.a,0);
-    return `
+  if(!list || list.length===0){
+    return `<table class="detail-table"><thead><tr><th>${title}</th></tr></thead>
+      <tbody><tr><td style="color:var(--muted-2); font-size:12px;">لا يوجد سداد مسجّل لهذا اليوم.</td></tr></tbody></table>`;
+  }
+  const total = reportedTotal != null ? reportedTotal : list.reduce((s,x)=>s+x.a,0);
+  return `
     <table class="detail-table payments-table">
-    <thead><tr><th>${title}</th><th>${methodHeader}</th><th style="text-align:left">${amountHeader}</th></tr></thead>
-    <tbody>
+      <thead><tr><th>${title}</th><th>الجهة/الطريقة</th><th style="text-align:left">المبلغ</th></tr></thead>
+      <tbody>
         ${list.map(x=>`<tr><td>${x.n}</td><td style="color:var(--muted)">${x.m||'-'}</td><td class="v">${fmt(x.a)}</td></tr>`).join('')}
-    <tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td colspan="2">${totalText}</td><td class="v" style="font-size: 1em; font-weight: bold;">${fmt(total)}</td></tr>
-    </tbody>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td colspan="2">الإجمالي</td><td class="v" style="font-size: 1em; font-weight: bold;">${fmt(total)}</td></tr>
+</tbody>
     </table>`;
 }
-    function closeDrawer(){
+function closeDrawer(){
   document.getElementById('drawerBackdrop').classList.remove('open');
 }
 
