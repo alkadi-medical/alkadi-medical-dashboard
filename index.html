@@ -881,8 +881,8 @@ const cards = [
 {label: translations[currentLang].todaySalesTitle, value: fmt(r.totalSales), color: 'var(--accent)', sub: getDow(r.dow)},
 {label: translations[currentLang].todayTargetTitle, value: fmt(r.target), color: 'var(--gold)', sub: (currentLang === 'en' ? 'Weighted for ' : 'حسب وزن ') + getDow(r.dow)},
     {label: translations[currentLang].achievementRatio, value: pct(r.achievement), color: achvColor(r.achievement), 
-         sub: `<span class="tag `+r.flag+`">`+(currentLang === 'en' ? (r.flag==='good'?'Achieved':r.flag==='ok'?'Fair':'Accepted') : (r.flag==='good'?'محقق':r.flag==='ok'?'ضعيف':'مقبول'))+`</span>`},
-        {label: translations[currentLang].cashBalanceTitle, value: fmt(r.closeBalance), color: 'var(--success)', 
+sub: `<span class="tag `+r.flag+`">`+(currentLang === 'en' ? (r.flag==='excellent'?'Excellent':r.flag==='good'?'Good':r.flag==='ok'?'Fair':'Weak') : (r.flag==='excellent'?'ممتاز':r.flag==='good'?'جيد':r.flag==='ok'?'مقبول':'ضعيف'))+`</span>`},
+    {label: translations[currentLang].cashBalanceTitle, value: fmt(r.closeBalance), color: 'var(--success)', 
          sub: (r.closeBalance>=r.openBalance?'▲':'▼') + (currentLang === 'en' ? ' from ' + fmt(r.openBalance) + ' start of day' : ' من ' + fmt(r.openBalance) + ' أول اليوم')}
     ];
   wrap.innerHTML = cards.map(c=>`
