@@ -941,14 +941,14 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
   drawer.innerHTML = `
     <div class="drawer-head">
       <div>
-        <div class="drawer-title">تفاصيل اليوم</div>
-        <div class="drawer-date">${r.date} — ${r.dow}</div>
+<div class="drawer-title">${currentLang === 'en' ? 'Day Details' : 'تفاصيل اليوم'}</div>
+<div class="drawer-date">${r.date} — ${r.dow}</div>
       </div>
     </div>
     </div>
     <table class="detail-table">
-      <thead><tr><th colspan="2">تفاصيل الإيرادات</th></tr></thead>
-      <tbody>
+<tr><th colspan="2">${currentLang === 'en' ? 'Revenue Details' : 'تفاصيل الإيرادات'}</th></tr>
+<tbody>
         <tr><td>مبيعات نقدية</td><td class="v">${fmt(r.cashSales)}</td></tr>
         <tr><td>مبيعات شبكة</td><td class="v">${fmt(r.cardSales)}</td></tr>
         <tr><td>تحويلات بنكية</td><td class="v">${fmt(r.bankTransfer)}</td></tr>
