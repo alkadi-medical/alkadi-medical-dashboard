@@ -752,9 +752,13 @@ const AR_HEADER_MAP = {
     Object.assign(out, row);
   }
   const dateStr = parseFlexibleDate(out.date);
-  const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
-  return {
-    date: dateStr,
+const num = v => {
+    if (v === undefined || v === null || v === '') return 0;
+    let cleanStr = String(v).trim().replace(/[^\d\.-]/g, '');
+    let n = parseFloat(cleanStr);
+    return isNaN(n) ? 0 : n;
+};
+        date: dateStr,
     cashSales:num(out.cashSales), cardSales:num(out.cardSales), bankTransfer:num(out.bankTransfer),
     creditSales:num(out.creditSales), cashPurchases:num(out.cashPurchases), supplierCash:num(out.supplierCash),
     returns:num(out.returns), cashExpenses:num(out.cashExpenses), bankDeposit:num(out.bankDeposit),
