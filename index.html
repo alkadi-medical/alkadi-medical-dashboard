@@ -474,7 +474,7 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </section>    
 <!-- قسم بيان القروض الجديد -->
 <section id="loansSection" class="loans-section" style="margin-top: 30px; ...">
-<div class="card-title" style="color: #22c55e; padding-right: 20px; margin-bottom: 16px; font-size: 1.2rem;">بيان القروض حتى تاريخ 15-09-2026</div>
+<div class="card-title" style="color: #22c55e; padding-right: 20px; margin-bottom: 16px; font-size: 1.2rem;">بيان القروض حتى تاريخ 05-09-2026</div>
     <div class="table-container" style="overflow-x: auto;">
         <table class="detail-table" style="width: 100%; white-space: nowrap; text-align: center;">
             <thead>
@@ -654,17 +654,16 @@ function pct(n){
   return (n*100).toFixed(1) + '%';
 }
 function achvClass(a){
-    if(a>=1) return 'excellent';
-    if(a>=0.9) return 'good';
-    if(a>=0.75) return 'ok';
-    return 'weak';
+  if(a>=1) return 'good';
+  if(a>=0.85) return 'ok';
+  return 'weak';
 }
 function achvColor(a){
-    if(a>=1) return 'var(--success)';
-    if(a>=0.9) return 'var(--success)';
-    if(a>=0.75) return 'var(--amber)';
-    return 'var(--danger)';
+  if(a>=1) return 'var(--success)';
+  if(a>=0.7) return 'var(--amber)';
+  return 'var(--danger)';
 }
+
 // -------------------------------------------------------------------------
 // enrich a raw record with computed fields
 // -------------------------------------------------------------------------
@@ -721,24 +720,14 @@ function parseFlexibleDate(raw){
 
 // يقرأ صفوف تبويب "بيانات يومية" كما هي (بعناوينها العربية) من نشر Google Sheets مباشرة - بدون أي تعديل يدوي مطلوب من المستخدم
 const AR_HEADER_MAP = {
-    'التاريخ': 'date',
-    'مبيعات نقدية': 'cashSales',
-    'مبيعات شبكة': 'cardsSales',
-    'تحويلات بنكية': 'bankTransfer',
-    'مبيعات آجلة': 'creditsSales',
-    'إجمالي المبيعات': 'totalSales',
-    'مشتريات نقدية': 'cashPurchases',
-    'سداد موردين نقداً': 'supplierCash',
-    'مرتجع نقدي': 'returns',
-    'مصروفات نقدية': 'cashExpenses',
-    'إيداع بنك': 'bankDeposit',
-    'أخرى': 'other',
-    'تحويل بين فروع': 'branchTransfer',
-    'رصيد أول اليوم': 'openBalance',
-    'تحصيلات من العملاء': 'collections',
-    'بيان المصروفات': 'expenseNote'
+  'التاريخ':'date',
+  'مبيعات نقدية':'cashSales', 'مبيعات شبكة':'cardSales', 'تحويلات بنكية':'bankTransfer', 'مبيعات آجلة':'creditSales',
+  'مشتريات نقدية':'cashPurchases', 'سداد موردين نقداً':'supplierCash', 'مرتجع نقدي':'returns',
+  'مصروفات نقدية':'cashExpenses', 'إيداع بنك':'bankDeposit', 'أخرى':'other', 'تحويل بين فروع':'branchTransfer',
+  'رصيد أول اليوم':'openBalance', 'تحصيلات من العملاء':'collections'
 };
-    function csvRowToRaw(row){
+
+function csvRowToRaw(row){
   // يدعم كل من عناوين الشيت العربية الأصلية أو عناوين إنجليزية مبسطة (date, cashSales, ...) لو استُخدم شيت مخصص
   const out = {};
   const keys = Object.keys(row);
@@ -891,8 +880,8 @@ const cards = [
 {label: translations[currentLang].todaySalesTitle, value: fmt(r.totalSales), color: 'var(--accent)', sub: getDow(r.dow)},
 {label: translations[currentLang].todayTargetTitle, value: fmt(r.target), color: 'var(--gold)', sub: (currentLang === 'en' ? 'Weighted for ' : 'حسب وزن ') + getDow(r.dow)},
     {label: translations[currentLang].achievementRatio, value: pct(r.achievement), color: achvColor(r.achievement), 
-sub: `<span class="tag `+r.flag+`">`+(currentLang === 'en' ? (r.flag==='excellent'?'Excellent':r.flag==='good'?'Good':r.flag==='ok'?'Fair':'Weak') : (r.flag==='excellent'?'ممتاز':r.flag==='good'?'جيد':r.flag==='ok'?'مقبول':'ضعيف'))+`</span>`},
-    {label: translations[currentLang].cashBalanceTitle, value: fmt(r.closeBalance), color: 'var(--success)', 
+sub: `<span class="tag ${r.flag}">${currentLang === 'en' ? (r.flag==='excellent'?'Excellent':r.flag==='good'?'Good':r.flag==='ok'?'Fair':'Weak') : (r.flag==='excellent'?'ممتاز':r.flag==='good'?'جيد':r.flag==='ok'?'مقبول':'ضعيف')}</span>`,
+     {label: translations[currentLang].cashBalanceTitle, value: fmt(r.closeBalance), color: 'var(--success)', 
          sub: (r.closeBalance>=r.openBalance?'▲':'▼') + (currentLang === 'en' ? ' from ' + fmt(r.openBalance) + ' start of day' : ' من ' + fmt(r.openBalance) + ' أول اليوم')}
     ];
   wrap.innerHTML = cards.map(c=>`
@@ -951,14 +940,14 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
   drawer.innerHTML = `
     <div class="drawer-head">
       <div>
-<div class="drawer-title">${currentLang === 'en' ? 'Day Details' : 'تفاصيل اليوم'}</div>
-<div class="drawer-date">${r.date} — ${r.dow}</div>
+        <div class="drawer-title">تفاصيل اليوم</div>
+        <div class="drawer-date">${r.date} — ${r.dow}</div>
       </div>
     </div>
     </div>
     <table class="detail-table">
-<tr><th colspan="2">${currentLang === 'en' ? 'Revenue Details' : 'تفاصيل الإيرادات'}</th></tr>
-<tbody>
+      <thead><tr><th colspan="2">تفاصيل الإيرادات</th></tr></thead>
+      <tbody>
         <tr><td>مبيعات نقدية</td><td class="v">${fmt(r.cashSales)}</td></tr>
         <tr><td>مبيعات شبكة</td><td class="v">${fmt(r.cardSales)}</td></tr>
         <tr><td>تحويلات بنكية</td><td class="v">${fmt(r.bankTransfer)}</td></tr>
