@@ -35,11 +35,9 @@ section.alerts {
 /* --- تنسيق القائمة المنسدلة لتفاصيل المصروفات --- */
 .detail-table .dropdown-content {
     display: none;
-    background-color: #161a23;          /* خلفية داكنة واضحة */
-    color: #ffffff !important;         /* جعل الخط أبيض ناصح */
-    font-size: 0.95em;                 /* حجم خط مناسب ومقروء */
+    background-color: var(--surface-2, #1e2230);
 }
-      .detail-table tr.expandable-row.expanded + .dropdown-content {
+.detail-table tr.expandable-row.expanded + .dropdown-content {
     display: table-row;
 }
 .detail-table .expandable-row {
@@ -758,45 +756,30 @@ const AR_HEADER_MAP = {
     'رصيد أول اليوم': 'openBalance', 'تحصيلات من العملاء': 'collections'
 };
 function csvRowToRaw(row){
-    // لو استخدمت شيت مخصص (..., date, cashSales) يدعم كل من عناوين الشيت الأصلية أو عناوين إنجليزية مبسطة //
-    const out = {};
-    const keys = Object.keys(row);
-    const hasArabicHeaders = keys.some(k => AR_HEADER_MAP[k.trim()]);
-    if(hasArabicHeaders){
-        keys.forEach(k=>{
-            const mapped = AR_HEADER_MAP[k.trim()];
-            if(mapped) out[mapped] = row[k];
-        });
-    } else {
-        Object.assign(out, row);
-    }
-    const dateStr = parseFlexibleDate(out.date);
-    
-    // دالة أرقام ذكية ومحصنة تضمن عدم إرجاع NaN أبداً وتحويل الفراغات إلى 0
-    const num = v => {
-        if (v === undefined || v === null || v === '') return 0;
-        const n = parseFloat(String(v).replace(/,/g, '').trim());
-        return isNaN(n) ? 0 : n;
+  // يدعم كل من عناوين الشيت العربية الأصلية أو عناوين إنجليزية مبسطة (date, cashSales, ...) لو استُخدم شيت مخصص
+  const out = {};
+  const keys = Object.keys(row);
+  const hasArabicHeaders = keys.some(k => AR_HEADER_MAP[k.trim()]);
+  if(hasArabicHeaders){
+    keys.forEach(k=>{
+      const mapped = AR_HEADER_MAP[k.trim()];
+      if(mapped) out[mapped] = row[k];
+    });
+  } else {
+    Object.assign(out, row);
+  }
+  const dateStr = parseFlexibleDate(out.date);
+  const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
+  return {
+date: dateStr,
+        cashSales: num(out.cashSales), cardsSales: num(out.cardsSales), bankTransfer: num(out.bankTransfer),
+        creditsSales: num(out.creditsSales), cashPurchases: num(out.cashPurchases), supplierCash: num(out.supplierCash),
+        returns: num(out.returns), cashExpenses: num(out.cashExpenses), expenseNote: out.expenseNote || '', // <-- هذا السطر الجديد يا عبودي
+        bankDeposit: num(out.bankDeposit), other: num(out.other), branchTransfer: num(out.branchTransfer),
+        openBalance: num(out.openBalance), collections: num(out.collections)
     };
+}
 
-    return {
-        date: dateStr,
-        cashSales: num(out.cashSales),
-        cardsSales: num(out.cardsSales),
-        bankTransfer: num(out.bankTransfer),
-        creditsSales: num(out.creditsSales),
-        cashPurchases: num(out.cashPurchases),
-        supplierCash: num(out.supplierCash),
-        returns: num(out.returns),
-        cashExpenses: num(out.cashExpenses),
-        bankDeposit: num(out.bankDeposit),
-        other: num(out.other),
-        branchTransfer: num(out.branchTransfer),
-        openBalance: num(out.openBalance),
-        collections: num(out.collections),
-        expenseNote: String(out.expenseNote || '') // بيان المصروفات بمعزل تام عن الحسابات
-    };
-}    
 // 1. تعريف مصفوفة الأشهر لتفادي خطأ MONTHS_AR
 if (typeof MONTHS_AR === 'undefined') {
   var MONTHS_AR = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
