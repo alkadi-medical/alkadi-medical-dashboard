@@ -671,7 +671,7 @@ function achvColor(a){
 function enrich(r){
   const d = new Date(r.date + 'T00:00:00');
   const dow = DOW_AR[d.getDay()];
-const totalSales = num(r.cashSales) + num(r.cardsSales) + num(r.bankTransfer) + num(r.creditsSales);
+const totalSales = (r.cashSales || 0) + (r.cardsSales || 0) + (r.bankTransfer || 0) + (r.creditsSales || 0);
     const totalExpenses = r.cashPurchases + r.supplierCash + r.returns + r.cashExpenses + r.bankDeposit + r.other + r.branchTransfer;
   const closeBalance = r.openBalance + r.cashSales + r.collections - totalExpenses;
   const target = dailyTarget(d);
