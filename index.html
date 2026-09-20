@@ -758,31 +758,31 @@ const AR_HEADER_MAP = {
     'رصيد أول اليوم': 'openBalance', 'تحصيلات من العملاء': 'collections'
 };
 function csvRowToRaw(row){
-  // يدعم كل من عناوين الشيت العربية الأصلية أو عناوين إنجليزية مبسطة (date, cashSales, ...) لو استُخدم شيت مخصص
-  const out = {};
-  const keys = Object.keys(row);
-  const hasArabicHeaders = keys.some(k => AR_HEADER_MAP[k.trim()]);
-  if(hasArabicHeaders){
-    keys.forEach(k=>{
-      const mapped = AR_HEADER_MAP[k.trim()];
-      if(mapped) out[mapped] = row[k];
-    });
-  } else {
-    Object.assign(out, row);
-  }
-  const dateStr = parseFlexibleDate(out.date);
-  const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
-return {
-date: dateStr,
+    // لو استخدمت شيت مخصص (..., date, cashSales) يدعم كل من عناوين الشيت الأصلية أو عناوين إنجليزية مبسطة //
+    const out = {};
+    const keys = Object.keys(row);
+    const hasArabicHeaders = keys.some(k => AR_HEADER_MAP[k.trim()]);
+    if(hasArabicHeaders){
+        keys.forEach(k=>{
+            const mapped = AR_HEADER_MAP[k.trim()];
+            if(mapped) out[mapped] = row[k];
+        });
+    } else {
+        Object.assign(out, row);
+    }
+    const dateStr = parseFlexibleDate(out.date);
+    const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
+    return {
+        date: dateStr,
         cashSales: num(out.cashSales), cardsSales: num(out.cardsSales), bankTransfer: num(out.bankTransfer),
         creditsSales: num(out.creditsSales), cashPurchases: num(out.cashPurchases), supplierCash: num(out.supplierCash),
         returns: num(out.returns), cashExpenses: num(out.cashExpenses), bankDeposit: num(out.bankDeposit),
         other: num(out.other), branchTransfer: num(out.branchTransfer), openBalance: num(out.openBalance),
         collections: num(out.collections),
-        expenseNote: out.expenseNote || ''
+        expenseNote: String(out.expenseNote || '')
     };
 }
-
+    
 // 1. تعريف مصفوفة الأشهر لتفادي خطأ MONTHS_AR
 if (typeof MONTHS_AR === 'undefined') {
   var MONTHS_AR = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
