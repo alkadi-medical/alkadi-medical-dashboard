@@ -35,9 +35,11 @@ section.alerts {
 /* --- تنسيق القائمة المنسدلة لتفاصيل المصروفات --- */
 .detail-table .dropdown-content {
     display: none;
-    background-color: var(--surface-2, #1e2230);
+    background-color: #161a23;          /* خلفية داكنة واضحة */
+    color: #ffffff !important;         /* جعل الخط أبيض ناصح */
+    font-size: 0.95em;                 /* حجم خط مناسب ومقروء */
 }
-.detail-table tr.expandable-row.expanded + .dropdown-content {
+      .detail-table tr.expandable-row.expanded + .dropdown-content {
     display: table-row;
 }
 .detail-table .expandable-row {
@@ -770,13 +772,13 @@ function csvRowToRaw(row){
   }
   const dateStr = parseFlexibleDate(out.date);
   const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
-  return {
-date: dateStr,
+return {
+        date: dateStr,
         cashSales: num(out.cashSales), cardsSales: num(out.cardsSales), bankTransfer: num(out.bankTransfer),
         creditsSales: num(out.creditsSales), cashPurchases: num(out.cashPurchases), supplierCash: num(out.supplierCash),
-        returns: num(out.returns), cashExpenses: num(out.cashExpenses), expenseNote: out.expenseNote || '', // <-- هذا السطر الجديد يا عبودي
-        bankDeposit: num(out.bankDeposit), other: num(out.other), branchTransfer: num(out.branchTransfer),
-        openBalance: num(out.openBalance), collections: num(out.collections)
+        returns: num(out.returns), cashExpenses: num(out.cashExpenses), bankDeposit: num(out.bankDeposit), 
+        other: num(out.other), branchTransfer: num(out.branchTransfer), openBalance: num(out.openBalance), 
+        collections: num(out.collections), expenseNote: out.expenseNote || ''
     };
 }
 
