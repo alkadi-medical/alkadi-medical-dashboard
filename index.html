@@ -771,18 +771,32 @@ function csvRowToRaw(row){
         Object.assign(out, row);
     }
     const dateStr = parseFlexibleDate(out.date);
-    const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
+    
+    // دالة أرقام ذكية ومحصنة تضمن عدم إرجاع NaN أبداً وتحويل الفراغات إلى 0
+    const num = v => {
+        if (v === undefined || v === null || v === '') return 0;
+        const n = parseFloat(String(v).replace(/,/g, '').trim());
+        return isNaN(n) ? 0 : n;
+    };
+
     return {
         date: dateStr,
-        cashSales: num(out.cashSales), cardsSales: num(out.cardsSales), bankTransfer: num(out.bankTransfer),
-        creditsSales: num(out.creditsSales), cashPurchases: num(out.cashPurchases), supplierCash: num(out.supplierCash),
-        returns: num(out.returns), cashExpenses: num(out.cashExpenses), bankDeposit: num(out.bankDeposit),
-        other: num(out.other), branchTransfer: num(out.branchTransfer), openBalance: num(out.openBalance),
+        cashSales: num(out.cashSales),
+        cardsSales: num(out.cardsSales),
+        bankTransfer: num(out.bankTransfer),
+        creditsSales: num(out.creditsSales),
+        cashPurchases: num(out.cashPurchases),
+        supplierCash: num(out.supplierCash),
+        returns: num(out.returns),
+        cashExpenses: num(out.cashExpenses),
+        bankDeposit: num(out.bankDeposit),
+        other: num(out.other),
+        branchTransfer: num(out.branchTransfer),
+        openBalance: num(out.openBalance),
         collections: num(out.collections),
-        expenseNote: String(out.expenseNote || '')
+        expenseNote: String(out.expenseNote || '') // بيان المصروفات بمعزل تام عن الحسابات
     };
-}
-    
+}    
 // 1. تعريف مصفوفة الأشهر لتفادي خطأ MONTHS_AR
 if (typeof MONTHS_AR === 'undefined') {
   var MONTHS_AR = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
