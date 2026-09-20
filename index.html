@@ -773,12 +773,13 @@ function csvRowToRaw(row){
   const dateStr = parseFlexibleDate(out.date);
   const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
 return {
-        date: dateStr,
+date: dateStr,
         cashSales: num(out.cashSales), cardsSales: num(out.cardsSales), bankTransfer: num(out.bankTransfer),
         creditsSales: num(out.creditsSales), cashPurchases: num(out.cashPurchases), supplierCash: num(out.supplierCash),
-        returns: num(out.returns), cashExpenses: num(out.cashExpenses), bankDeposit: num(out.bankDeposit), 
-        other: num(out.other), branchTransfer: num(out.branchTransfer), openBalance: num(out.openBalance), 
-        collections: num(out.collections), expenseNote: out.expenseNote || ''
+        returns: num(out.returns), cashExpenses: num(out.cashExpenses), bankDeposit: num(out.bankDeposit),
+        other: num(out.other), branchTransfer: num(out.branchTransfer), openBalance: num(out.openBalance),
+        collections: num(out.collections),
+        expenseNote: out.expenseNote || ''
     };
 }
 
