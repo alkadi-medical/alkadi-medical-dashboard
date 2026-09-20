@@ -32,7 +32,35 @@ section.alerts {
     display: none !important;
 }
 }
-
+/* --- تنسيق القائمة المنسدلة لتفاصيل المصروفات --- */
+.detail-table .dropdown-content {
+    display: none;
+    background-color: var(--surface-2, #1e2230);
+}
+.detail-table tr.expandable-row.expanded + .dropdown-content {
+    display: table-row;
+}
+.detail-table .expandable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.detail-table .expandable-row:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+.detail-table .expandable-row .expand-icon {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 0.8em;
+    transition: transform 0.3s;
+}
+.detail-table .expandable-row.expanded .expand-icon {
+    transform: rotate(-90deg);
+}
+.detail-table .expandable-row .expand-label {
+    color: var(--muted-2, #94a3b8);
+    font-size: 0.85em;
+    margin-right: 5px;
+}
 /* منع تداخل شريط التمرير مع العمود الأيسر (الرقم والأثر) */
 td:first-child, th:first-child, .amount, .text-left {
   padding-left: 28px !important;
