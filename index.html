@@ -739,9 +739,12 @@ const AR_HEADER_MAP = {
     'تحويل بين فروع': 'branchTransfer',
     'رصيد أول اليوم': 'openBalance',
     'تحصيلات من العملاء': 'collections',
-    'بيان المصروفات': 'expenseNote'
+    'بيان المصروفات': 'expenseNote',
+    // تنظيف إضافي لاحتمالية وجود مسافات خفية في الشيت
+    'مبيعات  شبكة': 'cardsSales',
+    'مبيعات  آجلة': 'creditsSales'
 };
-    function csvRowToRaw(row){
+        function csvRowToRaw(row){
   // يدعم كل من عناوين الشيت العربية الأصلية أو عناوين إنجليزية مبسطة (date, cashSales, ...) لو استُخدم شيت مخصص
   const out = {};
   const keys = Object.keys(row);
