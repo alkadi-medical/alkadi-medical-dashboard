@@ -956,16 +956,37 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
 </tbody>
     </table>
     <table class="detail-table">
-      <thead><tr><th colspan="2">حركة النقد</th></tr></thead>
-      <tbody>
-        <tr><td>رصيد أول اليوم</td><td class="v">${fmt(r.openBalance)}</td></tr>
-<tr><td>تحصيلات من العملاء</td><td class="v">${fmt(r.collections)}</td></tr>
-<tr><td>سداد موردين نقداً</td><td class="v">${fmt(r.supplierCash)}</td></tr>
-<tr><td>مشتريات نقدية</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
-<tr><td>المصروفات النقدية</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
-<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>رصيد آخر اليوم</td><td class="v">${fmt(r.closeBalance)}</td></tr>
-</tbody>
-    </table>
+<table class="detail-table">
+    <thead><tr><th colspan="2">${currentLang === 'en' ? 'Cash Flow' : 'حركة النقد'}</th></tr></thead>
+    <tbody>
+        <tr><td>${currentLang === 'en' ? 'Opening Balance' : 'رصيد أول اليوم'}</td><td class="v">${fmt(r.openBalance)}</td></tr>
+        <tr><td>${currentLang === 'en' ? 'Collections' : 'تحصيلات من العملاء'}</td><td class="v">${fmt(r.collections)}</td></tr>
+        <tr><td>${currentLang === 'en' ? 'Supplier Cash Payments' : 'سداد موردين نقداً'}</td><td class="v">${fmt(r.supplierCash)}</td></tr>
+        <tr><td>${currentLang === 'en' ? 'Cash Purchases' : 'مشتريات نقدية'}</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
+        
+        <!-- سطر المصروفات النقدية الجديد -->
+        <tr onclick="this.classList.toggle('expanded')" class="expandable-row">
+            <td>
+                ${currentLang === 'en' ? 'Cash Expenses' : 'مصروفات نقدية'}
+                <!-- سهم القائمة المنسدلة -->
+                <span class="expand-icon">▼</span>
+                <!-- عبارة أضغط هنا -->
+                <span class="expand-label">${currentLang === 'en' ? '(Click for details)' : '(أضغط هنا للتفاصيل)'}</span>
+            </td>
+            <td class="v">${fmt(r.cashExpenses)}</td>
+        </tr>
+        <!-- القائمة المنسدلة لتفاصيل المصروفات -->
+        <tr class="dropdown-content">
+            <td colspan="2" style="font-size: 0.9em; color: var(--muted-2); padding-right: 30px;">
+                <strong>${currentLang === 'en' ? 'Expense Note:' : 'بيان المصروفات:'}</strong>
+                ${r.expenseNote || (currentLang === 'en' ? 'No note recorded for today.' : 'لا يوجد بيان مسجل لهذا اليوم.')}
+            </td>
+        </tr>
+        
+        <tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>${currentLang === 'en' ? 'Closing Balance' : 'رصيد آخر اليوم'}</td><td class="v">${fmt(r.closeBalance)}</td></tr>
+    </tbody>
+</table>
+</table>
     ${paymentsTableHtml('سداد الموردين نقداً', pay.cash, pay.cashTotalReported)}
     ${paymentsTableHtml('سداد الموردين بنكياً (تحويل)', pay.bank, pay.bankTotalReported)}
   `;
