@@ -722,12 +722,23 @@ function parseFlexibleDate(raw){
 // يقرأ صفوف تبويب "بيانات يومية" كما هي (بعناوينها العربية) من نشر Google Sheets مباشرة - بدون أي تعديل يدوي مطلوب من المستخدم
 const AR_HEADER_MAP = {
     'التاريخ': 'date',
-    'مبيعات نقدية': 'cashSales', 'مبيعات شبكة': 'cardsSales', 'تحويلات بنكية': 'bankTransfer', 'مبيعات آجلة': 'creditsSales',
-    'مرتجع نقدي': 'returns', 'سداد موردين نقداً': 'supplierCash', 'مشتريات نقدية': 'cashPurchases',
-    'مصروفات نقدية': 'cashExpenses', 'بيان المصروفات': 'expenseNote', 'إيداع بنك': 'bankDeposit', 'أخرى': 'other', 'تحويل بين فروع': 'branchTransfer',
-    'رصيد أول اليوم': 'openBalance', 'تحصيلات من العملاء': 'collections'
+    'مبيعات نقدية': 'cashSales',
+    'مبيعات شبكة': 'cardsSales',
+    'تحويلات بنكية': 'bankTransfer',
+    'مبيعات آجلة': 'creditsSales',
+    'إجمالي المبيعات': 'totalSales',
+    'مشتريات نقدية': 'cashPurchases',
+    'سداد موردين نقداً': 'supplierCash',
+    'مرتجع نقدي': 'returns',
+    'مصروفات نقدية': 'cashExpenses',
+    'إيداع بنك': 'bankDeposit',
+    'أخرى': 'other',
+    'تحويل بين فروع': 'branchTransfer',
+    'رصيد أول اليوم': 'openBalance',
+    'تحصيلات من العملاء': 'collections',
+    'بيان المصروفات': 'expenseNote'
 };
-function csvRowToRaw(row){
+    function csvRowToRaw(row){
   // يدعم كل من عناوين الشيت العربية الأصلية أو عناوين إنجليزية مبسطة (date, cashSales, ...) لو استُخدم شيت مخصص
   const out = {};
   const keys = Object.keys(row);
