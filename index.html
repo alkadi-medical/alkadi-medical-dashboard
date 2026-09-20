@@ -722,6 +722,9 @@ function parseFlexibleDate(raw){
 // يقرأ صفوف تبويب "بيانات يومية" كما هي (بعناوينها العربية) من نشر Google Sheets مباشرة - بدون أي تعديل يدوي مطلوب من المستخدم
 const AR_HEADER_MAP = {
     'التاريخ': 'date',
+    'الشهر رقم': 'monthNum',
+    'الشهر': 'monthName',
+    'اليوم': 'dayName',
     'مبيعات نقدية': 'cashSales',
     'مبيعات شبكة': 'cardsSales',
     'تحويلات بنكية': 'bankTransfer',
