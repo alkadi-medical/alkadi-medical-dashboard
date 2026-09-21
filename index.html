@@ -755,8 +755,8 @@ const AR_HEADER_MAP = {
     Object.assign(out, row);
   }
   const dateStr = parseFlexibleDate(out.date);
-  const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
-return {
+const num = v => { const n = parseFloat(String(v || 0).replace(/,/g, '')); return isNaN(n) ? 0 : n; };
+            return {
         date: dateStr,
         cashSales: num(out.cashSales || row['مبيعات نقدية'] || row['cashSales'] || 0),
         cardsSales: num(out.cardsSales || row['مبيعات شبكة'] || row['cardsSales'] || row['الشبكة'] || 0), 
