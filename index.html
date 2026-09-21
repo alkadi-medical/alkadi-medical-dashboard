@@ -970,9 +970,9 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
     <table class="detail-table">
 <tr><th colspan="2">${currentLang === 'en' ? 'Revenue Details' : 'تفاصيل الإيرادات'}</th></tr>
 <tbody>
-        <tr><td>مبيعات نقدية</td><td class="v">${fmt(r.cashSales)}</td></tr>
+<tr><td>مبيعات نقدية</td><td class="v">${Number(r.cashSales || 0).toLocaleString()}</td></tr>
 <tr><td>مبيعات شبكة</td><td class="v">${Number(r.cardsSales || 0).toLocaleString()}</td></tr>
-<tr><td>تحويلات بنكية</td><td class="v">${fmt(r.bankTransfer)}</td></tr>
+<tr><td>تحويلات بنكية</td><td class="v">${Number(r.bankTransfer || 0).toLocaleString()}</td></tr>
 <tr><td>مبيعات آجلة</td><td class="v">${Number(r.creditsSales || 0).toLocaleString()}</td></tr>
 <tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>إجمالي المبيعات</td><td class="v">${fmt(r.totalSales)}</td></tr>
 </tbody>
