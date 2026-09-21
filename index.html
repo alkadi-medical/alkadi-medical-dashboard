@@ -1051,8 +1051,8 @@ const actual = rows.reduce((s, r) => s + (Number(r.cashSales || 0) + Number(r.ca
             <tbody>
               ${rows.map(r=>`<tr>
                 <td>${r.dayNum} ${r.dow}</td>
-                <td class="v">${fmt(r.totalSales)}</td>
-                <td class="v">${fmt(r.target)}</td>
+<td class="v">${fmt(Number(r.cashSales || 0) + Number(r.cardsSales || 0) + Number(r.bankTransfer || 0) + Number(r.creditsSales || 0))}</td>
+<td class="v">${fmt(r.target)}</td>
                 <td class="v" style="color:${achvColor(r.achievement)}">${pct(r.achievement)}</td>
               </tr>`).join('')}
             </tbody>
