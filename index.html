@@ -756,15 +756,23 @@ const AR_HEADER_MAP = {
   }
   const dateStr = parseFlexibleDate(out.date);
   const num = v => { const n = parseFloat(String(v).replace(/,/g,'')); return isNaN(n) ? 0 : n; };
-  return {
-    date: dateStr,
-    cashSales:num(out.cashSales), cardSales:num(out.cardSales), bankTransfer:num(out.bankTransfer),
-    creditSales:num(out.creditSales), cashPurchases:num(out.cashPurchases), supplierCash:num(out.supplierCash),
-    returns:num(out.returns), cashExpenses:num(out.cashExpenses), bankDeposit:num(out.bankDeposit),
-    other:num(out.other), branchTransfer:num(out.branchTransfer), openBalance:num(out.openBalance),
-    collections:num(out.collections)
-  };
-}
+return {
+        date: dateStr,
+        cashSales: num(out.cashSales || row['مبيعات نقدية'] || row['cashSales'] || 0),
+        cardsSales: num(out.cardsSales || row['مبيعات شبكة'] || row['cardsSales'] || row['الشبكة'] || 0), 
+        bankTransfer: num(out.bankTransfer || row['تحويلات بنكية'] || row['bankTransfer'] || 0),
+        creditsSales: num(out.creditsSales || row['مبيعات آجلة'] || row['creditsSales'] || row['الآجلة'] || 0), 
+        cashPurchases: num(out.cashPurchases || row['مشتريات نقدية'] || 0), 
+        supplierCash: num(out.supplierCash || row['سداد مورديين نقداً'] || 0),
+        returns: num(out.returns || row['مرتجع نقدي'] || 0), 
+        cashExpenses: num(out.cashExpenses || row['مصروفات نقدية'] || 0), 
+        bankDeposit: num(out.bankDeposit || row['إيداع بنك'] || 0),
+        other: num(out.other || 0), 
+        branchTransfer: num(out.branchTransfer || 0), 
+        openBalance: num(out.openBalance || row['رصيد أول اليوم'] || 0),
+        collections: num(out.collections || row['تحصيلات من العملاء'] || 0)
+    };
+        }
 
 // 1. تعريف مصفوفة الأشهر لتفادي خطأ MONTHS_AR
 if (typeof MONTHS_AR === 'undefined') {
