@@ -719,34 +719,32 @@ function parseFlexibleDate(raw){
   }
 }
 
-// الجديد: قراءة الأعمدة مباشرة حسب ترتيبها الرقمي في الشيت (يبدأ العد من الصفر 0)
-// بناءً على ترتيب أعمدة الشيت لديك:
-// 0: التاريخ, 4: مبيعات نقدية, 5: مبيعات شبكة, 6: تحويلات بنكية, 7: مبيعات آجلة ... الخ
-
-function csvRowToRaw(row){
-    const values = Object.values(row); 
-    
-    const num = v => { 
-        const n = parseFloat(String(v || 0).replace(/,/g, '')); 
-        return isNaN(n) ? 0 : n; 
-    };
-
-    return {
-        date: parseFlexibleDate(values[0]),          // العمود A: التاريخ
-        cashSales: num(values[4]),                   // العمود E: مبيعات نقدية
-        cardsSales: num(values[5]),                  // العمود F: مبيعات شبكة
-        bankTransfer: num(values[6]),                // العمود G: تحويلات بنكية
-        creditsSales: num(values[7]),                // العمود H: مبيعات آجلة
-        cashPurchases: num(values[8]),               // العمود I: مشتريات نقدية
-        supplierCash: num(values[9]),                // العمود J: سداد مورديين نقداً
-        returns: num(values[10]),                    // العمود K: مرتجع نقدي
-        cashExpenses: num(values[11]),               // العمود L: مصروفات نقدية
-        bankDeposit: num(values[12]),                // العمود M: بيان المصروفات / الإيداعات
-        other: 0,
-        branchTransfer: 0
-    };
-}
-    function csvRowToRaw(row){
+// يقرأ صفوف تبويب "بيانات يومية" كما هي (بعناوينها العربية) من نشر Google Sheets مباشرة - بدون أي تعديل يدوي مطلوب من المستخدم
+const AR_HEADER_MAP = {
+    'التاريخ': 'date',
+    'الشهر رقم': 'monthNum',
+    'الشهر': 'monthName',
+    'اليوم': 'dayName',
+    'مبيعات نقدية': 'cashSales',
+    'مبيعات شبكة': 'cardsSales',
+    'تحويلات بنكية': 'bankTransfer',
+    'مبيعات آجلة': 'creditsSales',
+    'إجمالي المبيعات': 'totalSales',
+    'مشتريات نقدية': 'cashPurchases',
+    'سداد موردين نقداً': 'supplierCash',
+    'مرتجع نقدي': 'returns',
+    'مصروفات نقدية': 'cashExpenses',
+    'إيداع بنك': 'bankDeposit',
+    'أخرى': 'other',
+    'تحويل بين فروع': 'branchTransfer',
+    'رصيد أول اليوم': 'openBalance',
+    'تحصيلات من العملاء': 'collections',
+    'بيان المصروفات': 'expenseNote',
+    // تنظيف إضافي لاحتمالية وجود مسافات خفية في الشيت
+'مبيعات شبكة': 'cardsSales',
+'مبيعات آجلة': 'creditsSales',
+};
+        function csvRowToRaw(row){
   // يدعم كل من عناوين الشيت العربية الأصلية أو عناوين إنجليزية مبسطة (date, cashSales, ...) لو استُخدم شيت مخصص
   const out = {};
   const keys = Object.keys(row);
