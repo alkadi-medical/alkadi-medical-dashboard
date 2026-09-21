@@ -759,11 +759,9 @@ const num = v => { const n = parseFloat(String(v || 0).replace(/,/g, '')); retur
 return {
         date: dateStr,
         cashSales: num(out.cashSales),
-        cardsSales: num(out.cardsSales !== undefined ? out.cardsSales : (out['مبيعات شبكة'] || 0)),
-        'مبيعات شبكة': num(out.cardsSales !== undefined ? out.cardsSales : (out['مبيعات شبكة'] || 0)),
+        cardsSales: Number(out.cardsSales) || Number(out['مبيعات شبكة']) || 0,
         bankTransfer: num(out.bankTransfer),
-        creditsSales: num(out.creditsSales !== undefined ? out.creditsSales : (out['مبيعات آجلة'] || 0)),
-        'مبيعات آجلة': num(out.creditsSales !== undefined ? out.creditsSales : (out['مبيعات آجلة'] || 0)),
+        creditsSales: Number(out.creditsSales) || Number(out['مبيعات آجلة']) || 0,
         cashPurchases: num(out.cashPurchases),
         supplierCash: num(out.supplierCash),
         returns: num(out.returns),
