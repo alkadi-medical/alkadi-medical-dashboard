@@ -1025,8 +1025,8 @@ function renderMonths(){
   const grid = document.getElementById('monthGrid');
   grid.innerHTML = months.map(m=>{
     const rows = DATA.filter(r=>r.month===m);
-    const actual = rows.reduce((s,r)=>s+r.totalSales,0);
-    const budget = BUDGET_SALES[m];
+const actual = rows.reduce((s, r) => s + (Number(r.cashSales || 0) + Number(r.cardsSales || 0) + Number(r.bankTransfer || 0) + Number(r.creditsSales || 0)), 0);
+      const budget = BUDGET_SALES[m];
     const achievement = actual/budget;
     const daysInMonth = MONTH_WD_COUNTS[m].reduce((a,b)=>a+b,0);
     const completeness = rows.length/daysInMonth;
