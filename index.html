@@ -1033,16 +1033,16 @@ const actual = rows.reduce((s, r) => {
         const credits = Number(r.creditsSales || r['مبيعات آجلة'] || 0);
         return s + cash + cards + bank + credits;
     }, 0);
+    console.log("Month:", m, "Actual Sales:", actual);
+    const budget = BUDGET_SALES[m];
+    const achievement = actual/budget;
+    const daysInMonth = MONTH_WD_COUNTS[m].reduce((a,b)=>a+b,0);
+    const completeness = rows.length/daysInMonth;
+    const barPct = Math.min(achievement*100, 100);
+    const incomplete = completeness < 0.8;
 ```[cite: 24]
 
-### الخطوة النهائية:
-1. انسخ هذا الكود وضعه مكان الأسطر الحالية في `renderMonths()` (الأسطر 1029 إلى 1035)[cite: 24].
-2. احفظ الملف.
-3. افتح المتصفح واضغط **`Ctrl + Shift + R`** لتفريغ الذاكرة المؤقتة تماماً.
-
-بهذه الطريقة البسيطة، ستلتقط الدالة مبيعات الشبكة والآجل بالشكل الصحيح وتظهر الأرقام كاملة وصحيحة على بطاقات الشهور فوراً يا بطل! 🚀☕
-}, 0);
-      console.log("Month:", m, "Actual Sales:", actual);
+console.log("Month:", m, "Actual Sales:", actual);
       const budget = BUDGET_SALES[m];
     const achievement = actual/budget;
     const daysInMonth = MONTH_WD_COUNTS[m].reduce((a,b)=>a+b,0);
