@@ -1032,6 +1032,7 @@ const actual = rows.reduce((s, r) => {
         const bank = Number(r.bankTransfer || 0);
         const credits = Number(r.creditsSales || 0);
         return s + cash + cards + bank + credits;
+    console.log(`Month ${m} -> Cash: ${cash}, Cards: ${cards}, Bank: ${bank}, Credits: ${credits}`);
     }, 0);
       console.log("Month:", m, "Actual Sales:", actual);
       const budget = BUDGET_SALES[m];
