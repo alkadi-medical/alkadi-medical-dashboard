@@ -1025,7 +1025,13 @@ function renderMonths(){
   const grid = document.getElementById('monthGrid');
   grid.innerHTML = months.map(m=>{
     const rows = DATA.filter(r=>r.month===m);
-const actual = rows.reduce((s, r) => s + (Number(r.cashSales || 0) + Number(r.cardsSales || r['مبيعات شبكة'] || 0) + Number(r.bankTransfer || 0) + Number(r.creditsSales || r['مبيعات آجلة'] || 0)), 0);
+const actual = rows.reduce((s, r) => {
+    const cash = Number(r.cashSales || r['مبيعات نقدية'] || 0);
+    const cards = Number(r.cardsSales || r['مبيعات شبكة'] || r['شبكة'] || 0);
+    const bank = Number(r.bankTransfer || r['تحويلات بنكية'] || r['تحويلات'] || 0);
+    const credits = Number(r.creditsSales || r['مبيعات آجلة'] || r['آجلة'] || 0);
+    return s + cash + cards + bank + credits;
+}, 0);
       console.log("Month:", m, "Actual Sales:", actual);
       const budget = BUDGET_SALES[m];
     const achievement = actual/budget;
