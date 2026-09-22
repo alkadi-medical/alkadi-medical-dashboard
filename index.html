@@ -1025,6 +1025,7 @@ function renderMonths(){
   const grid = document.getElementById('monthGrid');
   grid.innerHTML = months.map(m=>{
     const rows = DATA.filter(r=>r.month===m);
+      console.log("Month:", m, "Rows found:", rows.length, "First row data:", rows[0]);
 const actual = rows.reduce((s, r) => {
     const cash = Number(r.cashSales || r['مبيعات نقدية'] || 0);
     const cards = Number(r.cardsSales || r['مبيعات شبكة'] || r['شبكة'] || 0);
