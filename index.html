@@ -1028,21 +1028,13 @@ function renderMonths(){
       console.log("Month:", m, "Rows found:", rows.length, "First row data:", rows[0]);
 const actual = rows.reduce((s, r) => {
         const cash = Number(r.cashSales || 0);
-        const cards = Number(r.cardsSales || r['مبيعات شبكة'] || 0);
-        const bank = Number(r.bankTransfer || r['تحويلات بنكية'] || 0);
-        const credits = Number(r.creditsSales || r['مبيعات آجلة'] || 0);
+        const cards = Number(r.cardsSales || 0);
+        const bank = Number(r.bankTransfer || 0);
+        const credits = Number(r.creditsSales || 0);
         return s + cash + cards + bank + credits;
+    console.log(`Month ${m} -> Cash: ${cash}, Cards: ${cards}, Bank: ${bank}, Credits: ${credits}`);
     }, 0);
-    console.log("Month:", m, "Actual Sales:", actual);
-    const budget = BUDGET_SALES[m];
-    const achievement = actual/budget;
-    const daysInMonth = MONTH_WD_COUNTS[m].reduce((a,b)=>a+b,0);
-    const completeness = rows.length/daysInMonth;
-    const barPct = Math.min(achievement*100, 100);
-    const incomplete = completeness < 0.8;
-```[cite: 24]
-
-console.log("Month:", m, "Actual Sales:", actual);
+      console.log("Month:", m, "Actual Sales:", actual);
       const budget = BUDGET_SALES[m];
     const achievement = actual/budget;
     const daysInMonth = MONTH_WD_COUNTS[m].reduce((a,b)=>a+b,0);
