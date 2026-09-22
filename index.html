@@ -1027,12 +1027,12 @@ function renderMonths(){
     const rows = DATA.filter(r=>r.month===m);
       console.log("Month:", m, "Rows found:", rows.length, "First row data:", rows[0]);
 const actual = rows.reduce((s, r) => {
-    const cash = Number(r.cashSales || r['مبيعات نقدية'] || 0);
-    const cards = Number(r.cardsSales || r['مبيعات شبكة'] || r['شبكة'] || 0);
-    const bank = Number(r.bankTransfer || r['تحويلات بنكية'] || r['تحويلات'] || 0);
-    const credits = Number(r.creditsSales || r['مبيعات آجلة'] || r['آجلة'] || 0);
-    return s + cash + cards + bank + credits;
-}, 0);
+        const cash = Number(r.cashSales || 0);
+        const cards = Number(r.cardsSales || 0);
+        const bank = Number(r.bankTransfer || 0);
+        const credits = Number(r.creditsSales || 0);
+        return s + cash + cards + bank + credits;
+    }, 0);
       console.log("Month:", m, "Actual Sales:", actual);
       const budget = BUDGET_SALES[m];
     const achievement = actual/budget;
