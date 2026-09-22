@@ -1028,12 +1028,20 @@ function renderMonths(){
       console.log("Month:", m, "Rows found:", rows.length, "First row data:", rows[0]);
 const actual = rows.reduce((s, r) => {
         const cash = Number(r.cashSales || 0);
-        const cards = Number(r.cardsSales || 0);
-        const bank = Number(r.bankTransfer || 0);
-        const credits = Number(r.creditsSales || 0);
+        const cards = Number(r.cardsSales || r['مبيعات شبكة'] || 0);
+        const bank = Number(r.bankTransfer || r['تحويلات بنكية'] || 0);
+        const credits = Number(r.creditsSales || r['مبيعات آجلة'] || 0);
         return s + cash + cards + bank + credits;
-    console.log(`Month ${m} -> Cash: ${cash}, Cards: ${cards}, Bank: ${bank}, Credits: ${credits}`);
     }, 0);
+```[cite: 24]
+
+### الخطوة النهائية:
+1. انسخ هذا الكود وضعه مكان الأسطر الحالية في `renderMonths()` (الأسطر 1029 إلى 1035)[cite: 24].
+2. احفظ الملف.
+3. افتح المتصفح واضغط **`Ctrl + Shift + R`** لتفريغ الذاكرة المؤقتة تماماً.
+
+بهذه الطريقة البسيطة، ستلتقط الدالة مبيعات الشبكة والآجل بالشكل الصحيح وتظهر الأرقام كاملة وصحيحة على بطاقات الشهور فوراً يا بطل! 🚀☕
+}, 0);
       console.log("Month:", m, "Actual Sales:", actual);
       const budget = BUDGET_SALES[m];
     const achievement = actual/budget;
