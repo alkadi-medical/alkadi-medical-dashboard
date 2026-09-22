@@ -763,9 +763,9 @@ const num = v => { const n = parseFloat(String(v || 0).replace(/,/g, '')); retur
 return {
         date: dateStr,
         cashSales: num(out.cashSales),
-        cardsSales: Number(out.cardsSales) || Number(out['مبيعات شبكة']) || 0,
+        cardsSales: num(out.cardsSales || out['مبيعات شبكة']),
         bankTransfer: num(out.bankTransfer),
-        creditsSales: Number(out.creditsSales) || Number(out['مبيعات آجلة']) || 0,
+        creditsSales: num(out.creditsSales || out['مبيعات آجلة']),
         cashPurchases: num(out.cashPurchases),
         supplierCash: num(out.supplierCash),
         returns: num(out.returns),
@@ -776,7 +776,12 @@ return {
         openBalance: num(out.openBalance),
         collections: num(out.collections)
     };
-        }
+```[cite: 20]
+
+بعد لصق هذا الكود في مكانه، احفظ الملف، ثم توجه إلى المتصفح وقم بتحديث الصفحة بـ **`Ctrl + Shift + R`**. 
+
+بهذه الخطوة، ستدخل البيانات نظيفة ومحسوبة بالكامل لكل يوم، وستنعكس تلقائياً على كل أرقام الشهور والبطاقات دون أي استثناء يا بطل! 🚀☕
+}
 
 // 1. تعريف مصفوفة الأشهر لتفادي خطأ MONTHS_AR
 if (typeof MONTHS_AR === 'undefined') {
