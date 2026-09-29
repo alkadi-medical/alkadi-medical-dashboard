@@ -638,21 +638,65 @@ const MONTH_WD_COUNTS = {
 };
 
 const BUDGET_SALES = {1:1000000,2:1000000,3:1000000,4:1250000,5:1250000,6:1250000,7:1500000,8:1500000,9:1500000,10:1500000,11:1500000,12:1500000};
-const MANUAL_ACTUALS = {
-    1: 748813,
-    2: 792901,
-    3: 805329,
-    4: 1025608,
-    5: 1000135,
-    6: 1097301,
-    7: 1064772,
-    8: 1129530,
-    9: 970979,
-    10: 0,
-    11: 0,
-    12: 0
+// 1. اجعل الكائن يبدأ بقيم صفرية افتراضية
+let MANUAL_ACTUALS = {
+    1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 
+    7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0
 };
-function monthTotalWeight(m){
+
+// 2. رابط الـ CSV الخاص بشيت "مقارنة شهرية" (استبدل الرابط أدناه برابط الـ CSV الخاص بورقة مقارنة شهرية لديك)
+const MONTHLY_COMPARE_CSV_URL = 'ضع_رابط_CSV_شيت_مقارنة_شهرية_هنا';
+
+// 3. دالة لجلب المبيعات الفعلية لكل شهر أوتوماتيكياً
+function fetchMonthlyActualsFromSheet() {
+    if (!MONTHLY_COMPARE_CSV_URL || MONTHLY_COMPARE_CSV_URL.includes('ضع_رابط')) {
+        console.warn("الرجاء وضع رابط الـ CSV الخاص بشيت مقارنة شهرية");
+        return;
+    }
+
+    Papa.parse(MONTHLY_COMPARE_CSV_URL, {
+        download: true,
+        header: false,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const rows = results.data;
+            
+            // خريطة لربط اسم الشهر برقمه التعريفي
+            const monthMapping = {
+                'يناير': 1, 'فبراير': 2, 'مارس': 3, 'أبريل': 4,
+                'مايو': 5, 'يونيو': 6, 'يوليو': 7, 'أغسطس': 8,
+                'سبتمبر': 9, 'أكتوبر': 10, 'نوفمبر': 11, 'ديسمبر': 12
+            };
+
+            rows.forEach(row => {
+                let monthName = (row[0] || '').trim(); // العمود الأول غالباً يحتوي على اسم الشهر
+                let actualSales = parseFloat(String(row[1] || '0').replace(/,/g, '')) || 0; // العمود الثاني يحتوي على الفعلي
+
+                if (monthMapping[monthName]) {
+                    MANUAL_ACTUALS[monthMapping[monthName]] = actualSales;
+                }
+            });
+
+            console.log("تم تحديث الفعلي الشهري أوتوماتيكياً من شيت مقارنة شهرية:", MANUAL_ACTUALS);
+            
+            // إعادة رسم أو تحديث الداشبورد بعد جلب البيانات لتظهر الأرقام الجديدة فوراً
+            if (typeof updateDashboard === 'function') {
+                updateDashboard();
+            } else if (typeof renderAll === 'function') {
+                renderAll();
+            }
+        },
+        error: function(err) {
+            console.error("خطأ في جلب بيانات مقارنة شهرية:", err);
+        }
+    });
+}
+
+// استدعاء الدالة تلقائياً عند تحميل الصفحة
+window.addEventListener('DOMContentLoaded', () => {
+    fetchMonthlyActualsFromSheet();
+});
+    function monthTotalWeight(m){
   return MONTH_WD_COUNTS[m].reduce((s,c,i)=> s + c*WEIGHTS[i], 0);
 }
 function dailyTarget(dateObj){
