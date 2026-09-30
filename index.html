@@ -638,191 +638,20 @@ const MONTH_WD_COUNTS = {
 };
 
 const BUDGET_SALES = {1:1000000,2:1000000,3:1000000,4:1250000,5:1250000,6:1250000,7:1500000,8:1500000,9:1500000,10:1500000,11:1500000,12:1500000};
-/* ============================================================
-   MANUAL_ACTUALS — «الفعلي الإجمالي» يُقرأ آلياً من Google Sheets
-   ------------------------------------------------------------
-   التبويب      : «مقارنة شهرية»  |  العمود A = الشهر ، العمود B = مبيعات فعلية
-   المطلوب منك  : تعبئة SH_SHEET_ID فقط (الجزء بين /d/ و /edit في رابط الشيت)
-   ما يحدث      : تُقرأ قيم العمود B شهراً بشهر وتُكتب داخل MANUAL_ACTUALS،
-                  ثم يُعاد رسم اللوحة فتظهر الأرقام والمجاميع فوراً.
-   يُتجاهل آلياً : صف العناوين، صف «الإجمالي»، صف التنبيه، الصفوف الفارغة.
-   ============================================================ */
-
-var SH_SHEET_ID  = '';               /* ← 1) الصق رقم الشيت هنا */
-var SH_SHEET_TAB = 'مقارنة شهرية';    /* ← 2) اسم التبويب كما هو */
-var SH_SHEET_GID = '';               /* ← 3) اختياري: إن فشل الاسم الصق GID من الرابط */
-var SH_MONTH_COL = 0;                /* العمود A = الشهر */
-var SH_VALUE_COL = 1;                /* العمود B = مبيعات فعلية */
-var SH_TIMEOUT_MS = 8000;            /* مهلة انتظار قراءة الشيت */
-
-/* القيم الافتراضية (أصفار) حتى تصل أرقام الشيت */
-const MANUAL_ACTUALS = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0 };
-
-/* كل منطق القراءة معزول هنا حتى لا يتعارض مع أي اسم دالة آخر في الصفحة */
-(function () {
-
-  var MONTHS = {
-    'يناير':1,'فبراير':2,'مارس':3,'أبريل':4,'ابريل':4,'مايو':5,'يونيو':6,'يوليو':7,
-    'أغسطس':8,'اغسطس':8,'سبتمبر':9,'أكتوبر':10,'اكتوبر':10,'نوفمبر':11,'ديسمبر':12,
-    'january':1,'february':2,'march':3,'april':4,'may':5,'june':6,'july':7,
-    'august':8,'september':9,'october':10,'november':11,'december':12
-  };
-
-  function normKey(v) {
-    return String(v == null ? '' : v)
-      .replace(/[\u064B-\u0652\u0640]/g, '')
-      .replace(/[\u0622\u0623\u0625\u0671]/g, '\u0627')
-      .replace(/\u0629/g, '\u0647')
-      .replace(/\u0649/g, '\u064A')
-      .replace(/[\u00A0\u2000-\u200F]/g, ' ')
-      .replace(/[\s\-_./]+/g, '')
-      .toLowerCase();
-  }
-
-  var LOOKUP = {};
-  for (var k in MONTHS) { if (MONTHS.hasOwnProperty(k)) LOOKUP[normKey(k)] = MONTHS[k]; }
-
-  function num(v) {
-    if (v === null || v === undefined) return 0;
-    if (typeof v === 'number') return isFinite(v) ? v : 0;
-    var s = String(v).trim();
-    s = s.replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
-    s = s.replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); });
-    s = s.replace(/٫/g, '.').replace(/[٬,\s]/g, '').replace(/[−–—]/g, '-');
-    var neg = /^\(.*\)$/.test(s);
-    s = s.replace(/[()]/g, '').replace(/[^0-9.\-]/g, '');
-    var n = parseFloat(s);
-    if (!isFinite(n)) n = 0;
-    return neg ? -n : n;
-  }
-
-  function monthOf(v) {
-    if (v === null || v === undefined || v === '') return 0;
-    if (typeof v === 'number') return (v >= 1 && v <= 12) ? Math.round(v) : 0;
-    var t = String(v).trim();
-    if (/^\d{1,2}$/.test(t)) { var i = parseInt(t, 10); return (i >= 1 && i <= 12) ? i : 0; }
-    if (/^\d{4}-\d{2}/.test(t)) return parseInt(t.substring(5, 7), 10);
-    var key = normKey(t);
-    if (LOOKUP[key] !== undefined) return LOOKUP[key];
-    var m = key.match(/^(?:شهر)?(\d{1,2})$/);
-    return (m && +m[1] >= 1 && +m[1] <= 12) ? +m[1] : 0;
-  }
-
-  function fromCSV(text) {
-    var rows = [], row = [], cell = '', q = false, i, c;
-    for (i = 0; i < text.length; i++) {
-      c = text.charAt(i);
-      if (q) {
-        if (c === '"') { if (text.charAt(i + 1) === '"') { cell += '"'; i++; } else { q = false; } }
-        else cell += c;
-      } else if (c === '"') q = true;
-      else if (c === ',') { row.push(cell); cell = ''; }
-      else if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
-      else if (c !== '\r') cell += c;
-    }
-    if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
-    return rows;
-  }
-
-  function toMap(rows) {
-    var map = {}, found = 0, i;
-    for (i = 0; i < rows.length; i++) {
-      var r = rows[i];
-      if (!r || r.length <= SH_VALUE_COL) continue;
-      var m = monthOf(r[SH_MONTH_COL]);
-      if (m >= 1 && m <= 12) { map[m] = num(r[SH_VALUE_COL]); found++; }
-    }
-    return found ? map : null;
-  }
-
-  function apply(map) {
-    var n = 0;
-    for (var m = 1; m <= 12; m++) { if (map[m] !== undefined) { MANUAL_ACTUALS[m] = map[m]; n++; } }
-    return n;
-  }
-
-  function rerender() {
-    if (typeof window === 'undefined') return;
-    if (typeof window.onActualsLoaded === 'function') { try { window.onActualsLoaded(); return; } catch (e) {} }
-    var fns = ['renderDashboard','renderAll','renderCards','renderMonths','renderMonthsCards',
-               'buildDashboard','drawCharts','updateDashboard','render'];
-    for (var i = 0; i < fns.length; i++) {
-      if (typeof window[fns[i]] === 'function') { try { window[fns[i]](); return; } catch (e) {} }
-    }
-  }
-
-  function baseUrl() {
-    var u = 'https://docs.google.com/spreadsheets/d/' + String(SH_SHEET_ID).trim() + '/gviz/tq?tqx=';
-    if (SH_SHEET_GID) u += 'out:csv&gid=' + encodeURIComponent(String(SH_SHEET_GID).trim());
-    else u += 'out:csv&sheet=' + encodeURIComponent(String(SH_SHEET_TAB).trim());
-    return u;
-  }
-
-  function jsonp() {
-    return new Promise(function (resolve, reject) {
-      var settled = false, timer = null;
-      function finish(fn, arg) {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        fn(arg);
-      }
-      timer = setTimeout(function () {
-        finish(reject, new Error('انتهت المهلة دون رد من الشيت — تأكد أن الشيت مشترك «Anyone with the link» وأن اسم التبويب صحيح'));
-      }, SH_TIMEOUT_MS);
-
-      window.__shActuals = function (json) {
-        try {
-          var t = (json && json.table && json.table.rows) || [];
-          var rows = t.map(function (r) {
-            var c = r.c || [], out = [];
-            for (var i = 0; i < c.length; i++) { out[i] = c[i] ? c[i].v : ''; }
-            return out;
-          });
-          var map = toMap(rows);
-          if (!map) throw new Error('لم أتعرف على شكل بيانات التبويب');
-          var n = apply(map);
-          console.log('✅ تم قراءة «' + SH_SHEET_TAB + '» عبر JSONP (' + n + ' شهر):', map);
-          rerender();
-          finish(resolve, map);
-        } catch (e) { finish(reject, e); }
-      };
-
-      var s = document.createElement('script');
-      s.src = baseUrl().replace('out:csv', 'out:json;responseHandler=__shActuals') + '&_=' + Date.now();
-      s.onerror = function () { finish(reject, new Error('فشل تحميل JSONP')); };
-      document.head.appendChild(s);
-    });
-  }
-
-  function start() {
-    if (!SH_SHEET_ID) {
-      console.warn('ℹ️ لم يتم تعبئة SH_SHEET_ID بعد — قيم MANUAL_ACTUALS ستبقى كما هي.');
-      return;
-    }
-    fetch(baseUrl() + '&_=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-      .then(function (text) {
-        var map = toMap(fromCSV(text));
-        if (!map) throw new Error('لم أتعرف على شكل بيانات التبويب');
-        var n = apply(map);
-        console.log('✅ تم قراءة «' + SH_SHEET_TAB + '» من العمود B (' + n + ' شهر):', map);
-        rerender();
-      })
-      .catch(function (err) {
-        console.warn('⚠️ تعذّر fetch (' + (err && err.message) + ') — سنجرّب JSONP…');
-        jsonp().catch(function (e2) {
-          console.warn('⚠️ فشل JSONP أيضاً (' + (e2 && e2.message) + ') — تأكد أن الشيت مشترك «Anyone with the link».');
-        });
-      });
-  }
-
-  if (typeof document !== 'undefined' && typeof fetch !== 'undefined') {
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
-    else start();
-  }
-
-})();
+const MANUAL_ACTUALS = {
+    1: 748813,
+    2: 792901,
+    3: 805329,
+    4: 1025608,
+    5: 1000135,
+    6: 1097301,
+    7: 1064772,
+    8: 1129530,
+    9: 1079937,
+    10: 0,
+    11: 0,
+    12: 0
+};
 function monthTotalWeight(m){
   return MONTH_WD_COUNTS[m].reduce((s,c,i)=> s + c*WEIGHTS[i], 0);
 }
