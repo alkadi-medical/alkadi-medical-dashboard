@@ -797,7 +797,7 @@ if (typeof MONTHS_AR === 'undefined') {
 }
 
 // 2. دالة التحميل الحية المحدثة
-function {
+function loadLive(){
   if(!CONFIG.csvUrl){ loadDemo(); return; }
   if(typeof Papa === 'undefined'){
     console.warn('مكتبة تحليل CSV غير متاحة، سيتم عرض النسخة المحفوظة.');
@@ -1056,7 +1056,7 @@ function renderMonths(){
   grid.innerHTML = months.map(m=>{
     const rows = DATA.filter(r=>r.month===m);
       console.log("Month:", m, "Rows found:", rows.length, "First row data:", rows[0]);
-const actual = LIVE_MONTHLY_ACTUALS[m] !== undefined ? LIVE_MONTHLY_ACTUALS[m] : 0;
+const actual = MANUAL_ACTUALS[m] !== undefined ? MANUAL_ACTUALS[m] : 0;
       console.log("Month:", m, "Actual Sales:", actual);
       const budget = BUDGET_SALES[m];
     const achievement = actual/budget;
