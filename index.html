@@ -438,7 +438,7 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 <section id="customersSection" style="padding: 20px;">
 <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 10px;">
     <h2 style="color: #22c55e; text-align: right; cursor: pointer; margin: 0;" onclick="toggleSection('customersSection', this)" data-ar="أرصدة العملاء" data-en="Customer Balances">أرصدة العملاء</h2>
-    <span style="color: #22c55e; font-size: 13px; font-weight: 600;" data-ar="كما في يوم: 30-09-2026" data-en="As of: 2026-09-30">كما في يوم: 30-09-2026</span>
+    <span style="color: #22c55e; font-size: 13px; font-weight: 600;" id="customersAsOf">كما في يوم: 30-09-2026</span>
 </div>
     <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
         <table class="data-table" style="width: 100%; border-collapse: collapse; text-align: right; direction: rtl;">
@@ -457,7 +457,7 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 <section id="suppliersSection" style="padding: 20px;">
 <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 10px;">
     <h2 style="color: #22c55e; text-align: right; cursor: pointer; margin: 0;" onclick="toggleSection('suppliersSection', this)" data-ar="أرصدة الموردين" data-en="Supplier Balances">أرصدة الموردين</h2>
-    <span style="color: #22c55e; font-size: 13px; font-weight: 600;" data-ar="كما في يوم: 30-09-2026" data-en="As of: 2026-09-30">كما في يوم: 30-09-2026</span>
+    <span style="color: #22c55e; font-size: 13px; font-weight: 600;" id="suppliersAsOf">كما في يوم: 30-09-2026</span>
 </div>
     <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
         <table class="data-table" style="width: 100%; border-collapse: collapse; text-align: right; direction: rtl;">
@@ -474,7 +474,7 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </section>    
 <!-- قسم بيان القروض الجديد -->
 <section id="loansSection" class="loans-section" style="margin-top: 30px; ...">
-<div class="card-title" style="color: #22c55e; padding-right: 20px; margin-bottom: 16px; font-size: 1.2rem;" data-ar="بيان القروض حتى تاريخ 25-09-2026" data-en="Loans Statement as of 2026-09-25">بيان القروض حتى تاريخ 25-09-2026</div>
+<div class="card-title" style="color: #22c55e; padding-right: 20px; margin-bottom: 16px; font-size: 1.2rem;" id="loansAsOf">بيان القروض حتى تاريخ 25-09-2026</div>
     <div class="table-container" style="overflow-x: auto;">
         <table class="detail-table" style="width: 100%; white-space: nowrap; text-align: center;">
             <thead>
@@ -631,6 +631,7 @@ if (statusTextEl) statusTextEl.innerText = translations[currentLang].liveStatus;
       if(val !== null) el.textContent = val;
     });
 
+    updateAsOfLabels();
     renderHero();
     renderDaySelect();
     if(typeof renderPulse === 'function') renderPulse();
@@ -1265,6 +1266,33 @@ document.getElementById('drawerBackdrop').addEventListener('click', (e)=>{
 
 if(CONFIG.mode==='live'){ loadLive(); } else { loadDemo(); }
 // دالة لجلب وعرض بيانات القروض من التبويب المنشور
+// ---- تواريخ "كما في يوم": تُقرأ من خلية داخل نفس تبويب الشيت (عمود إضافي عنوانه: تاريخ الأرصدة / تاريخ البيان) ----
+var ASOF = {customers:null, suppliers:null, loans:null};
+var ASOF_FALLBACK = {customers:'30-09-2026', suppliers:'30-09-2026', loans:'25-09-2026'}; // تُستخدم فقط إذا لم توجد الخلية في الشيت
+function pickAsOf(rows){
+  if(!rows) return null;
+  const keys = ['تاريخ الأرصدة','تاريخ البيان','As of'];
+  for(const r of rows){
+    for(const k of Object.keys(r)){
+      if(keys.indexOf(String(k).trim()) !== -1){
+        const v = String(r[k] || '').trim();
+        if(v) return v;
+      }
+    }
+  }
+  return null;
+}
+function updateAsOfLabels(){
+  const en = (typeof currentLang !== 'undefined' && currentLang === 'en');
+  const set = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
+  const cu = ASOF.customers || ASOF_FALLBACK.customers;
+  const su = ASOF.suppliers || ASOF_FALLBACK.suppliers;
+  const lo = ASOF.loans || ASOF_FALLBACK.loans;
+  set('customersAsOf', (en ? 'As of: ' : 'كما في يوم: ') + cu);
+  set('suppliersAsOf', (en ? 'As of: ' : 'كما في يوم: ') + su);
+  set('loansAsOf', (en ? 'Loans Statement as of ' : 'بيان القروض حتى تاريخ ') + lo);
+}
+
 function loadLoansData() {
     const loansCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=1832741970&single=true&output=csv';
     
@@ -1272,6 +1300,7 @@ function loadLoansData() {
         download: true,
         header: true,
         complete: function(results) {
+            ASOF.loans = pickAsOf(results.data); updateAsOfLabels();
             const loansData = results.data.filter(row => row['#'] || row['name']);
             renderLoansTable(loansData);
         }
@@ -1338,6 +1367,7 @@ function renderLoansTable(loansData) {
 function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
+ASOF.customers = pickAsOf(res.data); updateAsOfLabels();
 renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد'], 'customersTableFoot');
     }});
 }
@@ -1345,6 +1375,7 @@ renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اس�
 function loadSuppliersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=246288434&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
+ASOF.suppliers = pickAsOf(res.data); updateAsOfLabels();
 renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد'], 'suppliersTableFoot');
     }});
 }
