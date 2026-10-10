@@ -338,7 +338,7 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
         <h2 class="hero-title">تقرير <span class="accent">الأداء</span> اليومي</h2>
       </div>
       <div class="hero-date-select">
-        <label for="daySelect">عرض يوم:</label>
+        <label for="daySelect" data-ar="عرض يوم:" data-en="View day:">عرض يوم:</label>
         <select id="daySelect"></select>
       </div>
     </div>
@@ -350,38 +350,38 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </div> 
   <section class="pulse" id="pulseSection">
     <div class="section-head">
-      <div class="eyebrow">التوزيع اليومي — يناير إلى أغسطس 2026</div>
-      <h2 class="section-title">مؤشرات المبيعات اليومية</h2>
-      <p class="section-sub">كل مربع = يوم واحد، ولونه يعكس نسبة تحقق المستهدف الموزون لذلك اليوم تحديداً (المستهدف موزون حسب نشاط كل يوم أسبوع فعلياً، وليس بالتساوي). اضغط أي يوم لعرض التفاصيل الكاملة.</p>
+      <div class="eyebrow" data-ar="التوزيع اليومي — يناير إلى أغسطس 2026" data-en="Daily Distribution — January to August 2026">التوزيع اليومي — يناير إلى أغسطس 2026</div>
+      <h2 class="section-title" data-ar="مؤشرات المبيعات اليومية" data-en="Daily Sales Indicators">مؤشرات المبيعات اليومية</h2>
+      <p class="section-sub" data-ar="كل مربع = يوم واحد، ولونه يعكس نسبة تحقق المستهدف الموزون لذلك اليوم تحديداً (المستهدف موزون حسب نشاط كل يوم أسبوع فعلياً، وليس بالتساوي). اضغط أي يوم لعرض التفاصيل الكاملة." data-en="Each square represents one day; its color reflects that day&#39;s achievement vs its weighted target (weighted by actual weekday activity, not evenly). Click any day for full details.">كل مربع = يوم واحد، ولونه يعكس نسبة تحقق المستهدف الموزون لذلك اليوم تحديداً (المستهدف موزون حسب نشاط كل يوم أسبوع فعلياً، وليس بالتساوي). اضغط أي يوم لعرض التفاصيل الكاملة.</p>
     </div>
     <div class="pulse-legend">
-      <div class="legend-chip"><span class="legend-swatch" style="background:var(--danger)"></span> أقل من 70%</div>
-      <div class="legend-chip"><span class="legend-swatch" style="background:var(--amber)"></span> 70% – 99%</div>
-      <div class="legend-chip"><span class="legend-swatch" style="background:var(--success)"></span> 100% فأكثر</div>
-      <div class="legend-chip"><span class="legend-swatch" style="background:var(--surface-2); border:1px solid var(--border)"></span> لا يوجد تقرير</div>
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--danger)"></span><span data-ar="أقل من 70%" data-en="Below 70%">أقل من 70%</span></div>
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--amber)"></span><span data-ar="70% – 99%" data-en="70% - 99%">70% – 99%</span></div>
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--success)"></span><span data-ar="100% فأكثر" data-en="100% or more">100% فأكثر</span></div>
+      <div class="legend-chip"><span class="legend-swatch" style="background:var(--surface-2); border:1px solid var(--border)"></span><span data-ar="لا يوجد تقرير" data-en="No report">لا يوجد تقرير</span></div>
     </div>
     <div class="pulse-grid" id="pulseGrid"></div>
   </section>
 
   <section class="months">
     <div class="section-head">
-      <div class="eyebrow">الفعلي مقابل الخطة السنوية</div>
-      <h2 class="section-title">الأداء الشهري</h2>
-      <p class="section-sub">اضغط أي شهر لعرض تفاصيل أيامه. الأشهر ذات البيانات الناقصة (أقل من 80% من أيامها مسجّلة) موسومة بوضوح لأن نسبتها غير موثوقة للمقارنة.</p>
+      <div class="eyebrow" data-ar="الفعلي مقابل الخطة السنوية" data-en="Actual vs Annual Plan">الفعلي مقابل الخطة السنوية</div>
+      <h2 class="section-title" data-ar="الأداء الشهري" data-en="Monthly Performance">الأداء الشهري</h2>
+      <p class="section-sub" data-ar="اضغط أي شهر لعرض تفاصيل أيامه. الأشهر ذات البيانات الناقصة (أقل من 80% من أيامها مسجّلة) موسومة بوضوح لأن نسبتها غير موثوقة للمقارنة." data-en="Click any month to see its daily details. Months with incomplete data (under 80% of days logged) are clearly flagged since their rate isn&#39;t reliable for comparison.">اضغط أي شهر لعرض تفاصيل أيامه. الأشهر ذات البيانات الناقصة (أقل من 80% من أيامها مسجّلة) موسومة بوضوح لأن نسبتها غير موثوقة للمقارنة.</p>
     </div>
       <!-- بطاقة الأداء السنوي التراكمي -->
 <!-- بطاقة الأداء السنوي التراكمي -->
     <div class="yearly-summary-card" id="yearlyCard" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; border-radius: 16px; padding: 20px; margin-bottom: 25px; color: #fff; cursor: pointer; transition: border-color 0.15s ease;" onclick="toggleYearlyDetail()">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h3 style="margin: 0; font-size: 1.2rem; color: #38bdf8;">📊 الأداء السنوي الإجمالي (حتى تاريخه) <span style="font-size: 0.85rem; color: #94a3b8; margin-right: 8px;">(اضغط للعرض/الإخفاء)</span></h3>
+            <h3 style="margin: 0; font-size: 1.2rem; color: #38bdf8;"><span data-ar="📊 الأداء السنوي الإجمالي (حتى تاريخه)" data-en="📊 Cumulative Annual Performance (To Date)">📊 الأداء السنوي الإجمالي (حتى تاريخه)</span> <span style="font-size: 0.85rem; color: #94a3b8; margin-right: 8px;" data-ar="(اضغط للعرض/الإخفاء)" data-en="(click to show/hide)">(اضغط للعرض/الإخفاء)</span></h3>
             <span id="yearlyPercentage" style="font-size: 1.4rem; font-weight: bold; background: rgba(56, 189, 248, 0.1); padding: 4px 12px; border-radius: 8px; color: #38bdf8;">0%</span>
         </div>
         <div style="background: #334155; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 15px;">
             <div id="yearlyProgressBar" style="background: #38bdf8; height: 100%; width: 0%; transition: width 0.5s ease;"></div>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: #94a3b8;">
-            <div>المحقق فعلياً: <span id="yearlyActual" style="color: #fff; font-weight: bold; margin-right: 5px;">0</span></div>
-            <div>المستهدف السنوي: <span id="yearlyTarget" style="color: #fff; font-weight: bold; margin-right: 5px;">0</span></div>
+            <div><span data-ar="المحقق فعلياً:" data-en="Actual achieved:">المحقق فعلياً:</span> <span id="yearlyActual" style="color: #fff; font-weight: bold; margin-right: 5px;">0</span></div>
+            <div><span data-ar="المستهدف السنوي:" data-en="Annual target:">المستهدف السنوي:</span> <span id="yearlyTarget" style="color: #fff; font-weight: bold; margin-right: 5px;">0</span></div>
         </div>
 
         <!-- القائمة المنسدلة لتفاصيل الأشهر -->
@@ -390,10 +390,10 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
                 <table class="detail-table" style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: right;">
                     <thead>
                         <tr style="border-bottom: 1px solid #334155; color: #94a3b8;">
-                            <th style="padding: 8px;">الشهر</th>
-                            <th style="padding: 8px; text-align: left;">المستهدف</th>
-                            <th style="padding: 8px; text-align: left;">المحقق</th>
-                            <th style="padding: 8px; text-align: left;">نسبة التحقيق</th>
+                            <th style="padding: 8px;" data-ar="الشهر" data-en="Month">الشهر</th>
+                            <th style="padding: 8px; text-align: left;" data-ar="المستهدف" data-en="Target">المستهدف</th>
+                            <th style="padding: 8px; text-align: left;" data-ar="المحقق" data-en="Actual">المحقق</th>
+                            <th style="padding: 8px; text-align: left;" data-ar="نسبة التحقيق" data-en="Achievement %">نسبة التحقيق</th>
                         </tr>
                     </thead>
                     <tbody id="yearlyMonthsTableBody">
@@ -411,8 +411,8 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 
 <section class="trend" style="display:none;">
     <div class="section-head">
-      <div class="eyebrow">آخر 60 يوم</div>
-      <h2 class="section-title">اتجاه المبيعات لآخر 60 يوم</h2>
+      <div class="eyebrow" data-ar="آخر 60 يوم" data-en="Last 60 Days">آخر 60 يوم</div>
+      <h2 class="section-title" data-ar="اتجاه المبيعات لآخر 60 يوم" data-en="Sales Trend — Last 60 Days">اتجاه المبيعات لآخر 60 يوم</h2>
     </div>
     <div class="trend-card">
       <div class="chart-wrap" id="salesChart"></div>
@@ -421,13 +421,13 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 
   <section class="methodology">
     <details class="method">
-      <summary>منهجية الحساب — كيف يُحسب المستهدف اليومي؟</summary>
+      <summary data-ar="منهجية الحساب — كيف يُحسب المستهدف اليومي؟" data-en="Calculation Methodology — How is the daily target computed?">منهجية الحساب — كيف يُحسب المستهدف اليومي؟</summary>
       <div class="method-body">
-        <p>المستهدف الشهري (من الموازنة المعتمدة) لا يُقسّم بالتساوي على أيام الشهر، لأن <b>يوم الجمعة نشاطه الفعلي حوالي 16% فقط</b> من متوسط يوم عادي (تحليل 181 يوم فعلي، يناير–أغسطس 2026). بدلاً من ذلك:</p>
-        <p>1) يُحسب <b>وزن نسبي</b> لكل يوم أسبوع = متوسط مبيعاته الفعلية ÷ المتوسط العام لكل الأيام.</p>
-        <p>2) يُحسب <b>إجمالي أوزان الشهر</b> بجمع أوزان كل أيامه التقويمية الفعلية (وليس فقط الأيام المسجلة حتى الآن).</p>
-        <p>3) <b>مستهدف اليوم = المستهدف الشهري × (وزن اليوم ÷ إجمالي أوزان الشهر)</b>.</p>
-        <p>هذا يعطي كل يوم مستهدفاً واقعياً بدل افتراض أن كل الأيام متساوية النشاط. المصدر: نفس منهجية ملف "لوحة القاضي الطبية المالية 2026.xlsx".</p>
+        <p data-ar-html='المستهدف الشهري (من الموازنة المعتمدة) لا يُقسّم بالتساوي على أيام الشهر، لأن &lt;b&gt;يوم الجمعة نشاطه الفعلي حوالي 16% فقط&lt;/b&gt; من متوسط يوم عادي (تحليل 181 يوم فعلي، يناير–أغسطس 2026). بدلاً من ذلك:' data-en-html='The monthly target (from the approved budget) is not divided evenly across the month&#39;s days, because &lt;b&gt;Friday&#39;s actual activity is only about 16%&lt;/b&gt; of a normal day (based on 181 actual days, Jan-Aug 2026). Instead:'>المستهدف الشهري (من الموازنة المعتمدة) لا يُقسّم بالتساوي على أيام الشهر، لأن <b>يوم الجمعة نشاطه الفعلي حوالي 16% فقط</b> من متوسط يوم عادي (تحليل 181 يوم فعلي، يناير–أغسطس 2026). بدلاً من ذلك:</p>
+        <p data-ar-html='1) يُحسب &lt;b&gt;وزن نسبي&lt;/b&gt; لكل يوم أسبوع = متوسط مبيعاته الفعلية ÷ المتوسط العام لكل الأيام.' data-en-html='1) A &lt;b&gt;relative weight&lt;/b&gt; is computed for each weekday = its average actual sales ÷ the overall average across all days.'>1) يُحسب <b>وزن نسبي</b> لكل يوم أسبوع = متوسط مبيعاته الفعلية ÷ المتوسط العام لكل الأيام.</p>
+        <p data-ar-html='2) يُحسب &lt;b&gt;إجمالي أوزان الشهر&lt;/b&gt; بجمع أوزان كل أيامه التقويمية الفعلية (وليس فقط الأيام المسجلة حتى الآن).' data-en-html='2) The &lt;b&gt;total monthly weight&lt;/b&gt; is computed by summing the weights of all the month&#39;s actual calendar days (not just the days logged so far).'>2) يُحسب <b>إجمالي أوزان الشهر</b> بجمع أوزان كل أيامه التقويمية الفعلية (وليس فقط الأيام المسجلة حتى الآن).</p>
+        <p data-ar-html='3) &lt;b&gt;مستهدف اليوم = المستهدف الشهري × (وزن اليوم ÷ إجمالي أوزان الشهر)&lt;/b&gt;.' data-en-html='3) &lt;b&gt;Daily target = Monthly target × (day&#39;s weight ÷ total monthly weight)&lt;/b&gt;.'>3) <b>مستهدف اليوم = المستهدف الشهري × (وزن اليوم ÷ إجمالي أوزان الشهر)</b>.</p>
+        <p data-ar="هذا يعطي كل يوم مستهدفاً واقعياً بدل افتراض أن كل الأيام متساوية النشاط. المصدر: نفس منهجية ملف &quot;لوحة القاضي الطبية المالية 2026.xlsx&quot;." data-en="This gives every day a realistic target instead of assuming all days have equal activity. Source: same methodology as the &quot;Al Kadi Medical Financial Dashboard 2026.xlsx&quot; file.">هذا يعطي كل يوم مستهدفاً واقعياً بدل افتراض أن كل الأيام متساوية النشاط. المصدر: نفس منهجية ملف "لوحة القاضي الطبية المالية 2026.xlsx".</p>
       </div>
     </details>
   </section>
@@ -437,16 +437,16 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </div> <!-- نهاية الحاوية الرئيسية إن وجدت -->
 <section id="customersSection" style="padding: 20px;">
 <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 10px;">
-    <h2 style="color: #22c55e; text-align: right; cursor: pointer; margin: 0;" onclick="toggleSection('customersSection', this)">أرصدة العملاء</h2>
-    <span style="color: #22c55e; font-size: 13px; font-weight: 600;">كما في يوم: 30-09-2026</span>
+    <h2 style="color: #22c55e; text-align: right; cursor: pointer; margin: 0;" onclick="toggleSection('customersSection', this)" data-ar="أرصدة العملاء" data-en="Customer Balances">أرصدة العملاء</h2>
+    <span style="color: #22c55e; font-size: 13px; font-weight: 600;" data-ar="كما في يوم: 30-09-2026" data-en="As of: 2026-09-30">كما في يوم: 30-09-2026</span>
 </div>
     <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
         <table class="data-table" style="width: 100%; border-collapse: collapse; text-align: right; direction: rtl;">
             <thead>
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; background: #0f172a; z-index: 2;">
-                    <th style="width: 140px; padding: 12px; text-align: right;">كود العميل</th>
-                    <th style="width: auto; padding: 12px; text-align: right;">اسم العميل</th>
-                    <th style="width: 160px; padding: 12px; text-align: left; padding-left: 20px;">الرصيد</th>
+                    <th style="width: 140px; padding: 12px; text-align: right;" data-ar="كود العميل" data-en="Customer Code">كود العميل</th>
+                    <th style="width: auto; padding: 12px; text-align: right;" data-ar="اسم العميل" data-en="Customer Name">اسم العميل</th>
+                    <th style="width: 160px; padding: 12px; text-align: left; padding-left: 20px;" data-ar="الرصيد" data-en="Balance">الرصيد</th>
                 </tr>
             </thead>
             <tbody id="customersTableBody"></tbody>
@@ -456,16 +456,16 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
     <!-- قسم أرصدة الموردين -->
 <section id="suppliersSection" style="padding: 20px;">
 <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 10px;">
-    <h2 style="color: #22c55e; text-align: right; cursor: pointer; margin: 0;" onclick="toggleSection('suppliersSection', this)">أرصدة الموردين</h2>
-    <span style="color: #22c55e; font-size: 13px; font-weight: 600;">كما في يوم: 30-09-2026</span>
+    <h2 style="color: #22c55e; text-align: right; cursor: pointer; margin: 0;" onclick="toggleSection('suppliersSection', this)" data-ar="أرصدة الموردين" data-en="Supplier Balances">أرصدة الموردين</h2>
+    <span style="color: #22c55e; font-size: 13px; font-weight: 600;" data-ar="كما في يوم: 30-09-2026" data-en="As of: 2026-09-30">كما في يوم: 30-09-2026</span>
 </div>
     <div style="max-width: 900px; max-height: 400px; overflow-y: auto; overflow-x: auto; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
         <table class="data-table" style="width: 100%; border-collapse: collapse; text-align: right; direction: rtl;">
             <thead>
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; background: #0f172a; z-index: 2;">
-                    <th style="width: 140px; padding: 12px; text-align: right;">كود المورد</th>
-                    <th style="width: auto; padding: 12px; text-align: right;">اسم المورد</th>
-                    <th style="width: 160px; padding: 12px; text-align: left; padding-left: 20px;">الرصيد</th>
+                    <th style="width: 140px; padding: 12px; text-align: right;" data-ar="كود المورد" data-en="Supplier Code">كود المورد</th>
+                    <th style="width: auto; padding: 12px; text-align: right;" data-ar="اسم المورد" data-en="Supplier Name">اسم المورد</th>
+                    <th style="width: 160px; padding: 12px; text-align: left; padding-left: 20px;" data-ar="الرصيد" data-en="Balance">الرصيد</th>
                 </tr>
             </thead>
             <tbody id="suppliersTableBody"></tbody>
@@ -474,23 +474,23 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 </section>    
 <!-- قسم بيان القروض الجديد -->
 <section id="loansSection" class="loans-section" style="margin-top: 30px; ...">
-<div class="card-title" style="color: #22c55e; padding-right: 20px; margin-bottom: 16px; font-size: 1.2rem;">بيان القروض حتى تاريخ 05-10-2026</div>
+<div class="card-title" style="color: #22c55e; padding-right: 20px; margin-bottom: 16px; font-size: 1.2rem;" data-ar="بيان القروض حتى تاريخ 25-09-2026" data-en="Loans Statement as of 2026-09-25">بيان القروض حتى تاريخ 25-09-2026</div>
     <div class="table-container" style="overflow-x: auto;">
         <table class="detail-table" style="width: 100%; white-space: nowrap; text-align: center;">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>تاريخ أول قسط</th>
-                    <th>مبلغ القرض</th>
-                    <th>أصل القرض</th>
-                    <th>فوائد البنك</th>
-                    <th>القسط الشهري</th>
-                    <th>المبلغ المسدد</th>
-                    <th>المبلغ المتبقي</th>
-                    <th>عدد الأقساط</th>
-                    <th>الأقساط المدفوعة</th>
-                    <th>الأقساط المتبقية</th>
-                    <th>تاريخ آخر قسط</th>
+                    <th data-ar="#" data-en="#">#</th>
+                    <th data-ar="تاريخ أول قسط" data-en="First Installment Date">تاريخ أول قسط</th>
+                    <th data-ar="مبلغ القرض" data-en="Loan Amount">مبلغ القرض</th>
+                    <th data-ar="أصل القرض" data-en="Principal">أصل القرض</th>
+                    <th data-ar="فوائد البنك" data-en="Bank Interest">فوائد البنك</th>
+                    <th data-ar="القسط الشهري" data-en="Monthly Installment">القسط الشهري</th>
+                    <th data-ar="المبلغ المسدد" data-en="Amount Paid">المبلغ المسدد</th>
+                    <th data-ar="المبلغ المتبقي" data-en="Remaining Amount">المبلغ المتبقي</th>
+                    <th data-ar="عدد الأقساط" data-en="No. of Installments">عدد الأقساط</th>
+                    <th data-ar="الأقساط المدفوعة" data-en="Installments Paid">الأقساط المدفوعة</th>
+                    <th data-ar="الأقساط المتبقية" data-en="Installments Remaining">الأقساط المتبقية</th>
+                    <th data-ar="تاريخ آخر قسط" data-en="Last Installment Date">تاريخ آخر قسط</th>
                 </tr>
             </thead>
             <tbody id="loansTableBody">
@@ -506,7 +506,7 @@ footer{padding:34px 0; text-align:center; color:var(--muted-2); font-size:11.5px
 <!-- بداية الفوتر أو نهاية الصفحة -->
 </body>
 <footer>
-  شركة القاضي الطبية · لوحة داخلية للإدارة والشركاء · تصميم وإعداد عبدالله عبدالكريم سليمان
+  <span data-ar="شركة القاضي الطبية · لوحة داخلية للإدارة والشركاء · تصميم وإعداد عبدالله عبدالكريم سليمان" data-en="Al Kadi Medical Company · Internal dashboard for management and partners · Designed by Abdullah Abdulkarim Suleiman">شركة القاضي الطبية · لوحة داخلية للإدارة والشركاء · تصميم وإعداد عبدالله عبدالكريم سليمان</span>
 </footer>
 
 <script>
@@ -561,6 +561,7 @@ const translations = {
     'السبت': { ar: 'السبت', en: 'Saturday' },
     'الأحد': { ar: 'الأحد', en: 'Sunday' },
     'الإثنين': { ar: 'الإثنين', en: 'Monday' },
+    'الاثنين': { ar: 'الاثنين', en: 'Monday' },
     'الثلاثاء': { ar: 'الثلاثاء', en: 'Tuesday' },
     'الأربعاء': { ar: 'الأربعاء', en: 'Wednesday' },
     'الخميس': { ar: 'الخميس', en: 'Thursday' },
@@ -570,6 +571,16 @@ const translations = {
 function getDow(dayName) {
     if (!DOW_MAP[dayName]) return dayName;
     return DOW_MAP[dayName][currentLang] || dayName;
+}
+
+function toggleSection(sectionId, headerEl){
+  const section = document.getElementById(sectionId);
+  if(!section) return;
+  const body = section.querySelector('div[style*="overflow"]') || section.querySelector('.table-container');
+  if(body){
+    const hidden = body.style.display === 'none';
+    body.style.display = hidden ? '' : 'none';
+  }
 }
 
 function toggleLanguage() {
@@ -609,8 +620,23 @@ function toggleLanguage() {
     // ترجمة حالة الاتصال الحية
     const statusTextEl = document.getElementById('statusText');
 if (statusTextEl) statusTextEl.innerText = translations[currentLang].liveStatus;
+
+    // ترجمة عامة لكل عنصر ثابت معلّم بـ data-ar / data-en (أو data-ar-html / data-en-html للنصوص التي فيها وسوم HTML)
+    document.querySelectorAll('[data-ar-html]').forEach(el=>{
+      const html = currentLang==='en' ? el.getAttribute('data-en-html') : el.getAttribute('data-ar-html');
+      if(html !== null) el.innerHTML = html;
+    });
+    document.querySelectorAll('[data-ar]:not([data-ar-html])').forEach(el=>{
+      const val = currentLang==='en' ? el.getAttribute('data-en') : el.getAttribute('data-ar');
+      if(val !== null) el.textContent = val;
+    });
+
     renderHero();
     renderDaySelect();
+    if(typeof renderPulse === 'function') renderPulse();
+    if(typeof renderMonths === 'function') renderMonths();
+    if(typeof renderAlerts === 'function') renderAlerts();
+    if(typeof renderTrend === 'function') renderTrend();
     if (selectedDate) openDrawer(selectedDate);
 }
     
@@ -795,6 +821,8 @@ creditsSales: num(out.creditsSales) || num(out['مبيعات آجلة']) || 0,
 if (typeof MONTHS_AR === 'undefined') {
   var MONTHS_AR = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 }
+var MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function monthName(m){ return (typeof currentLang !== 'undefined' && currentLang === 'en') ? MONTHS_EN[m-1] : MONTHS_AR[m-1]; }
 
 // 2. دالة التحميل الحية المحدثة
 function loadLive(){
@@ -828,25 +856,9 @@ loadLoansData();
       }
     });
   }
-    // جلب "مبيعات فعلية" الحية لكل شهر من تبويب "مقارنة شهرية"
-let LIVE_MONTHLY_ACTUALS = Object.assign({}, MANUAL_ACTUALS);
-
-function loadMonthlyActualsData() {
-    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=560591868&single=true&output=csv';
-    Papa.parse(url, { download: true, header: true, complete: function(res) {
-        res.data.forEach(row => {
-            const name = (row['الشهر'] || '').trim();
-            const idx = MONTHS_AR.indexOf(name);
-            if (idx === -1) return;
-            const val = parseFloat(String(row['مبيعات فعلية'] || '0').replace(/,/g, ''));
-            if (!isNaN(val)) LIVE_MONTHLY_ACTUALS[idx + 1] = val;
-        });
-        if (typeof renderMonths === 'function') renderMonths();
-        else if (typeof renderAll === 'function') renderAll();
-    }});
-}
-
-  if(CONFIG.suppliersCsvUrl){
+  if(typeof Papa === 'undefined'){
+    console.warn('CSV library unavailable - using saved data');
+  } else if(CONFIG.suppliersCsvUrl){
     Papa.parse(CONFIG.suppliersCsvUrl, {
       download: true, header: true, skipEmptyLines: true,
       complete: function(supRes){
@@ -975,7 +987,7 @@ function renderPulse(){
       cells += `<div class="pulse-cell${isLast}" data-date="${dateStr}" style="background:${color}" title="${dateStr} — ${pct(rec.achievement)}"></div>`;
     }
     return `<div class="pulse-month-row">
-      <div class="pulse-month-label">${MONTHS_AR[m-1]}</div>
+      <div class="pulse-month-label">${monthName(m)}</div>
       <div class="pulse-days-scroll"><div class="pulse-days">${cells}</div></div>
     </div>`;
   }).join('');
@@ -997,33 +1009,33 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
     <div class="drawer-head">
       <div>
 <div class="drawer-title">${currentLang === 'en' ? 'Day Details' : 'تفاصيل اليوم'}</div>
-<div class="drawer-date">${r.date} — ${r.dow}</div>
+<div class="drawer-date">${r.date} — ${getDow(r.dow)}</div>
       </div>
     </div>
     </div>
     <table class="detail-table">
 <tr><th colspan="2">${currentLang === 'en' ? 'Revenue Details' : 'تفاصيل الإيرادات'}</th></tr>
 <tbody>
-<tr><td>مبيعات نقدية</td><td class="v">${Number(r.cashSales || 0).toLocaleString()}</td></tr>
-<tr><td>مبيعات شبكة</td><td class="v">${Number(r.cardsSales || 0).toLocaleString()}</td></tr>
-<tr><td>تحويلات بنكية</td><td class="v">${Number(r.bankTransfer || 0).toLocaleString()}</td></tr>
-<tr><td>مبيعات آجلة</td><td class="v">${Number(r.creditsSales || 0).toLocaleString()}</td></tr>
-<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>إجمالي المبيعات</td><td class="v">${fmt(r.totalSales)}</td></tr>
+<tr><td>${currentLang==='en'?'Cash Sales':'مبيعات نقدية'}</td><td class="v">${Number(r.cashSales || 0).toLocaleString()}</td></tr>
+<tr><td>${currentLang==='en'?'Card Sales':'مبيعات شبكة'}</td><td class="v">${Number(r.cardsSales || 0).toLocaleString()}</td></tr>
+<tr><td>${currentLang==='en'?'Bank Transfer':'تحويلات بنكية'}</td><td class="v">${Number(r.bankTransfer || 0).toLocaleString()}</td></tr>
+<tr><td>${currentLang==='en'?'Credit Sales':'مبيعات آجلة'}</td><td class="v">${Number(r.creditsSales || 0).toLocaleString()}</td></tr>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>${currentLang==='en'?'Total Sales':'إجمالي المبيعات'}</td><td class="v">${fmt(r.totalSales)}</td></tr>
 </tbody>
     </table>
     <table class="detail-table">
-      <thead><tr><th colspan="2">حركة النقد</th></tr></thead>
+      <thead><tr><th colspan="2">${currentLang==='en'?'Cash Movement':'حركة النقد'}</th></tr></thead>
       <tbody>
-        <tr><td>رصيد أول اليوم</td><td class="v">${fmt(r.openBalance)}</td></tr>
-<tr><td>تحصيلات من العملاء</td><td class="v">${fmt(r.collections)}</td></tr>
-<tr><td>سداد موردين نقداً</td><td class="v">${fmt(r.supplierCash)}</td></tr>
-<tr><td>مشتريات نقدية</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
-<tr><td>المصروفات النقدية</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
-<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>رصيد آخر اليوم</td><td class="v">${fmt(r.closeBalance)}</td></tr>
+        <tr><td>${currentLang==='en'?'Opening Balance':'رصيد أول اليوم'}</td><td class="v">${fmt(r.openBalance)}</td></tr>
+<tr><td>${currentLang==='en'?'Customer Collections':'تحصيلات من العملاء'}</td><td class="v">${fmt(r.collections)}</td></tr>
+<tr><td>${currentLang==='en'?'Supplier Cash Payments':'سداد موردين نقداً'}</td><td class="v">${fmt(r.supplierCash)}</td></tr>
+<tr><td>${currentLang==='en'?'Cash Purchases':'مشتريات نقدية'}</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
+<tr><td>${currentLang==='en'?'Cash Expenses':'المصروفات النقدية'}</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>${currentLang==='en'?'Closing Balance':'رصيد آخر اليوم'}</td><td class="v">${fmt(r.closeBalance)}</td></tr>
 </tbody>
     </table>
-    ${paymentsTableHtml('سداد الموردين نقداً', pay.cash, pay.cashTotalReported)}
-    ${paymentsTableHtml('سداد الموردين بنكياً (تحويل)', pay.bank, pay.bankTotalReported)}
+    ${paymentsTableHtml(currentLang==='en'?'Supplier Cash Payments':'سداد الموردين نقداً', pay.cash, pay.cashTotalReported)}
+    ${paymentsTableHtml(currentLang==='en'?'Supplier Bank Payments (Transfer)':'سداد الموردين بنكياً (تحويل)', pay.bank, pay.bankTotalReported)}
   `;
   document.getElementById('drawerBackdrop').classList.add('open');
 }
@@ -1031,15 +1043,15 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
 function paymentsTableHtml(title, list, reportedTotal){
   if(!list || list.length===0){
     return `<table class="detail-table"><thead><tr><th>${title}</th></tr></thead>
-      <tbody><tr><td style="color:var(--muted-2); font-size:12px;">لا يوجد سداد مسجّل لهذا اليوم.</td></tr></tbody></table>`;
+      <tbody><tr><td style="color:var(--muted-2); font-size:12px;">${currentLang==='en'?'No payment recorded for this day.':'لا يوجد سداد مسجّل لهذا اليوم.'}</td></tr></tbody></table>`;
   }
   const total = reportedTotal != null ? reportedTotal : list.reduce((s,x)=>s+x.a,0);
   return `
     <table class="detail-table payments-table">
-      <thead><tr><th>${title}</th><th>الجهة/الطريقة</th><th style="text-align:left">المبلغ</th></tr></thead>
+      <thead><tr><th>${title}</th><th>${currentLang==='en'?'Party/Method':'الجهة/الطريقة'}</th><th style="text-align:left">${currentLang==='en'?'Amount':'المبلغ'}</th></tr></thead>
       <tbody>
-        ${list.map(x=>`<tr><td>${x.n}</td><td style="color:var(--muted)">${x.m||'-'}</td><td class="v">${fmt(x.a)}</td></tr>`).join('')}
-<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td colspan="2">الإجمالي</td><td class="v" style="font-size: 1em; font-weight: bold;">${fmt(total)}</td></tr>
+        ${list.map(x=>`<tr><td>${x.n}</td><td style="color:var(--muted)">${currentLang==='en' ? ({'نقداً':'Cash','نقدي':'Cash','نقدا':'Cash','تحويل بنكي':'Bank Transfer','تحويل':'Bank Transfer'}[(x.m||'').trim()] || x.m || '-') : (x.m||'-')}</td><td class="v">${fmt(x.a)}</td></tr>`).join('')}
+<tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td colspan="2">${currentLang==='en'?'Total':'الإجمالي'}</td><td class="v" style="font-size: 1em; font-weight: bold;">${fmt(total)}</td></tr>
 </tbody>
     </table>`;
 }
@@ -1067,22 +1079,22 @@ const actual = rows.reduce((s, r) => s + (r.totalSales || 0), 0);
     return `
     <div class="month-card" data-month="${m}">
       <div class="month-card-head">
-        <div class="month-name">${MONTHS_AR[m-1]}</div>
+        <div class="month-name">${monthName(m)}</div>
         <div class="tag ${achvClass(achievement)}">${pct(achievement)}</div>
       </div>
       <div class="month-bar-track"><div class="month-bar-fill" style="width:${barPct}%; background:${achvColor(achievement)}"></div></div>
       <div class="month-stats">
-        <span>فعلي: <span class="num">${fmt(actual)}</span></span>
-        <span>مستهدف: <span class="num">${fmt(budget)}</span></span>
+        <span>${currentLang==='en'?'Actual':'فعلي'}: <span class="num">${fmt(actual)}</span></span>
+        <span>${currentLang==='en'?'Target':'مستهدف'}: <span class="num">${fmt(budget)}</span></span>
       </div>
-      ${incomplete ? `<div class="badge-incomplete">بيانات غير مكتملة (${Math.round(completeness*100)}% فقط، ${rows.length}/${daysInMonth} يوم)</div>` : ''}
+      ${incomplete ? `<div class="badge-incomplete">${currentLang==='en' ? `Incomplete data (${Math.round(completeness*100)}% only, ${rows.length}/${daysInMonth} days)` : `بيانات غير مكتملة (${Math.round(completeness*100)}% فقط، ${rows.length}/${daysInMonth} يوم)`}</div>` : ''}
       <div class="month-detail" id="month-detail-${m}">
         <div class="month-detail-scroll">
           <table>
-            <thead><tr><th>اليوم</th><th>مبيعات</th><th>مستهدف</th><th>%</th></tr></thead>
+            <thead><tr><th>${currentLang==='en'?'Day':'اليوم'}</th><th>${currentLang==='en'?'Sales':'مبيعات'}</th><th>${currentLang==='en'?'Target':'مستهدف'}</th><th>%</th></tr></thead>
             <tbody>
               ${rows.map(r=>`<tr>
-                <td>${r.dayNum} ${r.dow}</td>
+                <td>${r.dayNum} ${getDow(r.dow)}</td>
 <td class="v">${fmt(Number(r.cashSales || 0) + Number(r.cardsSales || 0) + Number(r.bankTransfer || 0) + Number(r.creditsSales || 0))}</td>
 <td class="v">${fmt(r.target)}</td>
                 <td class="v" style="color:${achvColor(r.achievement)}">${pct(r.achievement)}</td>
@@ -1119,8 +1131,8 @@ const actual = rows.reduce((s, r) => s + (r.totalSales || 0), 0);
     const yearlyPctEl = document.getElementById('yearlyPercentage');
     const yearlyBarEl = document.getElementById('yearlyProgressBar');
     
-    if(yearlyActEl) yearlyActEl.innerText = fmt(totalYearlyActualSales) + ' ريال';
-    if(yearlyTgtEl) yearlyTgtEl.innerText = fmt(totalYearlyTargetSum) + ' ريال';
+    if(yearlyActEl) yearlyActEl.innerText = fmt(totalYearlyActualSales) + (currentLang==='en' ? ' SAR' : ' ريال');
+    if(yearlyTgtEl) yearlyTgtEl.innerText = fmt(totalYearlyTargetSum) + (currentLang==='en' ? ' SAR' : ' ريال');
     if(yearlyPctEl) yearlyPctEl.innerText = yearlyPctFinal + '%';
     if(yearlyBarEl) yearlyBarEl.style.width = Math.min(yearlyPctFinal, 100) + '%';
     
@@ -1141,8 +1153,9 @@ function renderAlerts(){
     const alerts = [];
     
     const last30 = DATA.slice(-30);
+    const weak30 = last30.filter(r=>r.achievement<0.7).length;
     if(weak30>0){
-    alerts.push({type:'', icon:'⚠️', text:`${weak30} من آخر ${last30.length} يوماً مسجّلاً حققوا أقل من 70% من المستهدف الموزون.`});
+    alerts.push({type:'', icon:'⚠️', text: currentLang==='en' ? `${weak30} of the last ${last30.length} logged days achieved less than 70% of the weighted target.` : `${weak30} من آخر ${last30.length} يوماً مسجّلاً حققوا أقل من 70% من المستهدف الموزون.`});
   }
 
   const months = [...new Set(DATA.map(r=>r.month))].sort((a,b)=>a-b);
@@ -1152,7 +1165,7 @@ function renderAlerts(){
     const completeness = rows.length/daysInMonth;
     const isCurrentOrFutureMonth = m >= (DATA[DATA.length-1]?DATA[DATA.length-1].month:99);
     if(completeness < 0.8 && !isCurrentOrFutureMonth){
-      alerts.push({type:'amber', icon:'🗂️', text:`شهر ${MONTHS_AR[m-1]} بيانات غير مكتملة (${rows.length} من ${daysInMonth} يوماً فقط) — أي نسبة تحقق له غير موثوقة.`});
+      alerts.push({type:'amber', icon:'🗂️', text: currentLang==='en' ? `${monthName(m)} has incomplete data (only ${rows.length} of ${daysInMonth} days) — its achievement rate isn't reliable.` : `شهر ${monthName(m)} بيانات غير مكتملة (${rows.length} من ${daysInMonth} يوماً فقط) — أي نسبة تحقق له غير موثوقة.`});
     }
   });
 
@@ -1162,11 +1175,11 @@ function renderAlerts(){
     if(drop>0 && (!maxDrop || drop>maxDrop.drop)) maxDrop = {drop, date:DATA[i].date};
   }
   if(maxDrop && maxDrop.drop > 0){
-    alerts.push({type:'', icon:'💧', text:`أكبر انخفاض في رصيد النقد خلال يوم واحد: ${fmt(maxDrop.drop)} ريال بتاريخ ${maxDrop.date}.`});
+    alerts.push({type:'', icon:'💧', text: currentLang==='en' ? `Largest single-day cash balance drop: ${fmt(maxDrop.drop)} SAR on ${maxDrop.date}.` : `أكبر انخفاض في رصيد النقد خلال يوم واحد: ${fmt(maxDrop.drop)} ريال بتاريخ ${maxDrop.date}.`});
   }
 
   if(alerts.length===0){
-    alerts.push({type:'ok', icon:'✅', text:'لا توجد تنبيهات حرجة حالياً بناءً على البيانات المتاحة.'});
+    alerts.push({type:'ok', icon:'✅', text: currentLang==='en' ? 'No critical alerts currently, based on available data.' : 'لا توجد تنبيهات حرجة حالياً بناءً على البيانات المتاحة.'});
   }
 
   list.innerHTML = alerts.map(a=>`
@@ -1213,7 +1226,7 @@ const linePts = rows.map((r,i)=> `${x(i).toFixed(1)},${y(r.totalSales).toFixed(1
     }
   });
   // points with native tooltip
-  const points = rows.map((r,i)=> `<circle class="chart-point" cx="${x(i).toFixed(1)}" cy="${y(r.totalSales).toFixed(1)}" r="3"><title>${r.date}: ${fmt(r.totalSales)} ريال</title></circle>`).join('');
+  const points = rows.map((r,i)=> `<circle class="chart-point" cx="${x(i).toFixed(1)}" cy="${y(r.totalSales).toFixed(1)}" r="3"><title>${r.date}: ${fmt(r.totalSales)}${currentLang==='en'?' SAR':' ريال'}</title></circle>`).join('');
 
   container.innerHTML = `
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
@@ -1309,7 +1322,7 @@ function renderLoansTable(loansData) {
 
     tfoot.innerHTML = `
         <tr>
-            <td colspan="2">الإجمالي</td>
+            <td colspan="2">${currentLang==='en'?'Total':'الإجمالي'}</td>
             <td>${totalLoanAmount.toLocaleString()}</td>
             <td>${totalPrincipal.toLocaleString()}</td>
             <td>${totalInterest.toLocaleString()}</td>
@@ -1319,65 +1332,10 @@ function renderLoansTable(loansData) {
             <td colspan="4"></td>
         </tr>
     `;
-    // جلب أرصدة العملاء
+}
+
+// جلب أرصدة العملاء
 function loadCustomersData() {
-    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
-    Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد'], 'customersTableFoot');
-    }});
-}
-
-// جلب أرصدة الموردين
-function loadSuppliersData() {
-    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=246288434&single=true&output=csv';
-    Papa.parse(url, { download: true, header: true, complete: function(res) {
-renderSimpleTable('suppliersTableBody', res.data, ['كود المورد', 'اسم المورد', 'الرصيد'], 'suppliersTotal');
-    }});
-}
-
-// دالة عامة لتعبئة الجداول البسيطة
-function renderSimpleTable(tbodyId, data, headers, totalFooterId) {
-    const tbody = document.getElementById(tbodyId);
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    
-    const filteredData = data.filter(row => row[headers[0]] || row[headers[1]]);
-    let totalSum = 0;
-
-    filteredData.forEach(row => {
-                    let val = parseFloat(String(row['الرصيد'] || '0').replace(/,/g, '')) || 0;
-        totalSum += val;
-// فحص ما إذا كان السطر الحالي هو صف المجموع
-        const isTotalRow = row[headers[1]] && row[headers[1]].toString().includes('المجموع');
-        
-        // تحديد لون الخلفية بتباين واضح للأسطر العادية، وخضراء بارزة لصف المجموع
-let rowStyle = '';
-        if (isTotalRow) {
-            rowStyle = 'color: #22c55e !important; font-weight: bold; background-color: rgba(34, 197, 94, 0.1);';
-        } else {
-            const index = filteredData.indexOf(row);
-rowStyle = index % 2 === 0 ? 'color: #ffffff !important;' : 'color: #cbd5e1 !important;';
-        }
-        const tr = `
-<tr style="${rowStyle} border-bottom: 1px solid rgba(255,255,255,0.05);">
-<td>${row[headers[0]] || ''}</td>
-                <td>${row[headers[1]] || ''}</td>
-                <td>${row[headers[2]] || ''}</td>
-            </tr>
-        `;
-        tbody.innerHTML += tr;
-    });
-
-    if (totalFooterId) {
-        const totalEl = document.getElementById(totalFooterId);
-        if (totalEl) {
-            let formattedTotal = totalSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            totalEl.innerText = formattedTotal;
-        }
-    }
-}
-}
-    function loadCustomersData() {
     const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSCRmtr4GQIDUyENhOlbwqiCqPgMSA0EpOh24bbI6bypXu2kTnxidVkqNgosHpdAg/pub?gid=2058554714&single=true&output=csv';
     Papa.parse(url, { download: true, header: true, complete: function(res) {
 renderSimpleTable('customersTableBody', res.data, ['كود العميل', 'اسم العميل', 'الرصيد'], 'customersTableFoot');
@@ -1501,7 +1459,7 @@ function populateYearlyMonthsTable() {
         if (mTarget > 0 || mActual > 0) {
             htmlRows += `
                 <tr style="border-bottom: 1px dashed rgba(51,65,85,0.6);">
-                    <td style="padding: 8px; font-weight: 600; color: #fff;">${monthsNames[m - 1]}</td>
+                    <td style="padding: 8px; font-weight: 600; color: #fff;">${monthName(m)}</td>
                     <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mTarget.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                     <td style="padding: 8px; text-align: left; direction: ltr; color: #38bdf8;" class="num">${mActual.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                     <td style="padding: 8px; text-align: left; direction: ltr;" class="num">${mPercent}</td>
@@ -1515,7 +1473,7 @@ function populateYearlyMonthsTable() {
     tbody.innerHTML = htmlRows;
     tfoot.innerHTML = `
         <tr>
-            <td style="padding: 10px; color: #fff;">الإجمالي العام</td>
+            <td style="padding: 10px; color: #fff;">${currentLang==='en'?'Grand Total':'الإجمالي العام'}</td>
             <td style="padding: 10px; text-align: left; direction: ltr; color: #fff;" class="num">${totalTargetSum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td style="padding: 10px; text-align: left; direction: ltr; color: #fff;" class="num">${totalActualSum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td style="padding: 10px; text-align: left; direction: ltr; color: #38bdf8;" class="num">${overallPercent}</td>
