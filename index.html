@@ -1032,6 +1032,7 @@ const pay = (typeof PAYMENTS !== 'undefined' && PAYMENTS[dateStr]) ? PAYMENTS[da
 <tr><td>${currentLang==='en'?'Supplier Cash Payments':'سداد موردين نقداً'}</td><td class="v">${fmt(r.supplierCash)}</td></tr>
 <tr><td>${currentLang==='en'?'Cash Purchases':'مشتريات نقدية'}</td><td class="v">${fmt(r.cashPurchases)}</td></tr>
 <tr><td>${currentLang==='en'?'Cash Expenses':'المصروفات النقدية'}</td><td class="v">${fmt(r.cashExpenses)}</td></tr>
+<tr><td>${currentLang==='en'?'Cash Deposited to Bank':'إيداع نقدي بالبنك'}</td><td class="v">${fmt(r.bankDeposit)}</td></tr>
 <tr style="color: #22c55e; font-weight: bold; font-size: 1.3em;"><td>${currentLang==='en'?'Closing Balance':'رصيد آخر اليوم'}</td><td class="v">${fmt(r.closeBalance)}</td></tr>
 </tbody>
     </table>
